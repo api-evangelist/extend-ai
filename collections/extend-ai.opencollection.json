@@ -1,0 +1,218 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Extend API",
+    "version": "2026-02-09"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    },
+    "headers": [
+      { "key": "x-extend-api-version", "value": "2026-02-09" }
+    ]
+  },
+  "items": [
+    {
+      "info": { "name": "Files", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Upload a file", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/files/upload", "body": { "type": "formdata", "data": "{}" } },
+          "docs": "Upload a document and receive a file ID."
+        },
+        {
+          "info": { "name": "List files", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/files" },
+          "docs": "List files."
+        },
+        {
+          "info": { "name": "Get a file", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/files/{id}" },
+          "docs": "Retrieve a file by ID."
+        },
+        {
+          "info": { "name": "Delete a file", "type": "http" },
+          "http": { "method": "DELETE", "url": "https://api.extend.ai/files/{id}" },
+          "docs": "Delete a file by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Processors", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Parse a file (sync)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/parse", "body": { "type": "json", "data": "{}" } },
+          "docs": "Synchronously parse a document into markdown and structured chunks."
+        },
+        {
+          "info": { "name": "Extract from a file (sync)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/extract", "body": { "type": "json", "data": "{}" } },
+          "docs": "Synchronously extract structured fields from a document."
+        },
+        {
+          "info": { "name": "Classify a file (sync)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/classify", "body": { "type": "json", "data": "{}" } },
+          "docs": "Synchronously classify a document."
+        },
+        {
+          "info": { "name": "Split a file (sync)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/split", "body": { "type": "json", "data": "{}" } },
+          "docs": "Synchronously split a multi-document file into subdocuments."
+        },
+        {
+          "info": { "name": "List extractors", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/extractors" },
+          "docs": "List extractors."
+        },
+        {
+          "info": { "name": "Create an extractor", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/extractors", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create a reusable extractor."
+        },
+        {
+          "info": { "name": "Create extractor version", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/extractors/{id}/versions", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create a new version of an extractor."
+        },
+        {
+          "info": { "name": "List classifiers", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/classifiers" },
+          "docs": "List classifiers."
+        },
+        {
+          "info": { "name": "Create a classifier", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/classifiers", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create a reusable classifier."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Processor Runs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a parse run (async)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/parse_runs", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create an asynchronous parse run."
+        },
+        {
+          "info": { "name": "Get a parse run", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/parse_runs/{id}" },
+          "docs": "Retrieve a parse run by ID."
+        },
+        {
+          "info": { "name": "Create an extract run (async)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/extract_runs", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create an asynchronous extract run."
+        },
+        {
+          "info": { "name": "Get an extract run", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/extract_runs/{id}" },
+          "docs": "Retrieve an extract run by ID."
+        },
+        {
+          "info": { "name": "Create a classify run (async)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/classify_runs", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create an asynchronous classify run."
+        },
+        {
+          "info": { "name": "Get a classify run", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/classify_runs/{id}" },
+          "docs": "Retrieve a classify run by ID."
+        },
+        {
+          "info": { "name": "Create a split run (async)", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/split_runs", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create an asynchronous split run."
+        },
+        {
+          "info": { "name": "Get a split run", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/split_runs/{id}" },
+          "docs": "Retrieve a split run by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Workflows", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "List workflows", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/workflows" },
+          "docs": "List workflows."
+        },
+        {
+          "info": { "name": "Create a workflow", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/workflows", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create a workflow."
+        },
+        {
+          "info": { "name": "Get a workflow", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/workflows/{id}" },
+          "docs": "Retrieve a workflow by ID."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Workflow Runs", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create a workflow run", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/workflow_runs", "body": { "type": "json", "data": "{}" } },
+          "docs": "Run a deployed workflow against a file."
+        },
+        {
+          "info": { "name": "List workflow runs", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/workflow_runs" },
+          "docs": "List workflow runs."
+        },
+        {
+          "info": { "name": "Get a workflow run", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/workflow_runs/{id}" },
+          "docs": "Retrieve a workflow run by ID."
+        },
+        {
+          "info": { "name": "Update a workflow run", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/workflow_runs/{id}", "body": { "type": "json", "data": "{}" } },
+          "docs": "Update a workflow run."
+        },
+        {
+          "info": { "name": "Batch create workflow runs", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/workflow_runs/batch", "body": { "type": "json", "data": "{}" } },
+          "docs": "Batch create workflow runs."
+        }
+      ]
+    },
+    {
+      "info": { "name": "Evaluations", "type": "folder" },
+      "items": [
+        {
+          "info": { "name": "Create an evaluation set", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/evaluation_sets", "body": { "type": "json", "data": "{}" } },
+          "docs": "Create an evaluation set against an extractor, classifier, or splitter."
+        },
+        {
+          "info": { "name": "Get an evaluation set", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/evaluation_sets/{id}" },
+          "docs": "Retrieve an evaluation set by ID."
+        },
+        {
+          "info": { "name": "Create an evaluation set item", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/evaluation_set_items", "body": { "type": "json", "data": "{}" } },
+          "docs": "Add an item to an evaluation set."
+        },
+        {
+          "info": { "name": "Create an evaluation set run", "type": "http" },
+          "http": { "method": "POST", "url": "https://api.extend.ai/evaluation_set_runs", "body": { "type": "json", "data": "{}" } },
+          "docs": "Trigger an evaluation run over an evaluation set."
+        },
+        {
+          "info": { "name": "Get a batch run", "type": "http" },
+          "http": { "method": "GET", "url": "https://api.extend.ai/batch_runs/{id}" },
+          "docs": "Retrieve a batch run by ID (unified across batch submission endpoints)."
+        }
+      ]
+    }
+  ]
+}

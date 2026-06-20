@@ -1,0 +1,397 @@
+{
+  "info": {
+    "name": "Extend API",
+    "description": {
+      "content": "The Extend API turns documents into high quality structured data: files, parse/extract/classify/split processors and runs, workflows and workflow runs, evaluations, and batch processing. Base URL https://api.extend.ai. Authenticate with a Bearer token and pin a version with the x-extend-api-version header.",
+      "type": "text/plain"
+    },
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "https://api.extend.ai"
+    },
+    {
+      "key": "apiVersion",
+      "value": "2026-02-09"
+    }
+  ],
+  "item": [
+    {
+      "name": "Files",
+      "item": [
+        {
+          "name": "Upload a file",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/files/upload", "host": ["{{baseUrl}}"], "path": ["files", "upload"] },
+            "body": { "mode": "formdata", "formdata": [ { "key": "file", "type": "file", "src": [] } ] }
+          }
+        },
+        {
+          "name": "List files",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/files", "host": ["{{baseUrl}}"], "path": ["files"] }
+          }
+        },
+        {
+          "name": "Get a file",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/files/:id", "host": ["{{baseUrl}}"], "path": ["files", ":id"] }
+          }
+        },
+        {
+          "name": "Delete a file",
+          "request": {
+            "method": "DELETE",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/files/:id", "host": ["{{baseUrl}}"], "path": ["files", ":id"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Processors",
+      "item": [
+        {
+          "name": "Parse a file (sync)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/parse", "host": ["{{baseUrl}}"], "path": ["parse"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" },\n  \"config\": {}\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Extract from a file (sync)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/extract", "host": ["{{baseUrl}}"], "path": ["extract"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" },\n  \"config\": { \"schema\": {} }\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Classify a file (sync)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/classify", "host": ["{{baseUrl}}"], "path": ["classify"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" },\n  \"config\": { \"classifications\": [] }\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Split a file (sync)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/split", "host": ["{{baseUrl}}"], "path": ["split"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" },\n  \"config\": {}\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "List extractors",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/extractors", "host": ["{{baseUrl}}"], "path": ["extractors"] }
+          }
+        },
+        {
+          "name": "Create an extractor",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/extractors", "host": ["{{baseUrl}}"], "path": ["extractors"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"<name>\",\n  \"config\": {}\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Create extractor version",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/extractors/:id/versions", "host": ["{{baseUrl}}"], "path": ["extractors", ":id", "versions"] },
+            "body": { "mode": "raw", "raw": "{\n  \"releaseType\": \"MINOR\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "List classifiers",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/classifiers", "host": ["{{baseUrl}}"], "path": ["classifiers"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Processor Runs",
+      "item": [
+        {
+          "name": "Create a parse run (async)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/parse_runs", "host": ["{{baseUrl}}"], "path": ["parse_runs"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" }\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get a parse run",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/parse_runs/:id", "host": ["{{baseUrl}}"], "path": ["parse_runs", ":id"] }
+          }
+        },
+        {
+          "name": "Create an extract run (async)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/extract_runs", "host": ["{{baseUrl}}"], "path": ["extract_runs"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" },\n  \"extractor\": { \"id\": \"<extractor_id>\" }\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get an extract run",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/extract_runs/:id", "host": ["{{baseUrl}}"], "path": ["extract_runs", ":id"] }
+          }
+        },
+        {
+          "name": "Create a classify run (async)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/classify_runs", "host": ["{{baseUrl}}"], "path": ["classify_runs"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" }\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get a classify run",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/classify_runs/:id", "host": ["{{baseUrl}}"], "path": ["classify_runs", ":id"] }
+          }
+        },
+        {
+          "name": "Create a split run (async)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/split_runs", "host": ["{{baseUrl}}"], "path": ["split_runs"] },
+            "body": { "mode": "raw", "raw": "{\n  \"file\": { \"id\": \"<file_id>\" }\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get a split run",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/split_runs/:id", "host": ["{{baseUrl}}"], "path": ["split_runs", ":id"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflows",
+      "item": [
+        {
+          "name": "List workflows",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/workflows", "host": ["{{baseUrl}}"], "path": ["workflows"] }
+          }
+        },
+        {
+          "name": "Create a workflow",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/workflows", "host": ["{{baseUrl}}"], "path": ["workflows"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"<name>\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get a workflow",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/workflows/:id", "host": ["{{baseUrl}}"], "path": ["workflows", ":id"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Workflow Runs",
+      "item": [
+        {
+          "name": "Create a workflow run",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/workflow_runs", "host": ["{{baseUrl}}"], "path": ["workflow_runs"] },
+            "body": { "mode": "raw", "raw": "{\n  \"workflow\": { \"id\": \"<workflow_id>\" },\n  \"file\": { \"id\": \"<file_id>\" },\n  \"priority\": 50\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "List workflow runs",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/workflow_runs", "host": ["{{baseUrl}}"], "path": ["workflow_runs"] }
+          }
+        },
+        {
+          "name": "Get a workflow run",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/workflow_runs/:id", "host": ["{{baseUrl}}"], "path": ["workflow_runs", ":id"] }
+          }
+        },
+        {
+          "name": "Update a workflow run",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/workflow_runs/:id", "host": ["{{baseUrl}}"], "path": ["workflow_runs", ":id"] },
+            "body": { "mode": "raw", "raw": "{\n  \"metadata\": {}\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Batch create workflow runs",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/workflow_runs/batch", "host": ["{{baseUrl}}"], "path": ["workflow_runs", "batch"] },
+            "body": { "mode": "raw", "raw": "{\n  \"workflow\": { \"id\": \"<workflow_id>\" },\n  \"inputs\": []\n}", "options": { "raw": { "language": "json" } } }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Evaluations",
+      "item": [
+        {
+          "name": "Create an evaluation set",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/evaluation_sets", "host": ["{{baseUrl}}"], "path": ["evaluation_sets"] },
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"<name>\",\n  \"entityId\": \"<extractor_or_classifier_or_splitter_id>\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get an evaluation set",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/evaluation_sets/:id", "host": ["{{baseUrl}}"], "path": ["evaluation_sets", ":id"] }
+          }
+        },
+        {
+          "name": "Create an evaluation set item",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/evaluation_set_items", "host": ["{{baseUrl}}"], "path": ["evaluation_set_items"] },
+            "body": { "mode": "raw", "raw": "{\n  \"evaluationSetId\": \"<evaluation_set_id>\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Create an evaluation set run",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "x-extend-api-version", "value": "{{apiVersion}}" }
+            ],
+            "url": { "raw": "{{baseUrl}}/evaluation_set_runs", "host": ["{{baseUrl}}"], "path": ["evaluation_set_runs"] },
+            "body": { "mode": "raw", "raw": "{\n  \"evaluationSetId\": \"<evaluation_set_id>\"\n}", "options": { "raw": { "language": "json" } } }
+          }
+        },
+        {
+          "name": "Get a batch run",
+          "request": {
+            "method": "GET",
+            "header": [ { "key": "x-extend-api-version", "value": "{{apiVersion}}" } ],
+            "url": { "raw": "{{baseUrl}}/batch_runs/:id", "host": ["{{baseUrl}}"], "path": ["batch_runs", ":id"] }
+          }
+        }
+      ]
+    }
+  ]
+}

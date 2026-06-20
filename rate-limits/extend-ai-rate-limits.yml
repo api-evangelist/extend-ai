@@ -1,0 +1,61 @@
+specification: API Commons Rate Limits
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/RateLimits
+provider: Extend
+providerId: extend-ai
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Document Processing
+- Document AI
+- Intelligent Document Processing
+- OCR
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  The Extend API enforces account- and workspace-scoped throughput controls.
+  Synchronous processor endpoints (/parse, /extract, /classify, /split) carry a
+  five minute per-request timeout and are intended for onboarding and testing,
+  while production traffic is expected to use the asynchronous run endpoints,
+  batch endpoints, and webhooks. Workflow runs accept a priority value (default
+  50) that influences scheduling under load. Specific numeric request- and
+  credit-per-minute limits are not publicly enumerated and are managed per
+  account and plan, so this artifact is not reconciled.
+notes: >-
+  Verify concurrency, requests-per-minute, and batch sizing limits with Extend
+  on reconciliation. Synchronous endpoints time out at five minutes; use async
+  runs, batches, and webhooks for production scale.
+sources:
+- https://docs.extend.ai/api-quickstart
+- https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+- https://docs.extend.ai/webhooks/configuration
+responseCodes:
+  throttled: 429
+limits:
+- name: Synchronous Request Timeout
+  scope: request
+  metric: seconds
+  limit: 300
+  notes: Sync /parse, /extract, /classify, /split fail after five minutes; use async runs.
+- name: Requests Per Minute
+  scope: account
+  metric: requests
+  limit: see provider documentation
+  notes: Account- and workspace-scoped; not publicly enumerated.
+- name: Concurrent Runs
+  scope: account
+  metric: runs
+  limit: see provider documentation
+  notes: Concurrency governed per account and plan; use batch endpoints for high volume.
+- name: Workflow Run Priority
+  scope: account
+  metric: priority
+  limit: 50
+  notes: Default priority value on workflow runs; higher priority is scheduled sooner under load.
+- name: Run Metadata Size
+  scope: request
+  metric: bytes
+  limit: 10240
+  notes: Custom run metadata is capped at roughly 10KB per run.

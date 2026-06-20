@@ -1,0 +1,142 @@
+aid: extend-ai
+name: Extend
+review:
+  question: Does Extend expose a documented public WebSocket or async streaming API?
+  answer: false
+  date: '2026-06-20'
+  reviewer: API Evangelist
+  asyncapiSpecCreated: false
+  asyncapiScopeNote: |
+    Extend's real-time delivery mechanism is HTTP webhooks (server-to-server
+    POST callbacks), not a WebSocket or Server-Sent Events stream. No AsyncAPI
+    document was authored: there is no ws:// / wss:// surface, and the webhook
+    surface is a set of outbound HTTP POST events rather than a subscribe-style
+    streaming channel. The webhook event catalog is documented below for
+    completeness and is referenced from the OpenAPI/HTTP-first artifacts.
+disambiguation:
+  note: |
+    "Extend" is an overloaded company name. This catalog covers ONLY the
+    document processing / intelligent document automation company at
+    https://www.extend.ai (parse, extract, classify, split, edit; API at
+    https://api.extend.ai). It is NOT:
+      - extend.com / "Extend" the extended-warranty and product-protection
+        fintech (GitHub org paywithextend), and
+      - the github.com/extend-ai organization, which is an unrelated "Spacetime
+        AI" company describing the physical world, not document processing.
+    Because no public GitHub organization is clearly owned by the extend.ai
+    document AI company, no GitHubOrganization common property was added.
+findings:
+  summary: |
+    Extend does not publish a documented public WebSocket API. The Extend
+    platform exposes a REST (HTTPS) API under https://api.extend.ai authenticated
+    with a Bearer API token and version-pinned via the x-extend-api-version
+    header (current documented version 2026-02-09). Long-running work is handled
+    with asynchronous run objects that the client polls (GET /parse_runs/{id},
+    GET /extract_runs/{id}, GET /classify_runs/{id}, GET /split_runs/{id},
+    GET /workflow_runs/{id}, GET /batch_runs/{id}) or receives via outbound
+    HTTP webhook events. Webhooks are signed with HMAC-SHA256 over
+    v0:{timestamp}:{body}, with x-extend-request-timestamp and
+    x-extend-request-signature headers verified by the SDK helpers. No
+    bidirectional or streaming WebSocket transport is documented.
+  transports:
+    - protocol: REST
+      scheme: https
+      baseURL: https://api.extend.ai
+      documented: true
+    - protocol: Webhooks
+      scheme: https
+      note: Outbound HTTP POST events signed with HMAC-SHA256; not WebSocket and not SSE.
+      documented: true
+    - protocol: SSE
+      scheme: https
+      documented: false
+      note: No Server-Sent Events streaming endpoint is documented.
+    - protocol: WebSocket
+      scheme: wss
+      documented: false
+      note: No WebSocket endpoint is documented anywhere in the Extend API reference.
+  authentication:
+    scheme: Bearer
+    header: 'Authorization: Bearer $EXTEND_API_KEY'
+    versionHeader: 'x-extend-api-version: 2026-02-09'
+    workspaceHeader: 'x-extend-workspace-id (required for org-scoped keys)'
+  endpointsConfirmedRest:
+    - POST   https://api.extend.ai/files/upload
+    - GET    https://api.extend.ai/files
+    - GET    https://api.extend.ai/files/{id}
+    - DELETE https://api.extend.ai/files/{id}
+    - POST   https://api.extend.ai/parse
+    - POST   https://api.extend.ai/parse_runs
+    - GET    https://api.extend.ai/parse_runs
+    - GET    https://api.extend.ai/parse_runs/{id}
+    - POST   https://api.extend.ai/parse_runs/batch
+    - POST   https://api.extend.ai/extract
+    - POST   https://api.extend.ai/extract_runs
+    - GET    https://api.extend.ai/extract_runs/{id}
+    - POST   https://api.extend.ai/extract_runs/batch
+    - GET    https://api.extend.ai/extractors
+    - POST   https://api.extend.ai/extractors
+    - GET    https://api.extend.ai/extractors/{id}
+    - POST   https://api.extend.ai/extractors/{id}
+    - POST   https://api.extend.ai/extractors/{id}/versions
+    - POST   https://api.extend.ai/classify
+    - POST   https://api.extend.ai/classify_runs
+    - GET    https://api.extend.ai/classify_runs/{id}
+    - POST   https://api.extend.ai/classify_runs/batch
+    - GET    https://api.extend.ai/classifiers
+    - POST   https://api.extend.ai/classifiers
+    - POST   https://api.extend.ai/split
+    - POST   https://api.extend.ai/split_runs
+    - GET    https://api.extend.ai/split_runs/{id}
+    - POST   https://api.extend.ai/split_runs/batch
+    - GET    https://api.extend.ai/workflows
+    - POST   https://api.extend.ai/workflows
+    - GET    https://api.extend.ai/workflows/{id}
+    - POST   https://api.extend.ai/workflow_runs
+    - GET    https://api.extend.ai/workflow_runs
+    - GET    https://api.extend.ai/workflow_runs/{id}
+    - POST   https://api.extend.ai/workflow_runs/{id}
+    - POST   https://api.extend.ai/workflow_runs/batch
+    - POST   https://api.extend.ai/evaluation_sets
+    - GET    https://api.extend.ai/evaluation_sets/{id}
+    - POST   https://api.extend.ai/evaluation_set_items
+    - POST   https://api.extend.ai/evaluation_set_runs
+    - GET    https://api.extend.ai/batch_runs/{id}
+  webhookEvents:
+    - workflow_run.completed
+    - workflow_run.failed
+    - workflow_run.needs_review
+    - workflow_run.rejected
+    - workflow_run.cancelled
+    - workflow_run.step_run.processed
+    - extract_run.processed
+    - extract_run.failed
+    - classify_run.processed
+    - classify_run.failed
+    - split_run.processed
+    - split_run.failed
+    - batch_processor_run.processed
+    - batch_processor_run.failed
+    - extractor.created
+    - workflow.deployed
+sources:
+  - url: https://docs.extend.ai/api-quickstart
+    type: Documentation
+    note: States base URL https://api.extend.ai, Bearer auth, and x-extend-api-version 2026-02-09.
+  - url: https://docs.extend.ai/llms.txt
+    type: Documentation
+    note: Documentation index enumerating all API reference endpoint pages and capabilities.
+  - url: https://docs.extend.ai/webhooks/configuration
+    type: Documentation
+    note: Documents outbound HTTP webhook events and HMAC-SHA256 signature verification; no WebSocket.
+  - url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+    type: APIReference
+    note: All documented surfaces are HTTPS REST plus webhook callbacks.
+actions:
+  asyncapiPath: null
+  apisYmlUpdated: true
+  reason: |
+    No WebSocket or SSE streaming surface exists, so no AsyncAPI document was
+    authored. The real asynchronous delivery mechanism is signed outbound HTTP
+    webhooks, which are documented here and remain modeled as part of the
+    HTTP/REST surface in the OpenAPI artifact and apis.yml.

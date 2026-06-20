@@ -1,0 +1,105 @@
+specification: API Commons Plans
+specificationVersion: '0.1'
+schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main/schema/api-commons.yml#/$defs/Plans
+provider: Extend
+providerId: extend-ai
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Document Processing
+- Document AI
+- Intelligent Document Processing
+- OCR
+- Extraction
+- Plans
+description: >-
+  Extend bills on a universal credit model: each API call (Parse, Extract,
+  Classify, Split, Edit) consumes a fixed number of credits per page, and cost
+  per page equals credits per page multiplied by the plan's per-credit rate.
+  Published tiers are Pay As You Go (credits included, then usage-based), Scale
+  (a fixed monthly fee with a monthly credit allotment and volume discounts),
+  and Enterprise (custom, sales-led with compliance, retention, and support
+  add-ons). Exact per-credit rates and per-API credit-per-page values are not
+  publicly enumerated and require confirmation with Extend, so this artifact is
+  not reconciled.
+notes: >-
+  Sales-led pricing for Enterprise; Pay As You Go and Scale are self-serve.
+  Per-credit rates and per-API credit consumption were not fully published at
+  capture time. Verify all figures against the Extend pricing page on
+  reconciliation.
+sources:
+- https://www.extend.ai/pricing
+- https://docs.extend.ai/product/general/how-credits-work
+plans:
+- id: extend-pay-as-you-go
+  name: Pay As You Go
+  type: usage
+  description: >-
+    Self-serve plan with a block of credits included for free, then usage-based
+    credit consumption across all document processing APIs.
+  entries:
+  - label: Included Credits
+    name: included_credits
+    type: included
+    metric: credits
+    limit: 10000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+  - label: Additional Credits
+    name: additional_credits
+    type: usage
+    metric: credits
+    limit: -1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: per-credit rate per Extend pricing page
+    userMultiplied: false
+- id: extend-scale
+  name: Scale
+  type: subscription
+  description: >-
+    Fixed monthly subscription with a larger monthly credit allotment, lower
+    per-credit rates, and volume discounts.
+  entries:
+  - label: Monthly Subscription
+    name: scale_subscription
+    type: recurring
+    metric: subscription
+    limit: 1
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: $500 / month (per Extend pricing page)
+    userMultiplied: false
+  - label: Included Credits
+    name: scale_included_credits
+    type: included
+    metric: credits
+    limit: 50000
+    timeFrame: month
+    geo: global
+    unit: 1
+    price: included
+    userMultiplied: false
+- id: extend-enterprise
+  name: Enterprise
+  type: enterprise
+  description: >-
+    Custom, sales-led plan with volume discounts, HIPAA/BAA and compliance
+    options, custom data retention, and dedicated support.
+  entries:
+  - label: Custom Pricing
+    name: enterprise_custom
+    type: custom
+    metric: contract
+    limit: -1
+    timeFrame: year
+    geo: global
+    unit: 1
+    price: contact sales
+    userMultiplied: false

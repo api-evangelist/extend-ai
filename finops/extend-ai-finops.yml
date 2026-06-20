@@ -1,0 +1,79 @@
+specification: FinOps Framework
+specificationVersion: '1.0'
+schema: https://www.finops.org/framework/
+provider: Extend
+providerId: extend-ai
+created: '2026-06-20'
+modified: '2026-06-20'
+reconciled: false
+tags:
+- Document Processing
+- Document AI
+- Intelligent Document Processing
+- OCR
+- FinOps
+- Cost Management
+- FOCUS
+description: >-
+  FinOps view of Extend spend. Extend meters usage in credits, where each API
+  (Parse, Extract, Classify, Split, Edit) consumes a fixed number of credits
+  per page and cost equals credits per page multiplied by the plan's per-credit
+  rate. Self-serve Pay As You Go and Scale plans bundle monthly credits with
+  pay-as-you-go overage, while Enterprise is custom and sales-led. Per-credit
+  rates and per-API credit-per-page values are not publicly enumerated, so this
+  artifact is not reconciled.
+notes: >-
+  Per-credit rates and per-API credit consumption are subject to change and were
+  not fully published at capture time; verify against the Extend pricing and
+  credits documentation during reconciliation.
+sources:
+- https://www.extend.ai/pricing
+- https://docs.extend.ai/product/general/how-credits-work
+- https://focus.finops.org/focus-specification/v1-3/
+alignedWith:
+  framework: FinOps Foundation Framework
+  frameworkUrl: https://www.finops.org/framework/
+  dataSpec: FOCUS
+  dataSpecVersion: '1.3'
+  dataSpecUrl: https://focus.finops.org/focus-specification/v1-3/
+publisherName: Extend
+serviceCategory: AI and Machine Learning
+billingModel:
+  pricingCategory: Usage-Based
+  billingFrequency: Monthly
+  billingCurrency: USD
+  chargeCategories:
+  - Usage
+  - Purchase
+  - Adjustment
+focusColumns:
+  ServiceName: Extend
+  ServiceCategory: AI and Machine Learning
+  ProviderName: Extend
+  PublisherName: Extend
+  InvoiceIssuerName: Extend
+  BillingCurrency: USD
+  ChargeCategory: Usage
+  PricingCategory: Usage-Based
+meters:
+- name: credits
+  description: Universal billing unit consumed per page by each processing API.
+  unit: credits
+  aggregation: sum
+  dimensions:
+  - api
+  - page
+  - plan
+- name: pages_processed
+  description: Document pages processed across parse, extract, classify, split, and edit.
+  unit: pages
+  aggregation: sum
+  dimensions:
+  - api
+  - processor
+- name: subscription
+  description: Fixed monthly subscription fee on the Scale plan.
+  unit: month
+  aggregation: sum
+  dimensions:
+  - plan

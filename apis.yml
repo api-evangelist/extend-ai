@@ -1,0 +1,167 @@
+aid: extend-ai
+url: https://raw.githubusercontent.com/api-evangelist/extend-ai/refs/heads/main/apis.yml
+name: Extend
+kind: company
+description: Extend is an intelligent document processing platform that turns documents
+  into high quality, structured data. Its REST API at api.extend.ai exposes parsing,
+  extraction, classification, and splitting processors, durable multi-step workflows,
+  evaluation sets, and batch processing for automating document-heavy operations.
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+tags:
+- Document Processing
+- Document AI
+- Intelligent Document Processing
+- OCR
+- Extraction
+- Classification
+created: '2026-06-20'
+modified: '2026-06-20'
+specificationVersion: '0.19'
+apis:
+- aid: extend-ai:files
+  name: Extend Files API
+  tags:
+  - Files
+  - Upload
+  - Documents
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  properties:
+  - url: https://docs.extend.ai/api-quickstart
+    type: Documentation
+  - url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+    type: APIReference
+  - url: openapi/extend-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/extend-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/extend-ai.opencollection.json
+    type: OpenCollection
+  description: Upload, list, retrieve, and delete files used as inputs to Extend processors
+    and workflows, with optional PDF conversion and password-protected document support.
+- aid: extend-ai:processors
+  name: Extend Processors API
+  tags:
+  - Parse
+  - Extract
+  - Classify
+  - Split
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  baseURL: https://api.extend.ai
+  properties:
+  - url: https://docs.extend.ai/extraction/overview
+    type: Documentation
+  - url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+    type: APIReference
+  - url: openapi/extend-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/extend-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/extend-ai.opencollection.json
+    type: OpenCollection
+  description: Synchronous parse, extract, classify, and split endpoints plus management
+    of reusable extractors, classifiers, and splitters for document understanding.
+- aid: extend-ai:processor-runs
+  name: Extend Processor Runs API
+  tags:
+  - Processor Runs
+  - Async
+  - Polling
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  baseURL: https://api.extend.ai
+  properties:
+  - url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+    type: APIReference
+  - url: openapi/extend-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/extend-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/extend-ai.opencollection.json
+    type: OpenCollection
+  description: Asynchronous run lifecycle for parse, extract, classify, and split
+    operations, returning run objects you poll or receive via webhooks for production
+    workloads.
+- aid: extend-ai:workflows
+  name: Extend Workflows API
+  tags:
+  - Workflows
+  - Orchestration
+  - Durable
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  baseURL: https://api.extend.ai
+  properties:
+  - url: https://docs.extend.ai/workflows/overview
+    type: Documentation
+  - url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+    type: APIReference
+  - url: openapi/extend-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/extend-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/extend-ai.opencollection.json
+    type: OpenCollection
+  description: Create and manage versioned, durable multi-step workflows that chain
+    parsing, splitting, extraction, classification, validation, and routing.
+- aid: extend-ai:workflow-runs
+  name: Extend Workflow Runs API
+  tags:
+  - Workflow Runs
+  - Execution
+  - Webhooks
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  baseURL: https://api.extend.ai
+  properties:
+  - url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+    type: APIReference
+  - url: openapi/extend-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/extend-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/extend-ai.opencollection.json
+    type: OpenCollection
+  description: Run deployed workflows against files, then poll, update, list, and
+    batch workflow runs with priorities, metadata, secrets, and human-review states.
+- aid: extend-ai:evaluations
+  name: Extend Evaluations API
+  tags:
+  - Evaluations
+  - Batches
+  - Quality
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+  humanURL: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+  baseURL: https://api.extend.ai
+  properties:
+  - url: https://docs.extend.ai/evaluation/overview
+    type: Documentation
+  - url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+    type: APIReference
+  - url: openapi/extend-ai-openapi.yml
+    type: OpenAPI
+  - url: collections/extend-ai.postman_collection.json
+    type: PostmanCollection
+  - url: collections/extend-ai.opencollection.json
+    type: OpenCollection
+  description: Create evaluation sets and items against extractors, classifiers, or
+    splitters, trigger evaluation runs, and track batch runs to measure processor
+    accuracy over time.
+common:
+- type: LinkedIn
+  url: https://www.linkedin.com/company/extend-ai
+- type: Website
+  url: https://www.extend.ai
+- type: Documentation
+  url: https://docs.extend.ai
+- type: Plans
+  url: plans/extend-ai-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/extend-ai-rate-limits.yml
+- type: FinOps
+  url: finops/extend-ai-finops.yml
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
