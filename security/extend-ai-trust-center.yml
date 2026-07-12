@@ -1,0 +1,16 @@
+generated: '2026-07-11'
+method: searched
+probe: true
+source: https://trust.extend.ai/
+url: https://trust.extend.ai/
+certifications:
+- SOC 2
+- HIPAA
+- GDPR
+evidence:
+- source: https://trust.extend.ai/
+  keywords:
+  - soc 2
+  - hipaa
+  - trust center
+  - gdpr

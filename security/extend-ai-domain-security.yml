@@ -1,0 +1,28 @@
+generated: '2026-07-11'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: www.extend.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Sep  9 15:06:36 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: docs.extend.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct  7 19:40:10 2026 GMT
+  hsts: true
+  hsts_max_age: 63072000
+- host: api.extend.ai
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 13 23:59:59 2026 GMT
+  hsts: null
+domains:
+- domain: extend.ai
+  dnssec: false
+  caa: []
+  spf: true
+  dmarc: true
+  dmarc_policy: none

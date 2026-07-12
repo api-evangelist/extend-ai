@@ -150,6 +150,12 @@ apis:
     splitters, trigger evaluation runs, and track batch runs to measure processor
     accuracy over time.
 common:
+- type: TrustCenter
+  url: security/extend-ai-trust-center.yml
+- type: DomainSecurity
+  url: security/extend-ai-domain-security.yml
+- type: Authentication
+  url: authentication/extend-ai-authentication.yml
 - type: LinkedIn
   url: https://www.linkedin.com/company/extend-ai
 - type: Website
