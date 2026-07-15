@@ -150,6 +150,8 @@ apis:
     splitters, trigger evaluation runs, and track batch runs to measure processor
     accuracy over time.
 common:
+- type: AgenticAccess
+  url: agentic-access/extend-ai-agentic-access.yml
 - type: TrustCenter
   url: security/extend-ai-trust-center.yml
 - type: DomainSecurity
