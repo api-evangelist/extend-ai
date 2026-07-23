@@ -1,0 +1,162 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Workflows API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Workflows
+paths:
+  /workflows:
+    get:
+      operationId: listWorkflows
+      tags:
+      - Workflows
+      summary: List workflows
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/NextPageToken'
+      - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of workflows.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflows:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Workflow'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: createWorkflow
+      tags:
+      - Workflows
+      summary: Create a workflow
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: The created workflow.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflows/{id}:
+    get:
+      operationId: getWorkflow
+      tags:
+      - Workflows
+      summary: Get a workflow
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested workflow.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    Workflow:
+      type: object
+      properties:
+        object:
+          type: string
+          example: workflow
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

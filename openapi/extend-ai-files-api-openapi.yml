@@ -1,0 +1,208 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Files API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Files
+paths:
+  /files/upload:
+    post:
+      operationId: uploadFile
+      tags:
+      - Files
+      summary: Upload a file
+      description: Upload a document to Extend and receive a file ID that can be referenced by processors and workflows. Supports optional conversion to PDF and passwords for protected PDFs.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - name: convertToPdf
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: Convert supported inputs (images, Word, PowerPoint, Excel, HTML) to PDF.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+              - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Binary file contents.
+                password:
+                  type: string
+                  description: Password to unlock a protected PDF.
+      responses:
+        '200':
+          description: The uploaded file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /files:
+    get:
+      operationId: listFiles
+      tags:
+      - Files
+      summary: List files
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/NextPageToken'
+      - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of files.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/File'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /files/{id}:
+    get:
+      operationId: getFile
+      tags:
+      - Files
+      summary: Get a file
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        default:
+          $ref: '#/components/responses/ApiError'
+    delete:
+      operationId: deleteFile
+      tags:
+      - Files
+      summary: Delete a file
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    File:
+      type: object
+      properties:
+        object:
+          type: string
+          example: file
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - PDF
+          - CSV
+          - IMG
+          - TXT
+          - DOCX
+          - EXCEL
+          - XML
+          - HTML
+        presignedUrl:
+          type: string
+        parentFileId:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

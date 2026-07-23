@@ -1,0 +1,316 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Workflow Runs API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Workflow Runs
+paths:
+  /workflow_runs:
+    post:
+      operationId: createWorkflowRun
+      tags:
+      - Workflow Runs
+      summary: Create a workflow run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowRunRequest'
+      responses:
+        '200':
+          description: The created workflow run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+    get:
+      operationId: listWorkflowRuns
+      tags:
+      - Workflow Runs
+      summary: List workflow runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/NextPageToken'
+      - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of workflow runs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflowRuns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkflowRun'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflow_runs/{id}:
+    get:
+      operationId: getWorkflowRun
+      tags:
+      - Workflow Runs
+      summary: Get a workflow run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested workflow run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: updateWorkflowRun
+      tags:
+      - Workflow Runs
+      summary: Update a workflow run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The updated workflow run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflow_runs/batch:
+    post:
+      operationId: batchCreateWorkflowRuns
+      tags:
+      - Workflow Runs
+      summary: Batch create workflow runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - workflow
+              - inputs
+              properties:
+                workflow:
+                  $ref: '#/components/schemas/WorkflowReference'
+                inputs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        $ref: '#/components/schemas/FileInput'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    WorkflowRunRequest:
+      type: object
+      required:
+      - workflow
+      - file
+      properties:
+        workflow:
+          $ref: '#/components/schemas/WorkflowReference'
+        file:
+          $ref: '#/components/schemas/FileInput'
+        outputs:
+          type: array
+          items:
+            type: object
+        priority:
+          type: integer
+          default: 50
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+        secrets:
+          type: object
+          additionalProperties: true
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    WorkflowRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: workflow_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        stepRuns:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
+          additionalProperties: true
+        usage:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WorkflowReference:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    BatchRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: batch_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        runCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

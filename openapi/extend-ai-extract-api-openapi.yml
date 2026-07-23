@@ -1,0 +1,394 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Extract API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Extract
+paths:
+  /extract:
+    post:
+      operationId: extractFile
+      tags:
+      - Extract
+      summary: Extract from a file (synchronous)
+      description: Synchronously extract structured fields from a document using an inline config or a saved extractor. Five minute timeout; use POST /extract_runs for production.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractRequest'
+      responses:
+        '200':
+          description: A processed extract run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract_runs:
+    post:
+      operationId: createExtractRun
+      tags:
+      - Extract
+      summary: Create an extract run (asynchronous)
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractRequest'
+      responses:
+        '200':
+          description: The created extract run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract_runs/{id}:
+    get:
+      operationId: getExtractRun
+      tags:
+      - Extract
+      summary: Get an extract run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested extract run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extractors:
+    get:
+      operationId: listExtractors
+      tags:
+      - Extract
+      summary: List extractors
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/NextPageToken'
+      - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of extractors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  extractors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Processor'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: createExtractor
+      tags:
+      - Extract
+      summary: Create an extractor
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorCreateRequest'
+      responses:
+        '200':
+          description: The created extractor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extractors/{id}:
+    get:
+      operationId: getExtractor
+      tags:
+      - Extract
+      summary: Get an extractor
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested extractor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: updateExtractor
+      tags:
+      - Extract
+      summary: Update an extractor
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorCreateRequest'
+      responses:
+        '200':
+          description: The updated extractor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extractors/{id}/versions:
+    post:
+      operationId: createExtractorVersion
+      tags:
+      - Extract
+      summary: Create an extractor version
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                releaseType:
+                  type: string
+                  enum:
+                  - MAJOR
+                  - MINOR
+                  - PATCH
+                description:
+                  type: string
+                config:
+                  type: object
+      responses:
+        '200':
+          description: The created extractor version.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    Processor:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - EXTRACT
+          - CLASSIFY
+          - SPLIT
+        version:
+          type: string
+        config:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ExtractRequest:
+      type: object
+      required:
+      - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        extractor:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+            overrideConfig:
+              type: object
+        config:
+          type: object
+          description: Inline extract config with schema, baseProcessor, extractionRules.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    ProcessorRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        type:
+          type: string
+          enum:
+          - EXTRACT
+          - CLASSIFY
+          - SPLIT
+        file:
+          type: object
+        output:
+          type: object
+          additionalProperties: true
+        config:
+          type: object
+        usage:
+          type: object
+        dashboardUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    ProcessorCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        config:
+          type: object
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

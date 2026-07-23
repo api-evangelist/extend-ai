@@ -1,0 +1,316 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Classify API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Classify
+paths:
+  /classify:
+    post:
+      operationId: classifyFile
+      tags:
+      - Classify
+      summary: Classify a file (synchronous)
+      description: Synchronously classify a document using an inline config or a saved classifier. Five minute timeout; use POST /classify_runs for production.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassifyRequest'
+      responses:
+        '200':
+          description: A processed classify run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify_runs:
+    post:
+      operationId: createClassifyRun
+      tags:
+      - Classify
+      summary: Create a classify run (asynchronous)
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassifyRequest'
+      responses:
+        '200':
+          description: The created classify run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify_runs/{id}:
+    get:
+      operationId: getClassifyRun
+      tags:
+      - Classify
+      summary: Get a classify run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested classify run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classifiers:
+    get:
+      operationId: listClassifiers
+      tags:
+      - Classify
+      summary: List classifiers
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/NextPageToken'
+      - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of classifiers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  classifiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Processor'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: createClassifier
+      tags:
+      - Classify
+      summary: Create a classifier
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorCreateRequest'
+      responses:
+        '200':
+          description: The created classifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    ClassifyRequest:
+      type: object
+      required:
+      - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        classifier:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+        config:
+          type: object
+          description: Inline classify config with classifications, baseProcessor, rules.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    Processor:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - EXTRACT
+          - CLASSIFY
+          - SPLIT
+        version:
+          type: string
+        config:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ProcessorRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        type:
+          type: string
+          enum:
+          - EXTRACT
+          - CLASSIFY
+          - SPLIT
+        file:
+          type: object
+        output:
+          type: object
+          additionalProperties: true
+        config:
+          type: object
+        usage:
+          type: object
+        dashboardUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    ProcessorCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        config:
+          type: object
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

@@ -1,0 +1,219 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Evaluations API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Evaluations
+paths:
+  /evaluation_sets:
+    post:
+      operationId: createEvaluationSet
+      tags:
+      - Evaluations
+      summary: Create an evaluation set
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - name
+              - entityId
+              properties:
+                name:
+                  type: string
+                entityId:
+                  type: string
+                  description: ID of the extractor, classifier, or splitter to evaluate.
+                description:
+                  type: string
+      responses:
+        '200':
+          description: The created evaluation set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSet'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_sets/{id}:
+    get:
+      operationId: getEvaluationSet
+      tags:
+      - Evaluations
+      summary: Get an evaluation set
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested evaluation set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSet'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_set_items:
+    post:
+      operationId: createEvaluationSetItem
+      tags:
+      - Evaluations
+      summary: Create an evaluation set item
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - evaluationSetId
+              properties:
+                evaluationSetId:
+                  type: string
+                fileId:
+                  type: string
+                expectedOutput:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The created evaluation set item.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                    example: evaluation_set_item
+                  id:
+                    type: string
+                  evaluationSetId:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_set_runs:
+    post:
+      operationId: createEvaluationSetRun
+      tags:
+      - Evaluations
+      summary: Create an evaluation set run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - evaluationSetId
+              properties:
+                evaluationSetId:
+                  type: string
+                processorVersionId:
+                  type: string
+      responses:
+        '200':
+          description: The created evaluation set run.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                    example: evaluation_set_run
+                  id:
+                    type: string
+                  status:
+                    $ref: '#/components/schemas/RunStatus'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    EvaluationSet:
+      type: object
+      properties:
+        object:
+          type: string
+          example: evaluation_set
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        entity:
+          type: object
+          description: Summary of the associated extractor, classifier, or splitter.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

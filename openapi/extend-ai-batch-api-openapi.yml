@@ -1,0 +1,248 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Batch
+paths:
+  /parse_runs/batch:
+    post:
+      operationId: batchCreateParseRuns
+      tags:
+      - Batch
+      summary: Batch create parse runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract_runs/batch:
+    post:
+      operationId: batchCreateExtractRuns
+      tags:
+      - Batch
+      summary: Batch create extract runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify_runs/batch:
+    post:
+      operationId: batchCreateClassifyRuns
+      tags:
+      - Batch
+      summary: Batch create classify runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /split_runs/batch:
+    post:
+      operationId: batchCreateSplitRuns
+      tags:
+      - Batch
+      summary: Batch create split runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /batch_runs/{id}:
+    get:
+      operationId: getBatchRun
+      tags:
+      - Batch
+      summary: Get a batch run
+      description: Unified endpoint to retrieve a batch run created by any of the batch submission endpoints.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    BatchRequest:
+      type: object
+      required:
+      - inputs
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              file:
+                $ref: '#/components/schemas/FileInput'
+              metadata:
+                $ref: '#/components/schemas/RunMetadata'
+        processor:
+          type: object
+        config:
+          type: object
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    BatchRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: batch_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        runCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.

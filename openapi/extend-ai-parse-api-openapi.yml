@@ -1,0 +1,263 @@
+openapi: 3.0.1
+info:
+  title: Extend Batch Parse API
+  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+- url: https://api.extend.ai
+  description: Extend production API
+security:
+- BearerAuth: []
+tags:
+- name: Parse
+paths:
+  /parse:
+    post:
+      operationId: parseFile
+      tags:
+      - Parse
+      summary: Parse a file (synchronous)
+      description: Synchronously parse a document into markdown and structured chunks. Has a five minute timeout and is intended for onboarding and testing; use POST /parse_runs for production.
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - name: responseType
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - json
+          - url
+          default: json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+      responses:
+        '200':
+          description: A processed parse run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /parse_runs:
+    post:
+      operationId: createParseRun
+      tags:
+      - Parse
+      summary: Create a parse run (asynchronous)
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+      responses:
+        '200':
+          description: The created parse run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+    get:
+      operationId: listParseRuns
+      tags:
+      - Parse
+      summary: List parse runs
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/NextPageToken'
+      - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of parse runs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parseRuns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ParseRun'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /parse_runs/{id}:
+    get:
+      operationId: getParseRun
+      tags:
+      - Parse
+      summary: Get a parse run
+      parameters:
+      - $ref: '#/components/parameters/ApiVersion'
+      - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested parse run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  schemas:
+    ParseRequest:
+      type: object
+      required:
+      - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        config:
+          type: object
+          description: Parse configuration (target, blocks, figures, tables, OCR options).
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ParseRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: parse_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        file:
+          type: object
+        output:
+          type: object
+          properties:
+            chunks:
+              type: array
+              items:
+                type: object
+        config:
+          type: object
+        metrics:
+          type: object
+          properties:
+            processingTimeMs:
+              type: integer
+            pageCount:
+              type: integer
+        usage:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.
