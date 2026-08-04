@@ -1,0 +1,30 @@
+{
+  "provider": "extend-ai",
+  "sources": [
+    "extend-ai-batch-api-openapi.yml",
+    "extend-ai-classify-api-openapi.yml",
+    "extend-ai-evaluations-api-openapi.yml",
+    "extend-ai-extract-api-openapi.yml",
+    "extend-ai-files-api-openapi.yml",
+    "extend-ai-parse-api-openapi.yml",
+    "extend-ai-split-api-openapi.yml",
+    "extend-ai-workflow-runs-api-openapi.yml",
+    "extend-ai-workflows-api-openapi.yml"
+  ],
+  "outputs": [
+    "extend-ai-batch-api-openapi.yml",
+    "extend-ai-classify-api-openapi.yml",
+    "extend-ai-evaluations-api-openapi.yml",
+    "extend-ai-extract-api-openapi.yml",
+    "extend-ai-files-api-openapi.yml",
+    "extend-ai-parse-api-openapi.yml",
+    "extend-ai-split-api-openapi.yml",
+    "extend-ai-workflow-runs-api-openapi.yml",
+    "extend-ai-workflows-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
