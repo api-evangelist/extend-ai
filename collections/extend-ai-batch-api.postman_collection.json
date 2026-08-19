@@ -1,0 +1,879 @@
+{
+  "item": [
+    {
+      "id": "b8851e6d-74af-4be7-b596-890ee3ffafe3",
+      "name": "Batch",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "bb16aea7-9e59-4392-be22-53960aed414b",
+          "name": "Batch create parse runs",
+          "request": {
+            "name": "Batch create parse runs",
+            "description": {},
+            "url": {
+              "path": [
+                "parse_runs",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": 461.52758217541947\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": 9126\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "267f1754-2745-4710-967c-ae05f7ef0e58",
+              "name": "The created batch run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "parse_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"batch_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"runCount\": 4834,\n  \"createdAt\": \"2005-02-08T20:19:42.654Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "0249b7b2-dec5-4f3c-901f-7f968f7a1d54",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "parse_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a4bf51a5-8d5d-406b-bd38-1223fffdd24f",
+          "name": "Batch create extract runs",
+          "request": {
+            "name": "Batch create extract runs",
+            "description": {},
+            "url": {
+              "path": [
+                "extract_runs",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": 1717,\n        \"key_1\": 3226.1601521069006\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "533c61b5-9038-4c32-bc64-0e81d0ae3c57",
+              "name": "The created batch run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"batch_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"runCount\": 4834,\n  \"createdAt\": \"2005-02-08T20:19:42.654Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "164dba54-fc99-4cfc-86c3-9c709f8851e0",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "d00ad399-25ae-4c7d-9cb6-ccaf61490975",
+          "name": "Batch create classify runs",
+          "request": {
+            "name": "Batch create classify runs",
+            "description": {},
+            "url": {
+              "path": [
+                "classify_runs",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": 1717,\n        \"key_1\": 3226.1601521069006\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "5452997d-37d1-4f4f-87d5-0c411b4ab41e",
+              "name": "The created batch run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"batch_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"runCount\": 4834,\n  \"createdAt\": \"2005-02-08T20:19:42.654Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "40b5fea4-cec2-4d0c-bee6-704089a514e7",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "eaa21a3a-5987-4207-8d94-ce83c33d7519",
+          "name": "Batch create split runs",
+          "request": {
+            "name": "Batch create split runs",
+            "description": {},
+            "url": {
+              "path": [
+                "split_runs",
+                "batch"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": 1717,\n        \"key_1\": 3226.1601521069006\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "1d58e7dc-099d-46ab-b49a-f0ef2a539798",
+              "name": "The created batch run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"batch_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"runCount\": 4834,\n  \"createdAt\": \"2005-02-08T20:19:42.654Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3ebe4a0f-6f77-4d28-ab47-aecba729f6de",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split_runs",
+                    "batch"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"inputs\": [\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": true,\n        \"key_1\": false\n      }\n    },\n    {\n      \"file\": {\n        \"url\": \"<string>\",\n        \"name\": \"<string>\",\n        \"settings\": {\n          \"password\": \"<string>\"\n        }\n      },\n      \"metadata\": {\n        \"key_0\": \"string\",\n        \"key_1\": \"string\"\n      }\n    }\n  ],\n  \"processor\": \"<object>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "97371571-6375-42b5-88a6-d388715ce20b",
+          "name": "Get a batch run",
+          "request": {
+            "name": "Get a batch run",
+            "description": {
+              "content": "Unified endpoint to retrieve a batch run created by any of the batch submission endpoints.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "batch_runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "98493412-a594-4137-a92c-de7fd6793742",
+              "name": "The requested batch run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"batch_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"runCount\": 4834,\n  \"createdAt\": \"2005-02-08T20:19:42.654Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e6a343d4-e937-4cbb-b966-b440fe0730e4",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "batch_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.extend.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "56e4aec1-8ba3-40b6-9f93-6667effbb475",
+    "name": "Extend Batch API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.\n\nContact Support:\n Name: Extend Support",
+      "type": "text/plain"
+    }
+  }
+}

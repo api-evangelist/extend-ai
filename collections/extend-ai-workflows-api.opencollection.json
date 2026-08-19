@@ -1,0 +1,98 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Extend Batch Workflows API",
+    "version": "2026-02-09"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflows",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workflows",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/workflows",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "nextPageToken",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "maxPageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List workflows"
+        },
+        {
+          "info": {
+            "name": "Create a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/workflows",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a workflow"
+        },
+        {
+          "info": {
+            "name": "Get a workflow",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/workflows/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a workflow"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

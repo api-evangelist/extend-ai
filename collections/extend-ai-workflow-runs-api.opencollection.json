@@ -1,0 +1,147 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Extend Batch Workflow Runs API",
+    "version": "2026-02-09"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Workflow Runs",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List workflow runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/workflow_runs",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "nextPageToken",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "maxPageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List workflow runs"
+        },
+        {
+          "info": {
+            "name": "Create a workflow run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/workflow_runs",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a workflow run"
+        },
+        {
+          "info": {
+            "name": "Get a workflow run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/workflow_runs/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a workflow run"
+        },
+        {
+          "info": {
+            "name": "Update a workflow run",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/workflow_runs/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update a workflow run"
+        },
+        {
+          "info": {
+            "name": "Batch create workflow runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/workflow_runs/batch",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch create workflow runs"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

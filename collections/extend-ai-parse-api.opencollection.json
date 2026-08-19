@@ -1,0 +1,126 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Extend Batch Parse API",
+    "version": "2026-02-09"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Parse",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Parse a file (synchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/parse",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "responseType",
+                "value": "",
+                "type": "query"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synchronously parse a document into markdown and structured chunks. Has a five minute timeout and is intended for onboarding and testing; use POST /parse_runs for production."
+        },
+        {
+          "info": {
+            "name": "List parse runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/parse_runs",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "nextPageToken",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "maxPageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List parse runs"
+        },
+        {
+          "info": {
+            "name": "Create a parse run (asynchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/parse_runs",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create a parse run (asynchronous)"
+        },
+        {
+          "info": {
+            "name": "Get a parse run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/parse_runs/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get a parse run"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,220 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Extend Batch Extract API",
+    "version": "2026-02-09"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Extract",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Extract from a file (synchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/extract",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Synchronously extract structured fields from a document using an inline config or a saved extractor. Five minute timeout; use POST /extract_runs for production."
+        },
+        {
+          "info": {
+            "name": "Create an extract run (asynchronous)",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/extract_runs",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an extract run (asynchronous)"
+        },
+        {
+          "info": {
+            "name": "Get an extract run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/extract_runs/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get an extract run"
+        },
+        {
+          "info": {
+            "name": "List extractors",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/extractors",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "nextPageToken",
+                "value": "",
+                "type": "query"
+              },
+              {
+                "name": "maxPageSize",
+                "value": "",
+                "type": "query"
+              }
+            ]
+          },
+          "docs": "List extractors"
+        },
+        {
+          "info": {
+            "name": "Create an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/extractors",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an extractor"
+        },
+        {
+          "info": {
+            "name": "Get an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/extractors/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Get an extractor"
+        },
+        {
+          "info": {
+            "name": "Update an extractor",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/extractors/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Update an extractor"
+        },
+        {
+          "info": {
+            "name": "Create an extractor version",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/extractors/:id/versions",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Create an extractor version"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

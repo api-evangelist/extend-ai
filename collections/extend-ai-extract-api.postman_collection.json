@@ -1,0 +1,1417 @@
+{
+  "item": [
+    {
+      "id": "cfbdd116-1e30-4f14-9566-338cb7012ce8",
+      "name": "Extract",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "b88fdf0b-0f64-4e6b-b21a-0014491a3939",
+          "name": "Extract from a file (synchronous)",
+          "request": {
+            "name": "Extract from a file (synchronous)",
+            "description": {
+              "content": "Synchronously extract structured fields from a document using an inline config or a saved extractor. Five minute timeout; use POST /extract_runs for production.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "extract"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"extractor\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": true,\n    \"key_1\": 729\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "de580b43-506d-4e09-9d24-9251a8e65690",
+              "name": "A processed extract run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"extractor\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": 8581.671368737329\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"type\": \"SPLIT\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": true,\n    \"key_1\": true,\n    \"key_2\": \"string\"\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"2010-04-12T11:26:49.087Z\",\n  \"updatedAt\": \"1964-01-22T16:46:20.674Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "58739dc3-7b4b-406d-8964-a05bee75f770",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"extractor\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": 8581.671368737329\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "03f1a8b9-8e13-40aa-a2e9-2507e1c5eb75",
+          "name": "Create an extract run (asynchronous)",
+          "request": {
+            "name": "Create an extract run (asynchronous)",
+            "description": {},
+            "url": {
+              "path": [
+                "extract_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"extractor\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": true,\n    \"key_1\": 729\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "01aca676-2716-4b31-8a0f-18c2b02bcb3e",
+              "name": "The created extract run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"extractor\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": 8581.671368737329\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"type\": \"SPLIT\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": true,\n    \"key_1\": true,\n    \"key_2\": \"string\"\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"2010-04-12T11:26:49.087Z\",\n  \"updatedAt\": \"1964-01-22T16:46:20.674Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5615387f-ff84-4514-b012-ed3b082edc8a",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"extractor\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": 8581.671368737329\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "491c42ce-5066-42c8-8ca5-14771e1e7069",
+          "name": "Get an extract run",
+          "request": {
+            "name": "Get an extract run",
+            "description": {},
+            "url": {
+              "path": [
+                "extract_runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "89808fa9-e89f-4d22-aaf9-546e7fdd7c14",
+              "name": "The requested extract run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"NEEDS_REVIEW\",\n  \"type\": \"SPLIT\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": true,\n    \"key_1\": true,\n    \"key_2\": \"string\"\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"2010-04-12T11:26:49.087Z\",\n  \"updatedAt\": \"1964-01-22T16:46:20.674Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e58d49d2-f02f-4e23-8371-be31c2d5129a",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extract_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "7f555b2c-7a84-4d85-aeed-b47e3498193e",
+          "name": "List extractors",
+          "request": {
+            "name": "List extractors",
+            "description": {},
+            "url": {
+              "path": [
+                "extractors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "nextPageToken",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "maxPageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0db4d17f-b906-4fcc-9919-63585ab276d9",
+              "name": "A page of extractors.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextPageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "maxPageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"extractors\": [\n    {\n      \"object\": \"processor\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"CLASSIFY\",\n      \"version\": \"string\",\n      \"config\": {},\n      \"createdAt\": \"2024-12-08T03:48:26.584Z\",\n      \"updatedAt\": \"1947-05-24T07:35:35.775Z\"\n    },\n    {\n      \"object\": \"processor\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"SPLIT\",\n      \"version\": \"string\",\n      \"config\": {},\n      \"createdAt\": \"2004-11-08T11:24:26.094Z\",\n      \"updatedAt\": \"1995-05-31T15:21:48.533Z\"\n    }\n  ],\n  \"nextPageToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5e7327af-1596-44b0-bf71-216fa07f30b1",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextPageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "maxPageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "8afa2bb7-d17b-448e-beeb-fc713aebd8dc",
+          "name": "Create an extractor",
+          "request": {
+            "name": "Create an extractor",
+            "description": {},
+            "url": {
+              "path": [
+                "extractors"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "debdc08b-ecd8-4370-9f7b-591731229e35",
+              "name": "The created extractor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"CLASSIFY\",\n  \"version\": \"string\",\n  \"config\": {},\n  \"createdAt\": \"1984-11-08T01:01:37.804Z\",\n  \"updatedAt\": \"2023-02-05T01:49:52.434Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5b2b1edf-7df2-40bd-af29-6d49f90920e1",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "16bc1ff3-320c-4334-b18b-5cdaf0bd2862",
+          "name": "Get an extractor",
+          "request": {
+            "name": "Get an extractor",
+            "description": {},
+            "url": {
+              "path": [
+                "extractors",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "0d4a7bc2-ff51-475d-a259-b56114f2eb81",
+              "name": "The requested extractor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"CLASSIFY\",\n  \"version\": \"string\",\n  \"config\": {},\n  \"createdAt\": \"1984-11-08T01:01:37.804Z\",\n  \"updatedAt\": \"2023-02-05T01:49:52.434Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4cd9dc74-a349-4083-9943-a7e2142cda09",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4ed2a2cc-79e9-4cea-b745-a6b1b57cd866",
+          "name": "Update an extractor",
+          "request": {
+            "name": "Update an extractor",
+            "description": {},
+            "url": {
+              "path": [
+                "extractors",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "3e3726fc-f072-4fd5-84b2-71ac194f2213",
+              "name": "The updated extractor.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"CLASSIFY\",\n  \"version\": \"string\",\n  \"config\": {},\n  \"createdAt\": \"1984-11-08T01:01:37.804Z\",\n  \"updatedAt\": \"2023-02-05T01:49:52.434Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "17a32bea-5ca8-4f15-8da2-a8f776597cfa",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b02f022-e5b8-41b7-bd17-d2cf40e0d590",
+          "name": "Create an extractor version",
+          "request": {
+            "name": "Create an extractor version",
+            "description": {},
+            "url": {
+              "path": [
+                "extractors",
+                ":id",
+                "versions"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"releaseType\": \"<string>\",\n  \"description\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "18485812-e525-4961-9efc-9ec3209a36f3",
+              "name": "The created extractor version.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors",
+                    ":id",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"releaseType\": \"<string>\",\n  \"description\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"CLASSIFY\",\n  \"version\": \"string\",\n  \"config\": {},\n  \"createdAt\": \"1984-11-08T01:01:37.804Z\",\n  \"updatedAt\": \"2023-02-05T01:49:52.434Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "2ce6adcd-d704-40d4-98fc-5b23c70393fb",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "extractors",
+                    ":id",
+                    "versions"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"releaseType\": \"<string>\",\n  \"description\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.extend.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "85713e32-4a12-4669-8c6b-b535a812a9c6",
+    "name": "Extend Batch Extract API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.\n\nContact Support:\n Name: Extend Support",
+      "type": "text/plain"
+    }
+  }
+}

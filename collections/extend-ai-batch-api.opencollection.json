@@ -1,0 +1,132 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Extend Batch API",
+    "version": "2026-02-09"
+  },
+  "request": {
+    "auth": {
+      "type": "bearer",
+      "token": "{{bearerToken}}"
+    }
+  },
+  "items": [
+    {
+      "info": {
+        "name": "Batch",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Batch create parse runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/parse_runs/batch",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch create parse runs"
+        },
+        {
+          "info": {
+            "name": "Batch create extract runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/extract_runs/batch",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch create extract runs"
+        },
+        {
+          "info": {
+            "name": "Batch create classify runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/classify_runs/batch",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch create classify runs"
+        },
+        {
+          "info": {
+            "name": "Batch create split runs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.extend.ai/split_runs/batch",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            }
+          },
+          "docs": "Batch create split runs"
+        },
+        {
+          "info": {
+            "name": "Get a batch run",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.extend.ai/batch_runs/:id",
+            "headers": [
+              {
+                "name": "x-extend-api-version",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path"
+              }
+            ]
+          },
+          "docs": "Unified endpoint to retrieve a batch run created by any of the batch submission endpoints."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

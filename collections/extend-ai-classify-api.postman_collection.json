@@ -1,0 +1,867 @@
+{
+  "item": [
+    {
+      "id": "881b2ba3-f7a7-402e-af7b-7b51a9e201d7",
+      "name": "Classify",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "3bdf7e8b-9092-45b5-a08c-cfd78c744821",
+          "name": "Classify a file (synchronous)",
+          "request": {
+            "name": "Classify a file (synchronous)",
+            "description": {
+              "content": "Synchronously classify a document using an inline config or a saved classifier. Five minute timeout; use POST /classify_runs for production.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "classify"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"classifier\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "bd26e275-e729-4777-9f1b-a947ec3ca250",
+              "name": "A processed classify run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"classifier\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 5913\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"PENDING\",\n  \"type\": \"CLASSIFY\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": 5692,\n    \"key_1\": true\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"2016-11-22T06:27:23.849Z\",\n  \"updatedAt\": \"1965-09-22T23:09:50.892Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "47939687-742d-47a8-a568-655cb5164e4d",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"classifier\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 5913\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": false,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a38cea90-a9fe-46c3-a23f-9229742e1314",
+          "name": "Create a classify run (asynchronous)",
+          "request": {
+            "name": "Create a classify run (asynchronous)",
+            "description": {},
+            "url": {
+              "path": [
+                "classify_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"classifier\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": \"string\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "f5a94da6-89cd-40a2-8396-173342d95a87",
+              "name": "The created classify run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"classifier\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 5913\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"PENDING\",\n  \"type\": \"CLASSIFY\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": 5692,\n    \"key_1\": true\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"2016-11-22T06:27:23.849Z\",\n  \"updatedAt\": \"1965-09-22T23:09:50.892Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bf943d81-540e-4c46-b564-f608b7bbfcb3",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"classifier\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 5913\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": false,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "c593d491-4952-40a9-9cdb-324a93aee098",
+          "name": "Get a classify run",
+          "request": {
+            "name": "Get a classify run",
+            "description": {},
+            "url": {
+              "path": [
+                "classify_runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "7a34b415-88af-45db-bbf9-8e57848158c3",
+              "name": "The requested classify run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"PENDING\",\n  \"type\": \"CLASSIFY\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": 5692,\n    \"key_1\": true\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"2016-11-22T06:27:23.849Z\",\n  \"updatedAt\": \"1965-09-22T23:09:50.892Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "06d43d56-9898-48f5-a652-ae0216915090",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classify_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": false,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4dd03a84-ff59-4d18-9333-51191466af9d",
+          "name": "List classifiers",
+          "request": {
+            "name": "List classifiers",
+            "description": {},
+            "url": {
+              "path": [
+                "classifiers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "nextPageToken",
+                  "value": "<string>"
+                },
+                {
+                  "disabled": false,
+                  "key": "maxPageSize",
+                  "value": "<integer>"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "936a0f62-c763-49d3-96a7-ca9356aae42b",
+              "name": "A page of classifiers.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextPageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "maxPageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"classifiers\": [\n    {\n      \"object\": \"processor\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"EXTRACT\",\n      \"version\": \"string\",\n      \"config\": {},\n      \"createdAt\": \"2018-08-05T12:01:10.312Z\",\n      \"updatedAt\": \"2016-02-07T19:47:37.498Z\"\n    },\n    {\n      \"object\": \"processor\",\n      \"id\": \"string\",\n      \"name\": \"string\",\n      \"type\": \"SPLIT\",\n      \"version\": \"string\",\n      \"config\": {},\n      \"createdAt\": \"1981-12-02T22:14:30.060Z\",\n      \"updatedAt\": \"1991-02-07T12:45:45.915Z\"\n    }\n  ],\n  \"nextPageToken\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "a83b3e7c-9b8f-45f1-9b8d-a5efe21b6e34",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "nextPageToken",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "maxPageSize",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": false,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "1b6eca23-aae8-463c-86ef-a14986511c1c",
+          "name": "Create a classifier",
+          "request": {
+            "name": "Create a classifier",
+            "description": {},
+            "url": {
+              "path": [
+                "classifiers"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "d6376a65-d155-4b36-a8ed-eba308bc8bf2",
+              "name": "The created classifier.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor\",\n  \"id\": \"string\",\n  \"name\": \"string\",\n  \"type\": \"SPLIT\",\n  \"version\": \"string\",\n  \"config\": {},\n  \"createdAt\": \"1965-02-27T13:57:48.167Z\",\n  \"updatedAt\": \"2007-03-14T09:59:37.522Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ff09ee9c-9da5-41b1-8ecf-8087d1d64d6e",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "classifiers"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"<string>\",\n  \"config\": \"<object>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": false,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.extend.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "daa1adf3-4169-470a-812a-801b1bcd3855",
+    "name": "Extend Batch Classify API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.\n\nContact Support:\n Name: Extend Support",
+      "type": "text/plain"
+    }
+  }
+}

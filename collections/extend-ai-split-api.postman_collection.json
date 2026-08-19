@@ -1,0 +1,537 @@
+{
+  "item": [
+    {
+      "id": "cf6baf17-2ccc-4633-8ef7-adbd534a171b",
+      "name": "Split",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "412d4678-26be-462c-9d8f-9671eb48760b",
+          "name": "Split a file (synchronous)",
+          "request": {
+            "name": "Split a file (synchronous)",
+            "description": {
+              "content": "Synchronously split a multi-document file into subdocuments and classify each. Five minute timeout; use POST /split_runs for production.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "split"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"splitter\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "ff5a3086-1e5a-4d27-926b-a47ac1ebe8d4",
+              "name": "A processed split run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"splitter\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 2182,\n    \"key_2\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"CANCELLED\",\n  \"type\": \"SPLIT\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": 4037.9581842396483,\n    \"key_1\": \"string\"\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"1956-08-29T01:35:59.224Z\",\n  \"updatedAt\": \"2021-05-26T19:41:45.663Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "34de77eb-2ebc-42a5-8a51-fe0e2f724241",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"splitter\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 2182,\n    \"key_2\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "2adc9edd-d1c0-429e-bc05-fa98d31be5dc",
+          "name": "Create a split run (asynchronous)",
+          "request": {
+            "name": "Create a split run (asynchronous)",
+            "description": {},
+            "url": {
+              "path": [
+                "split_runs"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": null,
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"splitter\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": true\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "8dfc06a2-786d-4b71-86f7-dc6fdfe5f187",
+              "name": "The created split run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"splitter\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 2182,\n    \"key_2\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"CANCELLED\",\n  \"type\": \"SPLIT\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": 4037.9581842396483,\n    \"key_1\": \"string\"\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"1956-08-29T01:35:59.224Z\",\n  \"updatedAt\": \"2021-05-26T19:41:45.663Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "15395bb7-a599-498e-b134-c782f4c0d6ec",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split_runs"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"file\": {\n    \"url\": \"<string>\",\n    \"name\": \"<string>\",\n    \"settings\": {\n      \"password\": \"<string>\"\n    }\n  },\n  \"splitter\": {\n    \"id\": \"<string>\",\n    \"version\": \"<string>\",\n    \"overrideConfig\": \"<object>\"\n  },\n  \"config\": \"<object>\",\n  \"metadata\": {\n    \"key_0\": false,\n    \"key_1\": 2182,\n    \"key_2\": \"string\"\n  }\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "edc78955-3c41-4316-8312-da7d02cdf8e6",
+          "name": "Get a split run",
+          "request": {
+            "name": "Get a split run",
+            "description": {},
+            "url": {
+              "path": [
+                "split_runs",
+                ":id"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": [
+                {
+                  "disabled": false,
+                  "type": "any",
+                  "value": "<string>",
+                  "key": "id",
+                  "description": "(Required) "
+                }
+              ]
+            },
+            "header": [
+              {
+                "disabled": false,
+                "description": "API version to pin the request to, for example 2026-02-09.",
+                "key": "x-extend-api-version",
+                "value": "<string>"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": null
+          },
+          "response": [
+            {
+              "id": "3404c165-beb5-4ec0-bd44-cd1dc13a143b",
+              "name": "The requested split run.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"object\": \"processor_run\",\n  \"id\": \"string\",\n  \"status\": \"CANCELLED\",\n  \"type\": \"SPLIT\",\n  \"file\": {},\n  \"output\": {\n    \"key_0\": 4037.9581842396483,\n    \"key_1\": \"string\"\n  },\n  \"config\": {},\n  \"usage\": {},\n  \"dashboardUrl\": \"string\",\n  \"createdAt\": \"1956-08-29T01:35:59.224Z\",\n  \"updatedAt\": \"2021-05-26T19:41:45.663Z\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9f121b22-fd6e-4287-9594-4722e45f1e05",
+              "name": "Error response.",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "split_runs",
+                    ":id"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": [
+                    {
+                      "disabled": false,
+                      "type": "any",
+                      "value": "<string>",
+                      "key": "id",
+                      "description": "(Required) "
+                    }
+                  ]
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: bearer",
+                      "type": "text/plain"
+                    },
+                    "key": "Authorization",
+                    "value": "Bearer <token>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "API version to pin the request to, for example 2026-02-09.",
+                    "key": "x-extend-api-version",
+                    "value": "2026-02-09"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"code\": \"string\",\n  \"message\": \"string\",\n  \"retryable\": true,\n  \"requestId\": \"string\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.extend.ai",
+      "key": "baseUrl"
+    }
+  ],
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{bearerToken}}"
+      }
+    ]
+  },
+  "info": {
+    "_postman_id": "67ee68c1-76ef-40ac-ae88-d8e6288ffab3",
+    "name": "Extend Batch Split API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.\n\nContact Support:\n Name: Extend Support",
+      "type": "text/plain"
+    }
+  }
+}
