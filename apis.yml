@@ -6,6 +6,18 @@ description: Extend is an intelligent document processing platform that turns do
   into high quality, structured data. Its REST API at api.extend.ai exposes parsing,
   extraction, classification, and splitting processors, durable multi-step workflows,
   evaluation sets, and batch processing for automating document-heavy operations.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: true
+  label: Hosted service · you call their endpoint
+  confidence: high
+  source:
+  - openapi
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: paid
   onboarding: self-serve
