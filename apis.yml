@@ -118,6 +118,8 @@ apis:
   humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
   baseURL: https://api.extend.ai
   tags:
+  - Evaluation
+  tags_raw:
   - Evaluations
   properties:
   - type: OpenAPI
