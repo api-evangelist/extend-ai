@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Extend Batch Workflows API
+  title: Extend Workflows API
   description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
   termsOfService: https://www.extend.ai
   contact:
@@ -89,7 +89,45 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  parameters:
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
     Workflow:
       type: object
       properties:
@@ -110,44 +148,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
   responses:
     ApiError:
       description: Error response.

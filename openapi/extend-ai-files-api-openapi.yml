@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Extend Batch Files API
+  title: Extend Files API
   description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
   termsOfService: https://www.extend.ai
   contact:
@@ -121,22 +121,16 @@ paths:
           $ref: '#/components/responses/ApiError'
 components:
   parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
     MaxPageSize:
       name: maxPageSize
       in: query
       required: false
       schema:
         type: integer
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
+    PathId:
+      name: id
+      in: path
+      required: true
       schema:
         type: string
     ApiVersion:
@@ -147,6 +141,12 @@ components:
       schema:
         type: string
         example: '2026-02-09'
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
   schemas:
     ApiError:
       type: object
@@ -183,8 +183,9 @@ components:
         presignedUrl:
           type: string
         parentFileId:
-          type: string
-          nullable: true
+          type:
+          - string
+          - 'null'
         metadata:
           type: object
           additionalProperties: true

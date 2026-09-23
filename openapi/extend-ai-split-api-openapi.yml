@@ -1,6 +1,6 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
-  title: Extend Batch Split API
+  title: Extend Split API
   description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
   termsOfService: https://www.extend.ai
   contact:
@@ -81,16 +81,43 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
   schemas:
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
-    RunMetadata:
+    ApiError:
       type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
     FileFromUrl:
       type: object
       required:
@@ -105,16 +132,43 @@ components:
           properties:
             password:
               type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
+    SplitRequest:
+      type: object
+      required:
+      - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        splitter:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+            overrideConfig:
+              type: object
+        config:
+          type: object
+          description: Inline split config with splitClassifications, splitRules, baseProcessor.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
     ProcessorRun:
       type: object
       properties:
@@ -155,60 +209,6 @@ components:
       properties:
         id:
           type: string
-    SplitRequest:
-      type: object
-      required:
-      - file
-      properties:
-        file:
-          $ref: '#/components/schemas/FileInput'
-        splitter:
-          type: object
-          properties:
-            id:
-              type: string
-            version:
-              type: string
-            overrideConfig:
-              type: object
-        config:
-          type: object
-          description: Inline split config with splitClassifications, splitRules, baseProcessor.
-        metadata:
-          $ref: '#/components/schemas/RunMetadata'
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
   responses:
     ApiError:
       description: Error response.

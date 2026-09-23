@@ -1,15 +1,7 @@
 {
   "provider": "extend-ai",
   "sources": [
-    "extend-ai-batch-api-openapi.yml",
-    "extend-ai-classify-api-openapi.yml",
-    "extend-ai-evaluations-api-openapi.yml",
-    "extend-ai-extract-api-openapi.yml",
-    "extend-ai-files-api-openapi.yml",
-    "extend-ai-parse-api-openapi.yml",
-    "extend-ai-split-api-openapi.yml",
-    "extend-ai-workflow-runs-api-openapi.yml",
-    "extend-ai-workflows-api-openapi.yml"
+    "_original/extend-ai-openapi.yml"
   ],
   "outputs": [
     "extend-ai-batch-api-openapi.yml",
@@ -25,6 +17,20 @@
   "archived": [],
   "errors": [],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "extend-ai-openapi.yml: upgraded openapi 3.0.1 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "extend-ai-batch-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-classify-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-evaluations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-extract-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-files-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-parse-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-split-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-workflow-runs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "extend-ai-workflows-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

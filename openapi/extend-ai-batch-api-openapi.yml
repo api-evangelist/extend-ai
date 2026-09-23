@@ -1,4 +1,4 @@
-openapi: 3.0.1
+openapi: 3.2.0
 info:
   title: Extend Batch API
   description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
@@ -127,7 +127,33 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
   schemas:
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
     RunStatus:
       type: string
       enum:
@@ -138,11 +164,6 @@ components:
       - CANCELLED
       - NEEDS_REVIEW
       - REJECTED
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
     FileFromUrl:
       type: object
       required:
@@ -157,6 +178,22 @@ components:
           properties:
             password:
               type: string
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
     BatchRequest:
       type: object
       required:
@@ -175,34 +212,12 @@ components:
           type: object
         config:
           type: object
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
     FileFromId:
       type: object
       required:
       - id
       properties:
         id:
-          type: string
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
           type: string
     BatchRun:
       type: object
@@ -219,21 +234,6 @@ components:
         createdAt:
           type: string
           format: date-time
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
   responses:
     ApiError:
       description: Error response.
