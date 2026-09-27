@@ -147,13 +147,14 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
     ApiVersion:
       name: x-extend-api-version
       in: header
@@ -162,7 +163,23 @@ components:
       schema:
         type: string
         example: '2026-02-09'
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
   schemas:
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
     ApiError:
       type: object
       properties:
@@ -174,16 +191,6 @@ components:
           type: boolean
         requestId:
           type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
     EvaluationSet:
       type: object
       properties:
@@ -205,13 +212,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   securitySchemes:
     BearerAuth:
       type: http

@@ -129,104 +129,7 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  parameters:
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
   schemas:
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    FileFromUrl:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-        name:
-          type: string
-        settings:
-          type: object
-          properties:
-            password:
-              type: string
-    ClassifyRequest:
-      type: object
-      required:
-      - file
-      properties:
-        file:
-          $ref: '#/components/schemas/FileInput'
-        classifier:
-          type: object
-          properties:
-            id:
-              type: string
-            version:
-              type: string
-        config:
-          type: object
-          description: Inline classify config with classifications, baseProcessor, rules.
-        metadata:
-          $ref: '#/components/schemas/RunMetadata'
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
     Processor:
       type: object
       properties:
@@ -253,6 +156,50 @@ components:
         updatedAt:
           type: string
           format: date-time
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ClassifyRequest:
+      type: object
+      required:
+      - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        classifier:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+        config:
+          type: object
+          description: Inline classify config with classifications, baseProcessor, rules.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
     ProcessorRun:
       type: object
       properties:
@@ -286,13 +233,11 @@ components:
         updatedAt:
           type: string
           format: date-time
-    FileFromId:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
     ProcessorCreateRequest:
       type: object
       required:
@@ -302,6 +247,61 @@ components:
           type: string
         config:
           type: object
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+  parameters:
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
   responses:
     ApiError:
       description: Error response.

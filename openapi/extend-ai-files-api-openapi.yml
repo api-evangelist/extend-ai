@@ -120,45 +120,14 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  parameters:
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
-  schemas:
+  responses:
     ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  schemas:
     File:
       type: object
       properties:
@@ -195,13 +164,44 @@ components:
         updatedAt:
           type: string
           format: date-time
-  responses:
     ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+  parameters:
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
   securitySchemes:
     BearerAuth:
       type: http

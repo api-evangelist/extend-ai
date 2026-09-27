@@ -127,22 +127,36 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
   schemas:
+    BatchRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: batch_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        runCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
     ApiError:
       type: object
       properties:
@@ -154,46 +168,6 @@ components:
           type: boolean
         requestId:
           type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    FileFromUrl:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-        name:
-          type: string
-        settings:
-          type: object
-          properties:
-            password:
-              type: string
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
     BatchRequest:
       type: object
       required:
@@ -212,6 +186,18 @@ components:
           type: object
         config:
           type: object
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
     FileFromId:
       type: object
       required:
@@ -219,21 +205,20 @@ components:
       properties:
         id:
           type: string
-    BatchRun:
+    FileFromUrl:
       type: object
+      required:
+      - url
       properties:
-        object:
+        url:
           type: string
-          example: batch_run
-        id:
+        name:
           type: string
-        status:
-          $ref: '#/components/schemas/RunStatus'
-        runCount:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
   responses:
     ApiError:
       description: Error response.
@@ -241,6 +226,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
+  parameters:
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

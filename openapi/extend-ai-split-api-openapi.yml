@@ -81,22 +81,21 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
   schemas:
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
     ApiError:
       type: object
       properties:
@@ -108,16 +107,58 @@ components:
           type: boolean
         requestId:
           type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
+    ProcessorRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        type:
+          type: string
+          enum:
+          - EXTRACT
+          - CLASSIFY
+          - SPLIT
+        file:
+          type: object
+        output:
+          type: object
+          additionalProperties: true
+        config:
+          type: object
+        usage:
+          type: object
+        dashboardUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
     FileFromUrl:
       type: object
       required:
@@ -153,62 +194,6 @@ components:
           description: Inline split config with splitClassifications, splitRules, baseProcessor.
         metadata:
           $ref: '#/components/schemas/RunMetadata'
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
-    ProcessorRun:
-      type: object
-      properties:
-        object:
-          type: string
-          example: processor_run
-        id:
-          type: string
-        status:
-          $ref: '#/components/schemas/RunStatus'
-        type:
-          type: string
-          enum:
-          - EXTRACT
-          - CLASSIFY
-          - SPLIT
-        file:
-          type: object
-        output:
-          type: object
-          additionalProperties: true
-        config:
-          type: object
-        usage:
-          type: object
-        dashboardUrl:
-          type: string
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    FileFromId:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
   responses:
     ApiError:
       description: Error response.
@@ -216,6 +201,21 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
+  parameters:
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

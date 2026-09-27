@@ -145,69 +145,26 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  parameters:
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
   schemas:
-    ApiError:
+    BatchRun:
       type: object
       properties:
-        code:
+        object:
           type: string
-        message:
+          example: batch_run
+        id:
           type: string
-        retryable:
-          type: boolean
-        requestId:
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        runCount:
+          type: integer
+        createdAt:
           type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    FileFromUrl:
+          format: date-time
+    RunMetadata:
       type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-        name:
-          type: string
-        settings:
-          type: object
-          properties:
-            password:
-              type: string
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
     WorkflowRun:
       type: object
       properties:
@@ -233,21 +190,26 @@ components:
         updatedAt:
           type: string
           format: date-time
-    WorkflowReference:
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    ApiError:
       type: object
-      required:
-      - id
       properties:
-        id:
+        code:
           type: string
-        version:
+        message:
           type: string
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
+        retryable:
+          type: boolean
+        requestId:
           type: string
     WorkflowRunRequest:
       type: object
@@ -271,15 +233,27 @@ components:
         secrets:
           type: object
           additionalProperties: true
-    RunMetadata:
+    WorkflowReference:
       type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        version:
+          type: string
     FileInput:
       oneOf:
       - $ref: '#/components/schemas/FileFromUrl'
       - $ref: '#/components/schemas/FileFromId'
       - $ref: '#/components/schemas/FileFromText'
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
     FileFromId:
       type: object
       required:
@@ -287,21 +261,20 @@ components:
       properties:
         id:
           type: string
-    BatchRun:
+    FileFromUrl:
       type: object
+      required:
+      - url
       properties:
-        object:
+        url:
           type: string
-          example: batch_run
-        id:
+        name:
           type: string
-        status:
-          $ref: '#/components/schemas/RunStatus'
-        runCount:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
   responses:
     ApiError:
       description: Error response.
@@ -309,6 +282,33 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
+  parameters:
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
   securitySchemes:
     BearerAuth:
       type: http
