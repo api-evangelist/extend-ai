@@ -155,6 +155,12 @@ components:
           schema:
             $ref: '#/components/schemas/ApiError'
   parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
     ApiVersion:
       name: x-extend-api-version
       in: header
@@ -163,12 +169,6 @@ components:
       schema:
         type: string
         example: '2026-02-09'
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
   schemas:
     RunStatus:
       type: string
@@ -180,17 +180,6 @@ components:
       - CANCELLED
       - NEEDS_REVIEW
       - REJECTED
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
     EvaluationSet:
       type: object
       properties:
@@ -212,6 +201,17 @@ components:
         updatedAt:
           type: string
           format: date-time
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

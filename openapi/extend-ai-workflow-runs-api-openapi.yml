@@ -145,7 +145,29 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   schemas:
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
     BatchRun:
       type: object
       properties:
@@ -161,10 +183,13 @@ components:
         createdAt:
           type: string
           format: date-time
-    RunMetadata:
+    FileFromId:
       type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
+      required:
+      - id
+      properties:
+        id:
+          type: string
     WorkflowRun:
       type: object
       properties:
@@ -190,6 +215,15 @@ components:
         updatedAt:
           type: string
           format: date-time
+    WorkflowReference:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+        version:
+          type: string
     RunStatus:
       type: string
       enum:
@@ -200,17 +234,11 @@ components:
       - CANCELLED
       - NEEDS_REVIEW
       - REJECTED
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
     WorkflowRunRequest:
       type: object
       required:
@@ -233,33 +261,12 @@ components:
         secrets:
           type: object
           additionalProperties: true
-    WorkflowReference:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-        version:
-          type: string
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
     FileFromText:
       type: object
       required:
       - text
       properties:
         text:
-          type: string
-    FileFromId:
-      type: object
-      required:
-      - id
-      properties:
-        id:
           type: string
     FileFromUrl:
       type: object
@@ -275,18 +282,17 @@ components:
           properties:
             password:
               type: string
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   parameters:
-    NextPageToken:
-      name: nextPageToken
+    MaxPageSize:
+      name: maxPageSize
       in: query
       required: false
+      schema:
+        type: integer
+    PathId:
+      name: id
+      in: path
+      required: true
       schema:
         type: string
     ApiVersion:
@@ -297,18 +303,12 @@ components:
       schema:
         type: string
         example: '2026-02-09'
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    MaxPageSize:
-      name: maxPageSize
+    NextPageToken:
+      name: nextPageToken
       in: query
       required: false
       schema:
-        type: integer
+        type: string
   securitySchemes:
     BearerAuth:
       type: http

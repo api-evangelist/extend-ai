@@ -205,6 +205,13 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   schemas:
     Processor:
       type: object
@@ -236,6 +243,26 @@ components:
       type: object
       additionalProperties: true
       description: Custom metadata for a run, up to 10KB.
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    ProcessorCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        config:
+          type: object
     ExtractRequest:
       type: object
       required:
@@ -257,26 +284,12 @@ components:
           description: Inline extract config with schema, baseProcessor, extractionRules.
         metadata:
           $ref: '#/components/schemas/RunMetadata'
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    ApiError:
+    FileFromId:
       type: object
+      required:
+      - id
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
+        id:
           type: string
     ProcessorRun:
       type: object
@@ -311,33 +324,27 @@ components:
         updatedAt:
           type: string
           format: date-time
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
     FileInput:
       oneOf:
       - $ref: '#/components/schemas/FileFromUrl'
       - $ref: '#/components/schemas/FileFromId'
       - $ref: '#/components/schemas/FileFromText'
-    ProcessorCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        config:
-          type: object
     FileFromText:
       type: object
       required:
       - text
       properties:
         text:
-          type: string
-    FileFromId:
-      type: object
-      required:
-      - id
-      properties:
-        id:
           type: string
     FileFromUrl:
       type: object
@@ -354,10 +361,16 @@ components:
             password:
               type: string
   parameters:
-    NextPageToken:
-      name: nextPageToken
+    MaxPageSize:
+      name: maxPageSize
       in: query
       required: false
+      schema:
+        type: integer
+    PathId:
+      name: id
+      in: path
+      required: true
       schema:
         type: string
     ApiVersion:
@@ -368,25 +381,12 @@ components:
       schema:
         type: string
         example: '2026-02-09'
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    MaxPageSize:
-      name: maxPageSize
+    NextPageToken:
+      name: nextPageToken
       in: query
       required: false
       schema:
-        type: integer
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
+        type: string
   securitySchemes:
     BearerAuth:
       type: http
