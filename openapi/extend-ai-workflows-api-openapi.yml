@@ -89,24 +89,23 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
     MaxPageSize:
       name: maxPageSize
       in: query
       required: false
       schema:
         type: integer
-    PathId:
-      name: id
-      in: path
-      required: true
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
       schema:
         type: string
     ApiVersion:
@@ -117,24 +116,14 @@ components:
       schema:
         type: string
         example: '2026-02-09'
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
-  schemas:
+  responses:
     ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  schemas:
     Workflow:
       type: object
       properties:
@@ -155,6 +144,17 @@ components:
         updatedAt:
           type: string
           format: date-time
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
   securitySchemes:
     BearerAuth:
       type: http

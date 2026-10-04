@@ -81,6 +81,21 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
   responses:
     ApiError:
       description: Error response.
@@ -93,6 +108,18 @@ components:
       type: object
       additionalProperties: true
       description: Custom metadata for a run, up to 10KB.
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
     FileFromId:
       type: object
       required:
@@ -133,21 +160,17 @@ components:
         updatedAt:
           type: string
           format: date-time
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
     SplitRequest:
       type: object
       required:
@@ -169,24 +192,6 @@ components:
           description: Inline split config with splitClassifications, splitRules, baseProcessor.
         metadata:
           $ref: '#/components/schemas/RunMetadata'
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
     FileFromUrl:
       type: object
       required:
@@ -201,21 +206,16 @@ components:
           properties:
             password:
               type: string
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
   securitySchemes:
     BearerAuth:
       type: http

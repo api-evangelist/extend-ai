@@ -136,7 +136,57 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ApiError'
+  parameters:
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
   schemas:
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ProcessorCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        config:
+          type: object
     ClassifyRequest:
       type: object
       required:
@@ -156,56 +206,18 @@ components:
           description: Inline classify config with classifications, baseProcessor, rules.
         metadata:
           $ref: '#/components/schemas/RunMetadata'
-    Processor:
-      type: object
-      properties:
-        object:
-          type: string
-          example: processor
-        id:
-          type: string
-        name:
-          type: string
-        type:
-          type: string
-          enum:
-          - EXTRACT
-          - CLASSIFY
-          - SPLIT
-        version:
-          type: string
-        config:
-          type: object
-        createdAt:
-          type: string
-          format: date-time
-        updatedAt:
-          type: string
-          format: date-time
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
-    ProcessorCreateRequest:
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromText:
       type: object
       required:
-      - name
+      - text
       properties:
-        name:
+        text:
           type: string
-        config:
-          type: object
     FileFromId:
       type: object
       required:
@@ -246,27 +258,16 @@ components:
         updatedAt:
           type: string
           format: date-time
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
-    FileFromText:
+    ApiError:
       type: object
-      required:
-      - text
       properties:
-        text:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
           type: string
     FileFromUrl:
       type: object
@@ -282,33 +283,32 @@ components:
           properties:
             password:
               type: string
-  parameters:
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
+    Processor:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+          - EXTRACT
+          - CLASSIFY
+          - SPLIT
+        version:
+          type: string
+        config:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
   securitySchemes:
     BearerAuth:
       type: http
