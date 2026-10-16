@@ -14,7 +14,7 @@ edges:
     registered_name: ai.extend/extend
     register_id: ai.extend/extend
     detected_by: sweep-agent-tools.py
-    detected: '2026-10-14'
+    detected: '2026-10-15'
   mcp_registry:
     servers:
     - ai.extend/extend
