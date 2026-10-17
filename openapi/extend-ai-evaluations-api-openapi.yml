@@ -162,13 +162,6 @@ components:
       schema:
         type: string
         example: '2026-02-09'
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   schemas:
     EvaluationSet:
       type: object
@@ -191,6 +184,16 @@ components:
         updatedAt:
           type: string
           format: date-time
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
     ApiError:
       type: object
       properties:
@@ -202,16 +205,13 @@ components:
           type: boolean
         requestId:
           type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   securitySchemes:
     BearerAuth:
       type: http

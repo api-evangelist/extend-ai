@@ -129,18 +129,17 @@ paths:
         default:
           $ref: '#/components/responses/ApiError'
 components:
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
   parameters:
     PathId:
       name: id
       in: path
       required: true
+      schema:
+        type: string
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
       schema:
         type: string
     MaxPageSize:
@@ -149,12 +148,6 @@ components:
       required: false
       schema:
         type: integer
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
     ApiVersion:
       name: x-extend-api-version
       in: header
@@ -164,66 +157,12 @@ components:
         type: string
         example: '2026-02-09'
   schemas:
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    ProcessorCreateRequest:
-      type: object
-      required:
-      - name
-      properties:
-        name:
-          type: string
-        config:
-          type: object
-    ClassifyRequest:
-      type: object
-      required:
-      - file
-      properties:
-        file:
-          $ref: '#/components/schemas/FileInput'
-        classifier:
-          type: object
-          properties:
-            id:
-              type: string
-            version:
-              type: string
-        config:
-          type: object
-          description: Inline classify config with classifications, baseProcessor, rules.
-        metadata:
-          $ref: '#/components/schemas/RunMetadata'
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
     FileFromText:
       type: object
       required:
       - text
       properties:
         text:
-          type: string
-    FileFromId:
-      type: object
-      required:
-      - id
-      properties:
-        id:
           type: string
     ProcessorRun:
       type: object
@@ -258,6 +197,20 @@ components:
         updatedAt:
           type: string
           format: date-time
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
     ApiError:
       type: object
       properties:
@@ -269,6 +222,30 @@ components:
           type: boolean
         requestId:
           type: string
+    ClassifyRequest:
+      type: object
+      required:
+      - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        classifier:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+        config:
+          type: object
+          description: Inline classify config with classifications, baseProcessor, rules.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
     FileFromUrl:
       type: object
       required:
@@ -283,6 +260,22 @@ components:
           properties:
             password:
               type: string
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
+    ProcessorCreateRequest:
+      type: object
+      required:
+      - name
+      properties:
+        name:
+          type: string
+        config:
+          type: object
     Processor:
       type: object
       properties:
@@ -309,6 +302,13 @@ components:
         updatedAt:
           type: string
           format: date-time
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   securitySchemes:
     BearerAuth:
       type: http

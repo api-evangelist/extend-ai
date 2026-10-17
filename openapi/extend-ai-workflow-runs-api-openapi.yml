@@ -152,12 +152,6 @@ components:
       required: true
       schema:
         type: string
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
     NextPageToken:
       name: nextPageToken
       in: query
@@ -172,14 +166,108 @@ components:
       schema:
         type: string
         example: '2026-02-09'
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
   schemas:
+    FileFromText:
+      type: object
+      required:
+      - text
+      properties:
+        text:
+          type: string
+    RunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      - NEEDS_REVIEW
+      - REJECTED
+    BatchRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: batch_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        runCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    WorkflowRunRequest:
+      type: object
+      required:
+      - workflow
+      - file
+      properties:
+        workflow:
+          $ref: '#/components/schemas/WorkflowReference'
+        file:
+          $ref: '#/components/schemas/FileInput'
+        outputs:
+          type: array
+          items:
+            type: object
+        priority:
+          type: integer
+          default: 50
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+        secrets:
+          type: object
+          additionalProperties: true
+    FileInput:
+      oneOf:
+      - $ref: '#/components/schemas/FileFromUrl'
+      - $ref: '#/components/schemas/FileFromId'
+      - $ref: '#/components/schemas/FileFromText'
+    FileFromUrl:
+      type: object
+      required:
+      - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    FileFromId:
+      type: object
+      required:
+      - id
+      properties:
+        id:
+          type: string
     WorkflowRun:
       type: object
       properties:
@@ -205,62 +293,6 @@ components:
         updatedAt:
           type: string
           format: date-time
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    FileInput:
-      oneOf:
-      - $ref: '#/components/schemas/FileFromUrl'
-      - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
-          type: string
-    WorkflowRunRequest:
-      type: object
-      required:
-      - workflow
-      - file
-      properties:
-        workflow:
-          $ref: '#/components/schemas/WorkflowReference'
-        file:
-          $ref: '#/components/schemas/FileInput'
-        outputs:
-          type: array
-          items:
-            type: object
-        priority:
-          type: integer
-          default: 50
-        metadata:
-          $ref: '#/components/schemas/RunMetadata'
-        secrets:
-          type: object
-          additionalProperties: true
-    FileFromId:
-      type: object
-      required:
-      - id
-      properties:
-        id:
-          type: string
-    ApiError:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
     WorkflowReference:
       type: object
       required:
@@ -270,45 +302,13 @@ components:
           type: string
         version:
           type: string
-    BatchRun:
-      type: object
-      properties:
-        object:
-          type: string
-          example: batch_run
-        id:
-          type: string
-        status:
-          $ref: '#/components/schemas/RunStatus'
-        runCount:
-          type: integer
-        createdAt:
-          type: string
-          format: date-time
-    FileFromUrl:
-      type: object
-      required:
-      - url
-      properties:
-        url:
-          type: string
-        name:
-          type: string
-        settings:
-          type: object
-          properties:
-            password:
-              type: string
-    RunStatus:
-      type: string
-      enum:
-      - PENDING
-      - PROCESSING
-      - PROCESSED
-      - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
   securitySchemes:
     BearerAuth:
       type: http
