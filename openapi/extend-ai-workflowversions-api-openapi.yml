@@ -1,0 +1,2861 @@
+openapi: 3.2.0
+info:
+  title: Reference Workflow Versions API
+  version: 1.0.0
+servers:
+- url: https://api.extend.ai
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
+tags:
+- name: workflowVersions
+paths:
+  /workflows/{id}/versions:
+    post:
+      operationId: workflowVersions_create
+      summary: Create Workflow Version
+      description: 'Deploy a new version of a workflow. The deployed version becomes available for running workflow runs.
+
+
+        When `steps` is omitted, the current draft is deployed as-is. When `steps` is provided, the given steps are deployed directly without modifying the draft.'
+      tags:
+      - workflowVersions
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the workflow to deploy.
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      responses:
+        '200':
+          description: Version deployed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowVersion'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: An optional name for this deployed version.
+                steps:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/WorkflowStepDefinition'
+                  description: 'Optional step definitions. When provided, these steps are deployed directly without modifying the draft. When omitted, the current draft is deployed.
+
+
+                    All configurable steps (`EXTRACT`, `CLASSIFY`, `SPLIT`, `CONDITIONAL_EXTRACT`, `RULE_VALIDATION`, `EXTERNAL_DATA_VALIDATION`) must include `config` when deploying. Unconfigured steps are rejected with a 400.
+
+
+                    See the [Configuring Workflows via API guide](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows) for step definitions, branching patterns, and examples.
+
+                    '
+      security:
+      - BearerAuth: []
+    get:
+      operationId: workflowVersions_list
+      summary: List Workflow Versions
+      description: List all versions of a workflow, including the draft version. Returns a paginated list of version summaries.
+      tags:
+      - workflowVersions
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the workflow.
+        required: true
+        schema:
+          type: string
+      - name: nextPageToken
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/NextPageToken'
+      - name: maxPageSize
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/MaxPageSize'
+          default: 10
+      - name: sortDir
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDir'
+          default: desc
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      responses:
+        '200':
+          description: Successfully retrieved versions
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/workflowVersions_list_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /workflows/{id}/versions/{versionId}:
+    get:
+      operationId: workflowVersions_retrieve
+      summary: Get Workflow Version
+      description: Get a specific version of a workflow, including its step definitions.
+      tags:
+      - workflowVersions
+      parameters:
+      - name: id
+        in: path
+        description: The ID of the workflow.
+        required: true
+        schema:
+          type: string
+      - name: versionId
+        in: path
+        description: 'The version to retrieve. Accepts any of the following:
+
+
+          - `"draft"` — returns the current draft version
+
+          - `"latest"` — returns the latest published version (falls back to draft if none published)
+
+          - A version number (e.g. `"1"`, `"2"`) — returns that specific published version
+
+          - A version ID (e.g. `"workflow_version_abc123"`) — returns that specific version by ID
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      responses:
+        '200':
+          description: Version details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowVersion'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    ExternalDataValidationStepDefinitionConfigRequestOptionsContentType:
+      type: string
+      enum:
+      - application/json
+      - text/plain
+      description: 'Content type of the request body sent to the external endpoint.
+
+
+        See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+        '
+      title: ExternalDataValidationStepDefinitionConfigRequestOptionsContentType
+    MaxPageSize:
+      type: integer
+      minimum: 1
+      maximum: 1000
+      default: 10
+      description: The maximum number of results to return in the response. You may receive less than this number if there are fewer results than the maximum.
+      title: MaxPageSize
+    SplitConfig:
+      type: object
+      properties:
+        baseProcessor:
+          $ref: '#/components/schemas/SplitBaseProcessor'
+          default: splitting_performance
+        baseVersion:
+          type: string
+          description: The version of the `"splitting_performance"` or `"splitting_light"` processor to use. If not provided, the latest stable version for the selected `baseProcessor` will be used automatically. See [Splitting Changelog](https://docs.extend.ai/2026-02-09/model-versioning/splitting/splitting-performance) for more details.
+        splitClassifications:
+          $ref: '#/components/schemas/SplitClassifications'
+        splitRules:
+          type: string
+          description: Custom rules to guide the document splitting process in natural language.
+        advancedOptions:
+          $ref: '#/components/schemas/SplitAdvancedOptions'
+          description: Advanced configuration options.
+        parseConfig:
+          $ref: '#/components/schemas/ParseConfig'
+          description: Configuration options for the parsing process.
+      required:
+      - splitClassifications
+      title: SplitConfig
+    ConditionalExtractStepDefinitionConfigRulesItems:
+      type: object
+      properties:
+        name:
+          type: string
+        formula:
+          type: string
+          minLength: 1
+          description: 'The formula that determines when this extractor runs.
+
+
+            See the [Conditional Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional-extract) and [Formulas](https://docs.extend.ai/2026-02-09/workflows/formulas).
+
+            '
+        extractor:
+          $ref: '#/components/schemas/ExtractorRef'
+      required:
+      - formula
+      - extractor
+      title: ConditionalExtractStepDefinitionConfigRulesItems
+    MergeExtractStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/MergeExtractStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/MergeExtractStepDefinitionConfig'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+      required:
+      - name
+      - type
+      description: 'Merges extraction outputs from multiple upstream extract steps.
+
+
+        See the [Merge Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#merge-extract).
+
+        '
+      title: MergeExtractStepDefinition
+    ExtractAdvancedOptionsArrayCitationStrategy:
+      type: string
+      enum:
+      - item
+      - property
+      description: 'Granularity for array citations. Requires turning on citations: `citationsEnabled=true`.
+
+        - `item`: Creates item-level citations for array fields. This will return a single bbox citation for each "item" in the array e.g. line_items[0], line_items[1], etc.
+
+        - `property`: Creates property-level citations (cell-level citations) for array fields. This will return a citation for each property/cell for every item/row in the array, e.g. line_items[0].description, line_items[1].price, etc.
+
+        '
+      title: ExtractAdvancedOptionsArrayCitationStrategy
+    ClassifyBaseProcessor:
+      type: string
+      enum:
+      - classification_performance
+      - classification_light
+      default: classification_performance
+      description: 'The base processor to use. For classifiers, this can be either `"classification_performance"` or `"classification_light"`. Defaults to `"classification_performance"` if not provided. See [Classification Changelog](https://docs.extend.ai/2026-02-09/model-versioning/classification/classification-performance) for more details.
+
+        '
+      title: ClassifyBaseProcessor
+    ExtractorRef:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The extractor ID.
+        version:
+          type: string
+          description: 'The extractor version to use: `"latest"` (most recent published version), `"draft"`, or a specific semver string (e.g. `"1.0"`).
+
+            '
+      required:
+      - id
+      - version
+      description: A reference to an extractor.
+      title: ExtractorRef
+    ValidationStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Unique name for this step.
+        type:
+          $ref: '#/components/schemas/ValidationStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ValidationStepDefinitionConfig'
+          description: Optional. Omit on update to preserve the step's existing validation blocks. Omitted in responses when no blocks are configured.
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationNextEntry'
+          description: Routes to downstream steps based on whether all validation blocks passed.
+      required:
+      - name
+      - type
+      description: Evaluates code and semantic validation blocks and routes to pass or fail next steps.
+      title: ValidationStepDefinition
+    ParseConfigBlockOptionsTables:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: This option is deprecated and will have no effect. It will be removed in the next API version.
+          deprecated: true
+        targetFormat:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTablesTargetFormat'
+          default: html
+          description: 'The target format for the table blocks. Supported values:
+
+            * `markdown`: Convert table to Markdown format
+
+            * `html`: Convert table to HTML format
+
+            '
+        tableHeaderContinuationEnabled:
+          type: boolean
+          default: false
+          description: Whether to automatically copy table headers to headerless tables on subsequent pages when they have matching column counts. Useful for multi-page tables.
+        cellBlocksEnabled:
+          type: boolean
+          default: false
+          description: Whether to include individual table cell blocks in the output. When enabled, each cell in a table will be represented as a separate block with its own bounding box and content and will be `children` of the table block. Only supported on `parse_performance` engineVersion `1.0.1`.
+        agentic:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTablesAgentic'
+          description: Options for agentic table processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic table correction is triggered.
+      description: Options for table blocks.
+      title: ParseConfigBlockOptionsTables
+    ExternalDataValidationStepDefinitionConfigRequestOptionsMethod:
+      type: string
+      enum:
+      - GET
+      - POST
+      - PUT
+      title: ExternalDataValidationStepDefinitionConfigRequestOptionsMethod
+    ArrayStrategy:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ArrayStrategyType'
+          description: "The strategy type for handling large array use cases. For most use cases this should be left null, or should be set to `large_array_heuristics`. If you're unsure of what your use case needs, reach out to the Extend team for help.\n\n- `large_array_heuristics`: Optimized for documents with very large arrays, but where latency matters. \n\n  This strategy uses specialized heuristics around chunking, tables, and merging to handle large arrays efficiently over large documents.\n\n- `large_array_max_context`: Optimizes for accuracy over latency in documents with very large arrays. \n\n  This strategy will do multiple passes through the entire document to ensure there is no context loss across any chunks/pages, maximizing accuracy for complex array extraction, but adding material latency. This strategy incurs additional extraction credits when enabled.\n\n- `large_array_overlap_context`: Balances accuracy and latency in documents with very large arrays. \n\n  This strategy will always maintain surrounding/overlapping page context for every chunk/page that is extracted, eliminating array failure modes from context loss across page boundaries.\n"
+      required:
+      - type
+      title: ArrayStrategy
+    MergeExtractStepDefinitionType:
+      type: string
+      enum:
+      - MERGE_EXTRACT
+      title: MergeExtractStepDefinitionType
+    MergeExtractStepDefinitionConfig:
+      type: object
+      properties:
+        mergeOrder:
+          $ref: '#/components/schemas/MergeExtractStepDefinitionConfigMergeOrder'
+          description: 'How to order fields when merging. Defaults to confidence.
+
+
+            See the [Merge Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#merge-extract).
+
+            '
+      title: MergeExtractStepDefinitionConfig
+    ParseStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ParseStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ParseStepDefinitionConfig'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+      required:
+      - name
+      - type
+      description: 'Parses file content (OCR, text extraction). Every workflow should have exactly one parse step immediately after the trigger.
+
+
+        See the [Parse step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#parse).
+
+        '
+      title: ParseStepDefinition
+    WorkflowVersionSummaryObject:
+      type: string
+      enum:
+      - workflow_version
+      description: The type of object. Always `"workflow_version"`.
+      title: WorkflowVersionSummaryObject
+    WorkflowVersionObject:
+      type: string
+      enum:
+      - workflow_version
+      description: The type of object. Always `"workflow_version"`.
+      title: WorkflowVersionObject
+    ParseConfigBlockOptionsText:
+      type: object
+      properties:
+        signatureDetectionEnabled:
+          type: boolean
+          default: false
+          description: Whether an additional vision model will be utilized for advanced signature detection. Recommended for most use cases, but should be disabled if signature detection is not necessary and latency is a concern.
+        agentic:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTextAgentic'
+          description: Options for agentic text processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic text correction is triggered.
+      description: Options for text blocks.
+      title: ParseConfigBlockOptionsText
+    ParseConfig:
+      type: object
+      properties:
+        target:
+          $ref: '#/components/schemas/ParseConfigTarget'
+          default: markdown
+          description: 'The target format for the parsed content.
+
+
+            Supported values:
+
+
+            * `markdown`: True markdown with logical reading order (headings, lists, tables, checkboxes). Best default for LLMs/RAG and enables section-based chunking.
+
+            * `spatial`: Layout/position-preserving text that uses markdown elements for block types but is not strictly markdown due to whitespace/tabs used to maintain placement. Only page-based chunking is supported.
+
+
+            Guidance:
+
+
+            * Prefer `markdown` for most documents, multi-column reading order, and retrieval use cases
+
+            * Prefer `spatial` for messy/scanned/handwritten or skewed documents, when you need near 1:1 layout fidelity, or for BOL-like logistics docs
+
+
+            See “Markdown vs Spatial” in the [Parse guide](https://docs.extend.ai/2026-02-09/parsing/configuration#target-format) for details.
+
+            '
+        chunkingStrategy:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategy'
+          description: Strategy for dividing the document into chunks.
+        engine:
+          $ref: '#/components/schemas/ParseConfigEngine'
+          default: parse_performance
+          description: 'The parsing engine to use. Supported values:
+
+            * `parse_performance`: Full-featured parsing engine with highest accuracy (default)
+
+            * `parse_light`: Lightweight parsing engine optimized for high-volume, cost-sensitive ingestion. Uses the new layout model with full layout support and the markdown target at lower cost and latency, but performs worse than `parse_performance` on lower-quality scans, harder handwriting, larger tables, non-Latin-based languages, and dense checkbox regions.
+
+            * `parse_auto`: Adaptive parsing that classifies difficulty and routes work per page — simple pages are parsed with the parse_light model pipeline while complex pages get performance-level model treatment. Billed per page by complexity.
+
+            '
+        engineVersion:
+          type: string
+          default: latest
+          description: 'Pin a specific parser engine version for reproducibility. When set to `latest`, the most recent stable version of the selected engine is used.
+
+            '
+        blockOptions:
+          $ref: '#/components/schemas/ParseConfigBlockOptions'
+          description: Options for controlling how different block types are processed.
+        advancedOptions:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptions'
+      description: Configuration options for the parsing process. Defaults depend on the selected parser engine and version.
+      title: ParseConfig
+    ClassificationNextEntry:
+      type: object
+      properties:
+        step:
+          type: string
+          description: The name of the target step.
+        classificationId:
+          type: string
+          description: 'Must match a classification `id` from the referenced classifier''s or splitter''s configuration (e.g. `"cls_invoice"`). Classification IDs are stable across renames — if a classification type is renamed, the ID stays the same and routing continues to work.
+
+            '
+      required:
+      - step
+      - classificationId
+      description: 'A next entry for `CLASSIFY` and `SPLIT` steps. Routes based on the classification result.
+
+
+        See the [Configuring Workflows via API guide](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows) for end-to-end examples.
+
+        '
+      title: ClassificationNextEntry
+    WebhookResponseStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/WebhookResponseStepDefinitionType'
+      required:
+      - name
+      - type
+      description: 'A terminal step that triggers webhook delivery of the workflow results.
+
+
+        See the [Webhook Response step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#webhook-response).
+
+        '
+      title: WebhookResponseStepDefinition
+    CollectStepDefinitionType:
+      type: string
+      enum:
+      - COLLECT
+      title: CollectStepDefinitionType
+    ParseStepDefinitionConfig:
+      type: object
+      properties:
+        parseConfig:
+          $ref: '#/components/schemas/ParseConfig'
+      title: ParseStepDefinitionConfig
+    ParseConfigChunkingStrategyOptions:
+      type: object
+      properties:
+        minCharacters:
+          type: integer
+          default: 500
+          description: Specify a minimum number of characters per chunk.
+        maxCharacters:
+          type: integer
+          default: 10000
+          description: Specify a maximum number of characters per chunk.
+      description: Additional options for the chunking strategy.
+      title: ParseConfigChunkingStrategyOptions
+    ConditionalStepDefinitionType:
+      type: string
+      enum:
+      - CONDITIONAL
+      title: ConditionalStepDefinitionType
+    WorkflowsIdVersionsGetResponsesContentApplicationJsonSchemaObject:
+      type: string
+      enum:
+      - list
+      title: WorkflowsIdVersionsGetResponsesContentApplicationJsonSchemaObject
+    ValidationCodeBlockInputCodeLanguage:
+      type: string
+      enum:
+      - javascript
+      - python
+      description: The code language. Only JavaScript is currently executable; Python blocks return an error when evaluated.
+      title: ValidationCodeBlockInputCodeLanguage
+    ClassifyStepDefinitionType:
+      type: string
+      enum:
+      - CLASSIFY
+      title: ClassifyStepDefinitionType
+    HumanReviewStepDefinitionType:
+      type: string
+      enum:
+      - HUMAN_REVIEW
+      title: HumanReviewStepDefinitionType
+    PageRanges:
+      type: array
+      items:
+        $ref: '#/components/schemas/PageRangesItems'
+      description: Limit processing to the specified page ranges. See [Page Ranges](https://docs.extend.ai/2026-02-09/page-ranges).
+      title: PageRanges
+    ParseConfigChunkingStrategyType:
+      type: string
+      enum:
+      - page
+      - document
+      - section
+      default: page
+      description: 'The type of chunking strategy. Supported values:
+
+
+        * `page`: Chunk document by pages.
+
+        * `document`: Entire document is a single chunk. Essentially no chunking.
+
+        * `section`: Split by logical sections. Not supported for target=spatial.
+
+        '
+      title: ParseConfigChunkingStrategyType
+    ConditionalExtractStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ConditionalExtractStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ConditionalExtractStepDefinitionConfig'
+          description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+            '
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+          description: Can only be set when `config` is present.
+      required:
+      - name
+      - type
+      description: 'Runs extractors based on formula conditions.
+
+
+        Each extractor reference must include an explicit `version`. Valid values are `"latest"`, `"draft"`, or a specific semver string (e.g. `"1.0"`). Rules only support saved extractor references — inline configs are not supported in `CONDITIONAL_EXTRACT` rules.
+
+
+        See the [Conditional Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional-extract).
+
+        '
+      title: ConditionalExtractStepDefinition
+    ValidationSemanticBlockInputBlockType:
+      type: string
+      enum:
+      - semantic
+      title: ValidationSemanticBlockInputBlockType
+    ParseConfigBlockOptionsFigures:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: Whether to include figures in the output.
+        figureImageClippingEnabled:
+          type: boolean
+          default: true
+          description: Whether to clip and extract images from figures.
+        advancedChartExtractionEnabled:
+          type: boolean
+          default: false
+          description: Whether to enable advanced chart extraction using vision models for improved data extraction from charts.
+        customInstructions:
+          type: string
+          maxLength: 2000
+          description: 'Custom instructions injected into the vision model prompt used to analyze and summarize figures. Use to steer figure descriptions toward your use case (e.g. domain terminology, details to always capture). Requires `enabled: true`. Available on `parse_performance` >= `2.0.0` and `parse_light` >= `1.0.0`.
+
+            '
+      description: Options for figure blocks.
+      title: ParseConfigBlockOptionsFigures
+    ConditionalStepDefinitionConfigConditionsItemsOperation:
+      type: string
+      enum:
+      - EQUALS
+      - GTE
+      - LTE
+      - IS_NULL
+      - CONTAINS
+      - NO_OP
+      description: 'The comparison operation for this branch.
+
+
+        See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+        '
+      title: ConditionalStepDefinitionConfigConditionsItemsOperation
+    SplitAdvancedOptions:
+      type: object
+      properties:
+        splitIdentifierRules:
+          type: string
+          description: 'Custom rules for identifying split points.
+
+
+            **Deprecated:** For `splitting_light` >= 1.3.0 and `splitting_performance` >= 1.5.0, use the `identifierKey` field on each classification in `splitClassifications` instead. This provides per-type identifier extraction rules rather than a single global rule. On those versions, this field is accepted but ignored if provided.
+
+            '
+          deprecated: true
+        splitMethod:
+          $ref: '#/components/schemas/SplitAdvancedOptionsSplitMethod'
+          default: high_precision
+          description: 'The method to use for splitting documents. `high_precision` is more accurate but slower, while `basic_precision` is faster but less precise.
+
+
+            **Deprecated:** For `splitting_light` >= 1.3.0 and `splitting_performance` >= 1.5.0, this field has no impact and is ignored if provided. It is still accepted for compatibility with older integrations.
+
+            '
+          deprecated: true
+        splitExcelDocumentsBySheetEnabled:
+          type: boolean
+          default: false
+          description: For Excel documents, split by worksheet.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+        pageOverlapEnabled:
+          type: boolean
+          default: false
+          description: 'When enabled, the splitter will allow for page overlap when splitting a document such that a page can occur in multiple adjacent splits when context from the previous split is on the page and context from the next split is on the page.
+
+            **Availability:** Supported on `splitting_light` >= 1.1.0 and `splitting_performance` >= 1.2.0. If provided on older versions, this field is accepted but ignored.
+
+            '
+        strictIdentifierModeEnabled:
+          type: boolean
+          description: 'When enabled, adjacent candidate sub-documents that share the same type and the same extracted identifier are merged into a single split before the splitter finalizes its boundaries. Use it when one logical document repeats its identifier across its pages — for example a multi-page invoice whose invoice number appears on every page.
+
+
+            Identifiers come from the `identifierKey` rule on the matching classification in `splitClassifications` when one is defined. The splitter will always define a short descriptive identifier for each sub-document — make sure to define `identifierKey` on any classification you intend to merge by, so the identifier is a stable document-level value.
+
+
+            **Default:** When omitted, this setting is enabled on `splitting_performance` >= 1.6.2 and `splitting_light` >= 1.4.1, and disabled on earlier versions.
+
+
+            **Availability:** all `splitting_performance` versions and `splitting_light` >= 1.3.0
+
+            '
+      title: SplitAdvancedOptions
+    FileConversionStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/FileConversionStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/FileConversionStepDefinitionConfig'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+      required:
+      - name
+      - type
+      description: 'Converts files to a different format.
+
+
+        See the [File Conversion step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#file-conversion).
+
+        '
+      title: FileConversionStepDefinition
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling.
+        message:
+          type: string
+          description: "Human-readable error message suitable for displaying to developers. \nDo not rely on the exact text of this message as it may change.\n"
+        retryable:
+          type: boolean
+          description: 'Whether the request can be retried. When true, retry with exponential backoff.
+
+            When false, fix the underlying issue before retrying.
+
+            '
+        requestId:
+          type: string
+          description: "Unique request identifier for support purposes. Always include this \nwhen contacting Extend support about an error.\n"
+        docUrl:
+          type: string
+          description: Link to relevant documentation when one is available.
+      required:
+      - code
+      - message
+      - retryable
+      description: 'Standard error response format for all Extend API errors.
+
+
+        See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+        '
+      title: ApiError
+    ValidationNextEntry:
+      type: object
+      properties:
+        step:
+          type: string
+          description: The name of the target step.
+        result:
+          $ref: '#/components/schemas/ValidationNextEntryResult'
+          description: Use `"pass"` when all validation blocks passed, or `"fail"` otherwise.
+      required:
+      - step
+      - result
+      description: A next entry for `VALIDATION` steps. Routes based on whether all validation blocks passed.
+      title: ValidationNextEntry
+    ParseConfigBlockOptions:
+      type: object
+      properties:
+        figures:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsFigures'
+          description: Options for figure blocks.
+        tables:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTables'
+          description: Options for table blocks.
+        text:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsText'
+          description: Options for text blocks.
+        keyValue:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsKeyValue'
+          description: Options for key-value pair blocks.
+        barcodes:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsBarcodes'
+          description: Options for barcode blocks.
+        formulas:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsFormulas'
+          description: Options for formula blocks.
+      description: Options for controlling how different block types are processed.
+      title: ParseConfigBlockOptions
+    ParseConfigBlockOptionsTablesTargetFormat:
+      type: string
+      enum:
+      - markdown
+      - html
+      default: html
+      description: 'The target format for the table blocks. Supported values:
+
+        * `markdown`: Convert table to Markdown format
+
+        * `html`: Convert table to HTML format
+
+        '
+      title: ParseConfigBlockOptionsTablesTargetFormat
+    ClassifyConfig:
+      type: object
+      properties:
+        baseProcessor:
+          $ref: '#/components/schemas/ClassifyBaseProcessor'
+          default: classification_performance
+        baseVersion:
+          type: string
+          description: The version of the `"classification_performance"` or `"classification_light"` processor to use. If not provided, the latest stable version for the selected `baseProcessor` will be used automatically. See [Classification Changelog](https://docs.extend.ai/2026-02-09/model-versioning/classification/classification-performance) for more details.
+        classifications:
+          $ref: '#/components/schemas/Classifications'
+        classificationRules:
+          type: string
+          description: Custom rules to guide the classification process in natural language.
+        advancedOptions:
+          $ref: '#/components/schemas/ClassifyAdvancedOptions'
+          description: Advanced configuration options.
+        parseConfig:
+          $ref: '#/components/schemas/ParseConfig'
+          description: Configuration options for the parsing process.
+      required:
+      - classifications
+      title: ClassifyConfig
+    SortDir:
+      type: string
+      enum:
+      - asc
+      - desc
+      default: desc
+      description: Sort in ascending or descending order. Ascending order means the earliest result is returned first.
+      title: SortDir
+    ExternalDataValidationStepDefinitionConfigFailureBehavior:
+      type: string
+      enum:
+      - CONTINUE
+      - EXIT
+      description: 'Whether to continue or exit the workflow on validation failure. Defaults to `CONTINUE`.
+
+
+        See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+        '
+      title: ExternalDataValidationStepDefinitionConfigFailureBehavior
+    SplitBaseProcessor:
+      type: string
+      enum:
+      - splitting_performance
+      - splitting_light
+      default: splitting_performance
+      description: 'The base processor to use. For splitters, this can be either `"splitting_performance"` or `"splitting_light"`. Defaults to `"splitting_performance"` if not provided. See [Splitting Changelog](https://docs.extend.ai/2026-02-09/model-versioning/splitting/splitting-performance) for more details.
+
+        '
+      title: SplitBaseProcessor
+    Classifications:
+      type: array
+      items:
+        $ref: '#/components/schemas/Classification'
+      description: Array of possible classifications. Must provide at least one classification. At least one classification must have the type `"other"`. Each classification item must have a unique id.
+      title: Classifications
+    ParseConfigChunkingStrategy:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategyType'
+          default: page
+          description: 'The type of chunking strategy. Supported values:
+
+
+            * `page`: Chunk document by pages.
+
+            * `document`: Entire document is a single chunk. Essentially no chunking.
+
+            * `section`: Split by logical sections. Not supported for target=spatial.
+
+            '
+        options:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategyOptions'
+          description: Additional options for the chunking strategy.
+      description: Strategy for dividing the document into chunks.
+      title: ParseConfigChunkingStrategy
+    SplitStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/SplitStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/SplitStepDefinitionConfig'
+          description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+
+            When present, must contain exactly one of `splitter` (saved processor reference) or `splitterConfig` (inline configuration) — not both.
+
+
+            The `next[].classificationId` values must match split classification `id` values (not `type` strings) from the splitter''s configuration — the referenced version''s config for a saved reference, or the inline `splitClassifications` array for an inline config. For example, if the splitter defines `{ "id": "cls_receipt", "type": "receipt" }`, use `"cls_receipt"` as the `classificationId`.
+
+
+            See the [Split step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#split).
+
+            '
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationNextEntry'
+          description: 'Can only be set when `config` is present. Each entry must include a `classificationId` matching a split classification `id` from the splitter''s configuration (saved or inline). Use the classification''s stable `id` (e.g. `"cls_receipt"`), not the `type` string.
+
+
+            See the [Split step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#split).
+
+            '
+      required:
+      - name
+      - type
+      description: 'Splits a multi-document file into individual documents using a splitter. Routes to different next steps based on split type.
+
+
+        The step''s splitter can be specified in one of two ways:
+
+
+        - **Saved reference** (`splitter`): references a saved splitter by ID. The reference must include a pinned `version` — `"latest"` is not supported for `SPLIT` steps. Use a specific semver string (e.g. `"0.1"`) or `"draft"`. This is because classification IDs used for routing are tied to a specific processor version''s config.
+
+        - **Inline config** (`splitterConfig`): embeds the full splitter configuration directly in the step. No saved splitter is needed, so the workflow definition contains no workspace-specific processor IDs and is portable across workspaces. Routing (`next[].classificationId`) validates against the inline `splitClassifications` array.
+
+
+        See the [Split step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#split).
+
+        '
+      title: SplitStepDefinition
+    CollectStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/CollectStepDefinitionType'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+      required:
+      - name
+      - type
+      description: 'Collects outputs from multiple upstream branches before continuing.
+
+
+        See the [Collect step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#collect).
+
+        '
+      title: CollectStepDefinition
+    MergeExtractStepDefinitionConfigMergeOrder:
+      type: string
+      enum:
+      - confidence
+      - alphabetic
+      - first_to_execute
+      - last_to_execute
+      description: 'How to order fields when merging. Defaults to confidence.
+
+
+        See the [Merge Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#merge-extract).
+
+        '
+      title: MergeExtractStepDefinitionConfigMergeOrder
+    ParseStepDefinitionType:
+      type: string
+      enum:
+      - PARSE
+      title: ParseStepDefinitionType
+    RouterStepDefinitionConfig:
+      type: object
+      properties:
+        branches:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouterStepDefinitionConfigBranchesItems'
+          description: Branch predicates in evaluation order.
+      required:
+      - branches
+      description: Optional. Omit on update to preserve the step's existing branches.
+      title: RouterStepDefinitionConfig
+    RuleValidationStepDefinitionConfig:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleValidationStepDefinitionConfigRulesItems'
+          description: 'Validation rules for this step. Each rule defines a name and a boolean formula.
+
+
+            See the [Rule Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#rule-validation).
+
+            '
+      required:
+      - rules
+      description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+        '
+      title: RuleValidationStepDefinitionConfig
+    ValidationCodeBlockInputBlockType:
+      type: string
+      enum:
+      - code
+      title: ValidationCodeBlockInputBlockType
+    ParseConfigAdvancedOptionsImageConversionQuality:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+      default: medium
+      description: 'Controls the quality level when converting images or documents to PDF for parsing.
+
+
+        * `high`: Maximum quality, can add some latency for large/dense documents
+
+        * `medium`: Balanced quality and speed
+
+        * `low`: Lower quality, smaller file sizes, faster processing
+
+        '
+      title: ParseConfigAdvancedOptionsImageConversionQuality
+    TriggerStepDefinitionType:
+      type: string
+      enum:
+      - TRIGGER
+      title: TriggerStepDefinitionType
+    ParseConfigBlockOptionsKeyValue:
+      type: object
+      properties:
+        blankFieldFormattingEnabled:
+          type: boolean
+          default: false
+          description: Whether to preserve blank field formatting for key-value pairs with empty values.
+      description: Options for key-value pair blocks.
+      title: ParseConfigBlockOptionsKeyValue
+    SplitStepDefinitionConfig:
+      type: object
+      properties:
+        splitter:
+          $ref: '#/components/schemas/SplitterRef'
+          description: 'Reference to a saved splitter. Provide either this or `splitterConfig`, not both.
+
+
+            The `version` is required and must be a pinned version (semver like `"0.1"` or `"draft"`). `"latest"` is not allowed.
+
+            '
+        splitterConfig:
+          $ref: '#/components/schemas/SplitConfig'
+          description: 'Inline splitter configuration. Provide either this or `splitter`, not both. Same shape as the `config` accepted by [Create Split Run](https://docs.extend.ai/2026-02-09/api-reference/endpoints/split/create-split-run).
+
+
+            Inline configs are returned verbatim in responses (there is no saved processor, so no `version` is involved).
+
+            '
+      description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+
+        When present, must contain exactly one of `splitter` (saved processor reference) or `splitterConfig` (inline configuration) — not both.
+
+
+        The `next[].classificationId` values must match split classification `id` values (not `type` strings) from the splitter''s configuration — the referenced version''s config for a saved reference, or the inline `splitClassifications` array for an inline config. For example, if the splitter defines `{ "id": "cls_receipt", "type": "receipt" }`, use `"cls_receipt"` as the `classificationId`.
+
+
+        See the [Split step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#split).
+
+        '
+      title: SplitStepDefinitionConfig
+    SplitAdvancedOptionsSplitMethod:
+      type: string
+      enum:
+      - high_precision
+      - basic_precision
+      default: high_precision
+      description: 'The method to use for splitting documents. `high_precision` is more accurate but slower, while `basic_precision` is faster but less precise.
+
+
+        **Deprecated:** For `splitting_light` >= 1.3.0 and `splitting_performance` >= 1.5.0, this field has no impact and is ignored if provided. It is still accepted for compatibility with older integrations.
+
+        '
+      title: SplitAdvancedOptionsSplitMethod
+      deprecated: true
+    WorkflowVersion:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/WorkflowVersionObject'
+          description: The type of object. Always `"workflow_version"`.
+        id:
+          type: string
+          description: The ID of the workflow version.
+        version:
+          type: string
+          description: 'The version number as a string, or `"draft"` for the draft version.
+
+            '
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the workflow version.
+        steps:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowStepDefinition'
+          description: The step definitions for this version.
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - version
+      - name
+      - steps
+      - createdAt
+      - createdBy
+      description: A workflow version with its step definitions.
+      title: WorkflowVersion
+    FileConversionStepDefinitionConfigFailureBehavior:
+      type: string
+      enum:
+      - CONTINUE
+      - EXIT
+      description: 'Whether to continue or exit the workflow if file conversion fails. Defaults to `EXIT`.
+
+
+        See the [File Conversion step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#file-conversion).
+
+        '
+      title: FileConversionStepDefinitionConfigFailureBehavior
+    TriggerStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          description: Unique name for this step.
+        type:
+          $ref: '#/components/schemas/TriggerStepDefinitionType'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+          description: Must contain exactly one downstream step, and that step should be the workflow's `PARSE` step.
+      required:
+      - name
+      - type
+      description: 'The entry point of the workflow. Every workflow must have exactly one trigger step, and it must route to exactly one `PARSE` step.
+
+
+        See the [Trigger step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#trigger).
+
+        '
+      title: TriggerStepDefinition
+    ConditionalNextEntry:
+      type: object
+      properties:
+        step:
+          type: string
+          description: The name of the target step.
+        conditionId:
+          type: string
+          description: 'Must match one of the `config.conditions[].id` values on the conditional step.
+
+            '
+      required:
+      - step
+      - conditionId
+      description: 'A next entry for `CONDITIONAL` steps. Routes based on which condition branch matched.
+
+
+        See the [Configuring Workflows via API guide](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows) for end-to-end examples.
+
+        '
+      title: ConditionalNextEntry
+    ExtractChunkingOptionsChunkSelectionStrategy:
+      type: string
+      enum:
+      - intelligent
+      - confidence
+      - take_first
+      - take_last
+      description: The strategy to use for selecting chunks.
+      title: ExtractChunkingOptionsChunkSelectionStrategy
+    ParseConfigBlockOptionsTextAgentic:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable agentic text processing for OCR corrections.
+        customInstructions:
+          type: string
+          description: Custom instructions to guide the agentic text processing.
+      description: Options for agentic text processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic text correction is triggered.
+      title: ParseConfigBlockOptionsTextAgentic
+    ExtractBaseProcessor:
+      type: string
+      enum:
+      - extraction_performance
+      - extraction_light
+      - extraction_operator
+      default: extraction_performance
+      description: 'The base processor to use. For extractors, this can be `"extraction_performance"`, `"extraction_light"`, or `"extraction_operator"`. Defaults to `"extraction_performance"` if not provided. See [Extraction Changelog](https://docs.extend.ai/2026-02-09/model-versioning/extraction/extraction-performance) for more details.
+
+
+        `"extraction_operator"` selects [Operator](https://docs.extend.ai/2026-02-09/extraction/operator).
+
+        '
+      title: ExtractBaseProcessor
+    ExtractStepDefinitionConfig:
+      type: object
+      properties:
+        extractor:
+          $ref: '#/components/schemas/ExtractorRef'
+          description: Reference to a saved extractor. Provide either this or `extractorConfig`, not both.
+        extractorConfig:
+          $ref: '#/components/schemas/WorkflowInlineExtractConfig'
+          description: 'Inline extractor configuration. Provide either this or `extractor`, not both. Unlike the run endpoints, `schema` is required — schema-less extraction is not supported in workflows.
+
+
+            Inline configs are returned verbatim in responses (there is no saved processor, so no `version` is involved).
+
+            '
+      description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+
+        When present, must contain exactly one of `extractor` (saved processor reference) or `extractorConfig` (inline configuration) — not both.
+
+        '
+      title: ExtractStepDefinitionConfig
+    ExtractAdvancedOptions:
+      type: object
+      properties:
+        modelReasoningInsightsEnabled:
+          type: boolean
+          description: Whether to enable model reasoning insights.
+        advancedMultimodalEnabled:
+          type: boolean
+          description: Whether to enable advanced multimodal features.
+        citationsEnabled:
+          type: boolean
+          description: Whether to enable citations in the output.
+        citationMode:
+          $ref: '#/components/schemas/ExtractAdvancedOptionsCitationMode'
+          default: line
+          description: 'Controls the granularity of citations returned alongside extracted values. Requires `citationsEnabled=true` and a base processor version that supports bounding box citations.
+
+            - `line`: Use OCR lines for citations. This can return one or more relevant OCR lines for each citation. This is the default mode.
+
+            - `word`: Narrow each matched citation down to the relevant OCR word span when possible. Note: this might still return line citations in cases where the citation model is unable to reliably narrow down to a word-level citation. Typically, this only makes sense when you are doing array extraction and want precise word citations from a given cell in a table to match an array property, e.g. `line_items.total`.
+
+            - `block`: Use parser blocks (e.g. full paragraphs, key-val regions, tables, lists, etc.) and return block-level polygons for each citation. Will have highest recall in terms of overlap with the extracted value source, but least granularity.
+
+            '
+        arrayCitationStrategy:
+          $ref: '#/components/schemas/ExtractAdvancedOptionsArrayCitationStrategy'
+          description: 'Granularity for array citations. Requires turning on citations: `citationsEnabled=true`.
+
+            - `item`: Creates item-level citations for array fields. This will return a single bbox citation for each "item" in the array e.g. line_items[0], line_items[1], etc.
+
+            - `property`: Creates property-level citations (cell-level citations) for array fields. This will return a citation for each property/cell for every item/row in the array, e.g. line_items[0].description, line_items[1].price, etc.
+
+            '
+        arrayStrategy:
+          $ref: '#/components/schemas/ArrayStrategy'
+          description: Strategy for handling large arrays in documents.
+        chunkingOptions:
+          $ref: '#/components/schemas/ExtractChunkingOptions'
+        excelSheetRanges:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExcelSheetRange'
+          description: Ranges of sheet indices to extract from Excel documents.
+        excelSheetSelectionStrategy:
+          $ref: '#/components/schemas/ExtractAdvancedOptionsExcelSheetSelectionStrategy'
+          description: Strategy for selecting sheets from Excel documents.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+        reviewAgent:
+          $ref: '#/components/schemas/ExtractAdvancedOptionsReviewAgent'
+          description: 'Configuration for the review agent that analyzes extraction results.
+
+            When enabled, each field in the output metadata will include a `reviewAgentScore` (1-5)
+
+            and may include additional `insights` of type `issue` or `review_summary` to help identify
+
+            fields that may need manual review.
+
+
+            Enabling the review agent incurs additional credits.
+
+
+            To learn more, view the [Review Agent Documentation](https://docs.extend.ai/2026-02-09/extraction/review-agent)
+
+            '
+        currentDateEnabled:
+          type: boolean
+          description: Whether to include the current date as context for the model during extraction. Defaults to `false`.
+      title: ExtractAdvancedOptions
+    RuleValidationStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/RuleValidationStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/RuleValidationStepDefinitionConfig'
+          description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+            '
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/RuleValidationNextEntry'
+          description: 'Can only be set when `config` is present. Each entry must include a `result` of `"pass"` or `"fail"` to route based on whether all validation rules passed.
+
+
+            See the [Rule Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#rule-validation).
+
+            '
+      required:
+      - name
+      - type
+      description: 'Validates extraction outputs against formula-based rules. Routes to pass/fail next steps.
+
+
+        See the [Rule Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#rule-validation).
+
+        '
+      title: RuleValidationStepDefinition
+    ClassifyStepDefinitionConfig:
+      type: object
+      properties:
+        classifier:
+          $ref: '#/components/schemas/ClassifierRef'
+          description: 'Reference to a saved classifier. Provide either this or `classifierConfig`, not both.
+
+
+            The `version` is required and must be a pinned version (semver like `"0.1"` or `"draft"`). `"latest"` is not allowed.
+
+            '
+        classifierConfig:
+          $ref: '#/components/schemas/ClassifyConfig'
+          description: 'Inline classifier configuration. Provide either this or `classifier`, not both. Same shape as the `config` accepted by [Create Classify Run](https://docs.extend.ai/2026-02-09/api-reference/endpoints/classify/create-classify-run).
+
+
+            Inline configs are returned verbatim in responses (there is no saved processor, so no `version` is involved).
+
+            '
+      description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+
+        When present, must contain exactly one of `classifier` (saved processor reference) or `classifierConfig` (inline configuration) — not both.
+
+
+        The `next[].classificationId` values must match classification `id` values (not `type` strings) from the classifier''s configuration — the referenced version''s config for a saved reference, or the inline `classifications` array for an inline config. For example, if the classifier defines `{ "id": "cls_invoice", "type": "invoice" }`, use `"cls_invoice"` as the `classificationId`.
+
+
+        See the [Classify step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#classify).
+
+        '
+      title: ClassifyStepDefinitionConfig
+    ClassifyAdvancedOptionsContext:
+      type: string
+      enum:
+      - default
+      - max
+      default: default
+      description: The context to use for classification.
+      title: ClassifyAdvancedOptionsContext
+    ConditionalExtractStepDefinitionType:
+      type: string
+      enum:
+      - CONDITIONAL_EXTRACT
+      title: ConditionalExtractStepDefinitionType
+    CreatedBy:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - user
+            description: 'Discriminator value: user'
+          email:
+            type: string
+            format: email
+            description: The email address of the user who created the resource.
+        required:
+        - type
+        - email
+        description: Attribution for a resource created via the studio by a logged-in user.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - api_key
+            description: 'Discriminator value: api_key'
+          name:
+            type: string
+            description: The name of the API key that created the resource.
+        required:
+        - type
+        - name
+        description: Attribution for a resource created via the API using an API key.
+      discriminator:
+        propertyName: type
+      description: 'The actor that created this resource.
+
+
+        * `user` — the resource was created via the studio by a logged-in user. The user''s `email` is exposed.
+
+        * `api_key` — the resource was created via the API using an API key. The key''s `name` is exposed.
+
+
+        May be `null` for resources created before attribution.
+
+        '
+      title: CreatedBy
+    ExtractAdvancedOptionsReviewAgent:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          description: Whether to enable the review agent.
+      description: 'Configuration for the review agent that analyzes extraction results.
+
+        When enabled, each field in the output metadata will include a `reviewAgentScore` (1-5)
+
+        and may include additional `insights` of type `issue` or `review_summary` to help identify
+
+        fields that may need manual review.
+
+
+        Enabling the review agent incurs additional credits.
+
+
+        To learn more, view the [Review Agent Documentation](https://docs.extend.ai/2026-02-09/extraction/review-agent)
+
+        '
+      title: ExtractAdvancedOptionsReviewAgent
+    ConditionalStepDefinitionConfigConditionsItemsType:
+      type: string
+      enum:
+      - IF
+      - ELSE_IF
+      - ELSE
+      title: ConditionalStepDefinitionConfigConditionsItemsType
+    ExternalDataValidationStepDefinitionType:
+      type: string
+      enum:
+      - EXTERNAL_DATA_VALIDATION
+      title: ExternalDataValidationStepDefinitionType
+    ClassifyStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ClassifyStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ClassifyStepDefinitionConfig'
+          description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+
+            When present, must contain exactly one of `classifier` (saved processor reference) or `classifierConfig` (inline configuration) — not both.
+
+
+            The `next[].classificationId` values must match classification `id` values (not `type` strings) from the classifier''s configuration — the referenced version''s config for a saved reference, or the inline `classifications` array for an inline config. For example, if the classifier defines `{ "id": "cls_invoice", "type": "invoice" }`, use `"cls_invoice"` as the `classificationId`.
+
+
+            See the [Classify step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#classify).
+
+            '
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassificationNextEntry'
+          description: 'Can only be set when `config` is present. Each entry must include a `classificationId` matching a classification `id` from the classifier''s configuration (saved or inline). Use the classification''s stable `id` (e.g. `"cls_invoice"`), not the `type` string.
+
+
+            See the [Classify step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#classify).
+
+            '
+      required:
+      - name
+      - type
+      description: 'Classifies documents using a classifier. Routes to different next steps based on classification result.
+
+
+        The step''s classifier can be specified in one of two ways:
+
+
+        - **Saved reference** (`classifier`): references a saved classifier by ID. The reference must include a pinned `version` — `"latest"` is not supported for `CLASSIFY` steps. Use a specific semver string (e.g. `"0.1"`) or `"draft"`. This is because classification IDs used for routing are tied to a specific processor version''s config.
+
+        - **Inline config** (`classifierConfig`): embeds the full classifier configuration directly in the step. No saved classifier is needed, so the workflow definition contains no workspace-specific processor IDs and is portable across workspaces. Routing (`next[].classificationId`) validates against the inline `classifications` array.
+
+
+        See the [Classify step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#classify).
+
+        '
+      title: ClassifyStepDefinition
+    RuleValidationStepDefinitionConfigRulesItems:
+      type: object
+      properties:
+        name:
+          type: string
+        formula:
+          type: string
+          minLength: 1
+          description: 'Boolean formula used to validate the workflow data for this rule.
+
+
+            See the [Rule Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#rule-validation) and [Formulas](https://docs.extend.ai/2026-02-09/workflows/formulas).
+
+            '
+        description:
+          type: string
+      required:
+      - name
+      - formula
+      title: RuleValidationStepDefinitionConfigRulesItems
+    ValidationCodeBlockInputCode:
+      type: object
+      properties:
+        language:
+          $ref: '#/components/schemas/ValidationCodeBlockInputCodeLanguage'
+          description: The code language. Only JavaScript is currently executable; Python blocks return an error when evaluated.
+        code:
+          type: string
+          minLength: 1
+          description: Code to evaluate against the workflow context. Router predicates must return a boolean or a boolean with reasoning.
+      required:
+      - language
+      - code
+      title: ValidationCodeBlockInputCode
+    ExtractStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ExtractStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ExtractStepDefinitionConfig'
+          description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+
+            When present, must contain exactly one of `extractor` (saved processor reference) or `extractorConfig` (inline configuration) — not both.
+
+            '
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+          description: Can only be set when `config` is present.
+      required:
+      - name
+      - type
+      description: 'Extracts structured data from parsed content using an extractor.
+
+
+        The step''s extractor can be specified in one of two ways:
+
+
+        - **Saved reference** (`extractor`): references a saved extractor by ID. The reference must include an explicit `version` — `"latest"`, `"draft"`, or a specific semver string (e.g. `"1.0"`).
+
+        - **Inline config** (`extractorConfig`): embeds the full extractor configuration directly in the step. No saved extractor is needed, so the workflow definition contains no workspace-specific processor IDs and is portable across workspaces.
+
+
+        See the [Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#extract).
+
+        '
+      title: ExtractStepDefinition
+    ParseConfigAdvancedOptionsExcelParsingMode:
+      type: string
+      enum:
+      - basic
+      - advanced
+      description: 'Controls how Excel files are parsed.
+
+
+        * `basic`: Fast, deterministic parsing.
+
+        * `advanced`: Enable layout block detection for complex spreadsheets. This mode incurs additional credits when enabled.
+
+
+        For `.xls` files, `basic` mode is always used.
+
+        '
+      title: ParseConfigAdvancedOptionsExcelParsingMode
+    RuleValidationNextEntryResult:
+      type: string
+      enum:
+      - pass
+      - fail
+      description: 'Routes based on whether all validation rules passed.
+
+        '
+      title: RuleValidationNextEntryResult
+    ExtractChunkingOptions:
+      type: object
+      properties:
+        chunkingStrategy:
+          $ref: '#/components/schemas/ExtractChunkingOptionsChunkingStrategy'
+          description: The strategy to use for chunking the document.
+        pageChunkSize:
+          type: integer
+          description: The size of page chunks.
+        chunkSelectionStrategy:
+          $ref: '#/components/schemas/ExtractChunkingOptionsChunkSelectionStrategy'
+          description: The strategy to use for selecting chunks.
+        customSemanticChunkingRules:
+          type: string
+          description: Custom rules for semantic chunking.
+      description: 'Options controlling how documents are chunked before extraction.
+
+        '
+      title: ExtractChunkingOptions
+    ConditionalExtractStepDefinitionConfig:
+      type: object
+      properties:
+        rules:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionalExtractStepDefinitionConfigRulesItems'
+          description: 'Formula-based extractor rules for this step. Each rule pairs a formula with an extractor reference. The last rule must have `formula: "TRUE"` as a default catch-all.
+
+
+            See the [Conditional Extract step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional-extract).
+
+            '
+      required:
+      - rules
+      description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+        '
+      title: ConditionalExtractStepDefinitionConfig
+    ValidationNextEntryResult:
+      type: string
+      enum:
+      - pass
+      - fail
+      description: Use `"pass"` when all validation blocks passed, or `"fail"` otherwise.
+      title: ValidationNextEntryResult
+    HumanReviewStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/HumanReviewStepDefinitionType'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+      required:
+      - name
+      - type
+      description: 'Pauses the workflow for human review in the dashboard.
+
+
+        See the [Human Review step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#human-review).
+
+        '
+      title: HumanReviewStepDefinition
+    CreatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was created. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: CreatedAt
+    SplitClassification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the classification. We recommend lowercase, underscore-separated format.
+        type:
+          type: string
+          description: Type identifier for the classification.
+        description:
+          type: string
+          description: A detailed description of the classification.
+        identifierKey:
+          type: string
+          description: 'A natural-language rule describing how to extract a unique identifier for subdocuments of this type. For example, `"Extract the invoice number from the document header"`.
+
+
+            When provided, the splitter will extract the specified identifier for each subdocument of this type and include it in the output as the `identifier` field. This enables merging of related subdocuments that share the same extracted identifier.
+
+
+            **Availability:** Supported on `splitting_light` >= 1.3.0 and `splitting_performance` >= 1.5.0. If provided on older versions, this field is accepted but ignored.
+
+            '
+      required:
+      - id
+      - type
+      - description
+      description: A classification for document splitting. Extends the base Classification with an optional `identifierKey` field for per-type identifier extraction rules.
+      title: SplitClassification
+    RouterStepDefinitionType:
+      type: string
+      enum:
+      - ROUTER
+      title: RouterStepDefinitionType
+    ValidationSemanticBlockInputSemantic:
+      type: object
+      properties:
+        promptText:
+          type: string
+          minLength: 1
+          description: Natural-language instructions for validating the workflow data.
+      required:
+      - promptText
+      title: ValidationSemanticBlockInputSemantic
+    WebhookResponseStepDefinitionType:
+      type: string
+      enum:
+      - WEBHOOK_RESPONSE
+      title: WebhookResponseStepDefinitionType
+    ParseConfigAdvancedOptionsReturnOcr:
+      type: object
+      properties:
+        words:
+          type: boolean
+          default: false
+          description: Whether to include word-level OCR data in the response, including word bounding boxes and confidence scores. This meaningfully impacts the response size, consider using the signed url return format.
+      description: Options for returning raw OCR data in the response.
+      title: ParseConfigAdvancedOptionsReturnOcr
+    RuleValidationStepDefinitionType:
+      type: string
+      enum:
+      - RULE_VALIDATION
+      title: RuleValidationStepDefinitionType
+    ClassifierRef:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The classifier ID.
+        version:
+          type: string
+          description: 'The classifier version to use: `"draft"` or a specific semver string (e.g. `"0.1"`). `"latest"` is not allowed because classification IDs used for routing are tied to a specific version''s config.
+
+            '
+      required:
+      - id
+      - version
+      description: A reference to a classifier.
+      title: ClassifierRef
+    WorkflowVersionSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/WorkflowVersionSummaryObject'
+          description: The type of object. Always `"workflow_version"`.
+        id:
+          type: string
+          description: The ID of the workflow version.
+        version:
+          type: string
+          description: 'The version number as a string, or `"draft"` for the draft version.
+
+            '
+        name:
+          type:
+          - string
+          - 'null'
+          description: The name of the workflow version.
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - version
+      - name
+      - createdAt
+      - createdBy
+      description: A summary representation of a workflow version (without steps).
+      title: WorkflowVersionSummary
+    ParseConfigTarget:
+      type: string
+      enum:
+      - markdown
+      - spatial
+      default: markdown
+      description: 'The target format for the parsed content.
+
+
+        Supported values:
+
+
+        * `markdown`: True markdown with logical reading order (headings, lists, tables, checkboxes). Best default for LLMs/RAG and enables section-based chunking.
+
+        * `spatial`: Layout/position-preserving text that uses markdown elements for block types but is not strictly markdown due to whitespace/tabs used to maintain placement. Only page-based chunking is supported.
+
+
+        Guidance:
+
+
+        * Prefer `markdown` for most documents, multi-column reading order, and retrieval use cases
+
+        * Prefer `spatial` for messy/scanned/handwritten or skewed documents, when you need near 1:1 layout fidelity, or for BOL-like logistics docs
+
+
+        See “Markdown vs Spatial” in the [Parse guide](https://docs.extend.ai/2026-02-09/parsing/configuration#target-format) for details.
+
+        '
+      title: ParseConfigTarget
+    ExtractAdvancedOptionsExcelSheetSelectionStrategy:
+      type: string
+      enum:
+      - intelligent
+      - all
+      - first
+      - last
+      description: Strategy for selecting sheets from Excel documents.
+      title: ExtractAdvancedOptionsExcelSheetSelectionStrategy
+    ParseConfigAdvancedOptionsFormattingDetectionItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsFormattingDetectionItemsType'
+          description: 'The type of formatting detection to enable.
+
+
+            * `"change_tracking"` — Detect tracked changes (insertions, deletions, substitutions) indicated by strikethroughs, colored text, or underlines in the source document.
+
+            '
+      required:
+      - type
+      title: ParseConfigAdvancedOptionsFormattingDetectionItems
+    ParseConfigAdvancedOptionsEnrichmentFormat:
+      type: string
+      enum:
+      - xml
+      - bracket
+      default: xml
+      description: 'The format used for enrichment annotations in the output.
+
+
+        * `xml`: Use XML-style tags for enrichment annotations, e.g. <page_number>1</page_number> or <barcode>1234567890</barcode>
+
+        * `bracket`: Use bracket-style notation for enrichment annotations, e.g. [page_number: 1] or [barcode: 1234567890]
+
+        '
+      title: ParseConfigAdvancedOptionsEnrichmentFormat
+    SplitterRef:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The splitter ID.
+        version:
+          type: string
+          description: 'The splitter version to use: `"draft"` or a specific semver string (e.g. `"0.1"`). `"latest"` is not allowed because classification IDs used for routing are tied to a specific version''s config.
+
+            '
+      required:
+      - id
+      - version
+      description: A reference to a splitter.
+      title: SplitterRef
+    workflowVersions_list_Response_200:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/WorkflowsIdVersionsGetResponsesContentApplicationJsonSchemaObject'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkflowVersionSummary'
+        nextPageToken:
+          $ref: '#/components/schemas/NextPageToken'
+      required:
+      - object
+      - data
+      title: workflowVersions_list_Response_200
+    ExternalDataValidationStepDefinitionConfig:
+      type: object
+      properties:
+        requestOptions:
+          $ref: '#/components/schemas/ExternalDataValidationStepDefinitionConfigRequestOptions'
+          description: 'HTTP request configuration for the external validation call.
+
+
+            See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+            '
+        failureBehavior:
+          $ref: '#/components/schemas/ExternalDataValidationStepDefinitionConfigFailureBehavior'
+          description: 'Whether to continue or exit the workflow on validation failure. Defaults to `CONTINUE`.
+
+
+            See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+            '
+      required:
+      - requestOptions
+      description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+        '
+      title: ExternalDataValidationStepDefinitionConfig
+    ParseConfigBlockOptionsTablesAgentic:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable agentic table processing.
+        customInstructions:
+          type: string
+          description: Custom instructions to guide the agentic table processing.
+      description: Options for agentic table processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic table correction is triggered.
+      title: ParseConfigBlockOptionsTablesAgentic
+    PageRangesItems:
+      type: object
+      properties:
+        start:
+          type: integer
+          description: The start page of the range.
+        end:
+          type: integer
+          default: 750
+          description: The end page of the range.
+      required:
+      - start
+      - end
+      title: PageRangesItems
+    ConditionalStepDefinitionConfig:
+      type: object
+      properties:
+        conditions:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionalStepDefinitionConfigConditionsItems'
+          description: 'Ordered conditional branches for this step. Use `IF` for the first branch, `ELSE_IF` for additional branches, and `ELSE` for the fallback branch.
+
+
+            See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+            '
+      required:
+      - conditions
+      title: ConditionalStepDefinitionConfig
+    ValidationBlockInput:
+      oneOf:
+      - type: object
+        properties:
+          blockType:
+            $ref: '#/components/schemas/ValidationCodeBlockInputBlockType'
+          id:
+            type: string
+            description: The block ID. Generated when omitted.
+          name:
+            type: string
+            description: The name of the validation block.
+          code:
+            $ref: '#/components/schemas/ValidationCodeBlockInputCode'
+        required:
+        - blockType
+        - name
+        - code
+        description: A validation block that evaluates code against the workflow context.
+      - type: object
+        properties:
+          blockType:
+            $ref: '#/components/schemas/ValidationSemanticBlockInputBlockType'
+          id:
+            type: string
+            description: The block ID. Generated when omitted.
+          name:
+            type: string
+            description: The name of the validation block.
+          semantic:
+            $ref: '#/components/schemas/ValidationSemanticBlockInputSemantic'
+        required:
+        - blockType
+        - name
+        - semantic
+        description: A validation block that evaluates natural-language instructions against the workflow context.
+      discriminator:
+        propertyName: blockType
+      description: A code or semantic validation block. References to upstream steps in code and prompt text use public step names.
+      title: ValidationBlockInput
+    WorkflowStepDefinition:
+      oneOf:
+      - $ref: '#/components/schemas/TriggerStepDefinition'
+      - $ref: '#/components/schemas/ParseStepDefinition'
+      - $ref: '#/components/schemas/ExtractStepDefinition'
+      - $ref: '#/components/schemas/ClassifyStepDefinition'
+      - $ref: '#/components/schemas/SplitStepDefinition'
+      - $ref: '#/components/schemas/MergeExtractStepDefinition'
+      - $ref: '#/components/schemas/ConditionalStepDefinition'
+      - $ref: '#/components/schemas/ConditionalExtractStepDefinition'
+      - $ref: '#/components/schemas/ExternalDataValidationStepDefinition'
+      - $ref: '#/components/schemas/WebhookResponseStepDefinition'
+      - $ref: '#/components/schemas/RuleValidationStepDefinition'
+      - $ref: '#/components/schemas/ValidationStepDefinition'
+      - $ref: '#/components/schemas/RouterStepDefinition'
+      - $ref: '#/components/schemas/HumanReviewStepDefinition'
+      - $ref: '#/components/schemas/CollectStepDefinition'
+      - $ref: '#/components/schemas/FileConversionStepDefinition'
+      description: 'A workflow step definition used when creating, updating, deploying, and retrieving workflow versions.
+
+
+        See the [Configuring Workflows via API guide](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows) for routing patterns and examples.
+
+        '
+      title: WorkflowStepDefinition
+    RouterNextEntry:
+      type: object
+      properties:
+        step:
+          type: string
+          description: The name of the target step.
+        branchId:
+          type: string
+          minLength: 1
+          description: Must match a `config.branches[].id` value, or `"otherwise"` for the route taken when no branch matches.
+      required:
+      - step
+      - branchId
+      description: A next entry for `ROUTER` steps. Routes based on the first matching branch.
+      title: RouterNextEntry
+    ParseConfigBlockOptionsBarcodes:
+      type: object
+      properties:
+        imageClippingEnabled:
+          type: boolean
+          default: false
+          description: Whether to clip and extract images of barcodes. When enabled, barcode images will be available in the `imageUrl` field of BarcodeDetails.
+        readingEnabled:
+          type: boolean
+          default: false
+          description: Whether to decode and read barcode values. When enabled, decoded values will be available in the `decodedValue` field of BarcodeDetails.
+      description: Options for barcode blocks.
+      title: ParseConfigBlockOptionsBarcodes
+    FileConversionStepDefinitionType:
+      type: string
+      enum:
+      - FILE_CONVERSION
+      title: FileConversionStepDefinitionType
+    SplitStepDefinitionType:
+      type: string
+      enum:
+      - SPLIT
+      title: SplitStepDefinitionType
+    FileConversionStepDefinitionConfig:
+      type: object
+      properties:
+        failureBehavior:
+          $ref: '#/components/schemas/FileConversionStepDefinitionConfigFailureBehavior'
+          description: 'Whether to continue or exit the workflow if file conversion fails. Defaults to `EXIT`.
+
+
+            See the [File Conversion step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#file-conversion).
+
+            '
+      title: FileConversionStepDefinitionConfig
+    ArrayStrategyType:
+      type: string
+      enum:
+      - large_array_heuristics
+      - large_array_max_context
+      - large_array_overlap_context
+      description: "The strategy type for handling large array use cases. For most use cases this should be left null, or should be set to `large_array_heuristics`. If you're unsure of what your use case needs, reach out to the Extend team for help.\n\n- `large_array_heuristics`: Optimized for documents with very large arrays, but where latency matters. \n\n  This strategy uses specialized heuristics around chunking, tables, and merging to handle large arrays efficiently over large documents.\n\n- `large_array_max_context`: Optimizes for accuracy over latency in documents with very large arrays. \n\n  This strategy will do multiple passes through the entire document to ensure there is no context loss across any chunks/pages, maximizing accuracy for complex array extraction, but adding material latency. This strategy incurs additional extraction credits when enabled.\n\n- `large_array_overlap_context`: Balances accuracy and latency in documents with very large arrays. \n\n  This strategy will always maintain surrounding/overlapping page context for every chunk/page that is extracted, eliminating array failure modes from context loss across page boundaries.\n"
+      title: ArrayStrategyType
+    ExternalDataValidationStepDefinitionConfigRequestOptions:
+      type: object
+      properties:
+        url:
+          type: string
+          description: The URL to send the validation request to.
+        method:
+          $ref: '#/components/schemas/ExternalDataValidationStepDefinitionConfigRequestOptionsMethod'
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: 'Optional HTTP headers to include on the external validation request.
+
+
+            See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+            '
+        contentType:
+          $ref: '#/components/schemas/ExternalDataValidationStepDefinitionConfigRequestOptionsContentType'
+          description: 'Content type of the request body sent to the external endpoint.
+
+
+            See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+            '
+      required:
+      - url
+      - method
+      description: 'HTTP request configuration for the external validation call.
+
+
+        See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+        '
+      title: ExternalDataValidationStepDefinitionConfigRequestOptions
+    ExtractStepDefinitionType:
+      type: string
+      enum:
+      - EXTRACT
+      title: ExtractStepDefinitionType
+    ParseConfigAdvancedOptionsFormattingDetectionItemsType:
+      type: string
+      enum:
+      - change_tracking
+      description: 'The type of formatting detection to enable.
+
+
+        * `"change_tracking"` — Detect tracked changes (insertions, deletions, substitutions) indicated by strikethroughs, colored text, or underlines in the source document.
+
+        '
+      title: ParseConfigAdvancedOptionsFormattingDetectionItemsType
+    ParseConfigAdvancedOptions:
+      type: object
+      properties:
+        pageRotationEnabled:
+          type: boolean
+          default: true
+          description: Whether to automatically detect and correct page rotation.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+        excelParsingMode:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsExcelParsingMode'
+          description: 'Controls how Excel files are parsed.
+
+
+            * `basic`: Fast, deterministic parsing.
+
+            * `advanced`: Enable layout block detection for complex spreadsheets. This mode incurs additional credits when enabled.
+
+
+            For `.xls` files, `basic` mode is always used.
+
+            '
+        excelSkipHiddenContent:
+          type: boolean
+          default: false
+          description: Whether to exclude hidden rows, columns, and sheets when parsing Excel files.
+        excelUseRawCellValues:
+          type: boolean
+          default: false
+          description: Whether to return raw calculated cell values instead of locale-formatted values when parsing Excel files. Useful when downstream processing needs the underlying numeric or unformatted data.
+        excelSkipCalculation:
+          type: boolean
+          default: true
+          description: Whether to skip formula recalculation when opening Excel workbooks. Significantly improves parsing speed for formula-heavy spreadsheets. Disable if cell values depend on volatile functions like NOW() or TODAY().
+        excelIncludeCellMetadata:
+          type: boolean
+          default: false
+          description: Whether to include spreadsheet cell provenance when parsing Excel files in advanced mode. When enabled, table cell block details include source cell references and formulas, text or heading block details can include source ranges, and HTML table output includes `data-cell` and `data-formula` attributes.
+        excelIncludeCellFormatting:
+          type: boolean
+          default: false
+          description: Whether to include spreadsheet cell formatting when parsing Excel files in advanced mode. When enabled, table cell block details include structured formatting such as bold, italic, font color, and background color, and HTML table output preserves inline cell styles.
+        verticalGroupingThreshold:
+          type: number
+          format: double
+          minimum: 0.1
+          maximum: 5
+          default: 1
+          description: Multiplier for the Y-axis threshold used to determine if text blocks should be placed on the same line or not (0.1-5.0, default 1.0). Higher values group elements that are further apart vertically. Only applies when the spatial target is set.
+        returnOcr:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsReturnOcr'
+          description: Options for returning raw OCR data in the response.
+        alwaysConvertToPdf:
+          type: boolean
+          default: false
+          description: Whether to convert supported file types (images, Word documents, PowerPoint, Excel, HTML) to PDF before parsing. This can improve parsing quality for some file types and ensures spatial output with bounding boxes.
+        enrichmentFormat:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsEnrichmentFormat'
+          default: xml
+          description: 'The format used for enrichment annotations in the output.
+
+
+            * `xml`: Use XML-style tags for enrichment annotations, e.g. <page_number>1</page_number> or <barcode>1234567890</barcode>
+
+            * `bracket`: Use bracket-style notation for enrichment annotations, e.g. [page_number: 1] or [barcode: 1234567890]
+
+            '
+        imageConversionQuality:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsImageConversionQuality'
+          default: medium
+          description: 'Controls the quality level when converting images or documents to PDF for parsing.
+
+
+            * `high`: Maximum quality, can add some latency for large/dense documents
+
+            * `medium`: Balanced quality and speed
+
+            * `low`: Lower quality, smaller file sizes, faster processing
+
+            '
+        formattingDetection:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParseConfigAdvancedOptionsFormattingDetectionItems'
+          description: 'Enable detection of formatting-based annotations in the document. Currently supports change tracking detection.
+
+
+            When enabled, detected changes are represented inline within the `content` field of applicable blocks using standard HTML change-tracking elements: [`<ins>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ins) for insertions and [`<del>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del) for deletions, grouped inside a `<change>` wrapper.
+
+
+            Affected block types: `text`, `heading`, `section_heading`, `header`, `footer`.
+
+
+            **Note:** Requires `engine: "parse_performance"` with `engineVersion >= "2.0.0"`.
+
+            '
+      title: ParseConfigAdvancedOptions
+    ExtractChunkingOptionsChunkingStrategy:
+      type: string
+      enum:
+      - standard
+      - semantic
+      - contextual
+      description: The strategy to use for chunking the document.
+      title: ExtractChunkingOptionsChunkingStrategy
+    SplitClassifications:
+      type: array
+      items:
+        $ref: '#/components/schemas/SplitClassification'
+      description: Array of split classifications that define the possible types of document sections. Must provide at least one classification. At least one classification must have the type `"other"`. Each classification item must have a unique id.
+      title: SplitClassifications
+    Classification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the classification. We recommend lowercase, underscore-separated format.
+        type:
+          type: string
+          description: Type identifier for the classification.
+        description:
+          type: string
+          description: A detailed description of the classification.
+      required:
+      - id
+      - type
+      - description
+      title: Classification
+    ExternalDataValidationStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ExternalDataValidationStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ExternalDataValidationStepDefinitionConfig'
+          description: 'Optional on create/update. Required before the workflow can be deployed. Omitted in responses when the step is not yet configured.
+
+            '
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/SimpleNextEntry'
+          description: Can only be set when `config` is present.
+      required:
+      - name
+      - type
+      description: 'Sends extraction data to an external HTTP endpoint for validation.
+
+
+        See the [External Data Validation step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#external-data-validation).
+
+        '
+      title: ExternalDataValidationStepDefinition
+    RuleValidationNextEntry:
+      type: object
+      properties:
+        step:
+          type: string
+          description: The name of the target step.
+        result:
+          $ref: '#/components/schemas/RuleValidationNextEntryResult'
+          description: 'Routes based on whether all validation rules passed.
+
+            '
+      required:
+      - step
+      - result
+      description: 'A next entry for `RULE_VALIDATION` steps. Routes based on whether all validation rules passed.
+
+
+        See the [Configuring Workflows via API guide](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows) for end-to-end examples.
+
+        '
+      title: RuleValidationNextEntry
+    ValidationStepDefinitionConfig:
+      type: object
+      properties:
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/ValidationBlockInput'
+          description: Validation blocks for this step. All blocks must pass for the step to be valid.
+      required:
+      - blocks
+      description: Optional. Omit on update to preserve the step's existing validation blocks. Omitted in responses when no blocks are configured.
+      title: ValidationStepDefinitionConfig
+    ParseConfigEngine:
+      type: string
+      enum:
+      - parse_performance
+      - parse_light
+      - parse_auto
+      default: parse_performance
+      description: 'The parsing engine to use. Supported values:
+
+        * `parse_performance`: Full-featured parsing engine with highest accuracy (default)
+
+        * `parse_light`: Lightweight parsing engine optimized for high-volume, cost-sensitive ingestion. Uses the new layout model with full layout support and the markdown target at lower cost and latency, but performs worse than `parse_performance` on lower-quality scans, harder handwriting, larger tables, non-Latin-based languages, and dense checkbox regions.
+
+        * `parse_auto`: Adaptive parsing that classifies difficulty and routes work per page — simple pages are parsed with the parse_light model pipeline while complex pages get performance-level model treatment. Billed per page by complexity.
+
+        '
+      title: ParseConfigEngine
+    WorkflowInlineExtractConfig:
+      type: object
+      properties:
+        baseProcessor:
+          $ref: '#/components/schemas/ExtractBaseProcessor'
+          default: extraction_performance
+        baseVersion:
+          type: string
+          description: The version of the `"extraction_performance"`, `"extraction_light"`, or `"extraction_operator"` processor to use. If not provided, the latest stable version will be used. See [Extraction Changelog](https://docs.extend.ai/2026-02-09/model-versioning/extraction/extraction-performance) for more details.
+        extractionRules:
+          type: string
+          description: Custom rules to guide the extraction process in natural language.
+        schema:
+          $ref: '#/components/schemas/JsonObject'
+          description: 'JSON Schema definition of the data to extract. Required for inline workflow configs.
+
+
+            See the [JSON Schema guide](https://docs.extend.ai/2026-02-09/extraction/schema) for details and examples of schema configuration.
+
+            '
+        advancedOptions:
+          $ref: '#/components/schemas/ExtractAdvancedOptions'
+          description: Advanced configuration options.
+        parseConfig:
+          $ref: '#/components/schemas/ParseConfig'
+          description: Configuration options for the parsing process.
+      required:
+      - schema
+      description: 'An inline extractor configuration for an `EXTRACT` workflow step. Same shape as the `config` accepted by [Create Extract Run](https://docs.extend.ai/2026-02-09/api-reference/endpoints/extract/create-extract-run), except `schema` is required — schema-less extraction (inferring the schema from the file at run time) is not supported in workflows.
+
+        '
+      title: WorkflowInlineExtractConfig
+    ExtractAdvancedOptionsCitationMode:
+      type: string
+      enum:
+      - line
+      - word
+      - block
+      default: line
+      description: 'Controls the granularity of citations returned alongside extracted values. Requires `citationsEnabled=true` and a base processor version that supports bounding box citations.
+
+        - `line`: Use OCR lines for citations. This can return one or more relevant OCR lines for each citation. This is the default mode.
+
+        - `word`: Narrow each matched citation down to the relevant OCR word span when possible. Note: this might still return line citations in cases where the citation model is unable to reliably narrow down to a word-level citation. Typically, this only makes sense when you are doing array extraction and want precise word citations from a given cell in a table to match an array property, e.g. `line_items.total`.
+
+        - `block`: Use parser blocks (e.g. full paragraphs, key-val regions, tables, lists, etc.) and return block-level polygons for each citation. Will have highest recall in terms of overlap with the extracted value source, but least granularity.
+
+        '
+      title: ExtractAdvancedOptionsCitationMode
+    ConditionalStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          $ref: '#/components/schemas/ConditionalStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/ConditionalStepDefinitionConfig'
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConditionalNextEntry'
+          description: 'Each entry should include a `conditionId` matching a `config.conditions[].id` value.
+
+
+            See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+            '
+      required:
+      - name
+      - type
+      - config
+      description: 'Routes to different next steps based on ordered conditional branches evaluated against upstream step outputs.
+
+
+        See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+        '
+      title: ConditionalStepDefinition
+    NextPageToken:
+      type: string
+      description: 'The token used to fetch the page of results from a previous request. We use cursor based pagination and will return a `nextPageToken` in the response if there are more results.
+
+
+        Note that if other parameters are changed in subsequent requests, you may receive inconsistent data.
+
+        '
+      title: NextPageToken
+    ValidationStepDefinitionType:
+      type: string
+      enum:
+      - VALIDATION
+      title: ValidationStepDefinitionType
+    SimpleNextEntry:
+      type: object
+      properties:
+        step:
+          type: string
+          description: The name of the target step.
+      required:
+      - step
+      description: A next entry for non-branching steps. Routes to the target step unconditionally.
+      title: SimpleNextEntry
+    RouterStepDefinitionConfigBranchesItems:
+      type: object
+      properties:
+        id:
+          type: string
+          minLength: 1
+          description: Unique branch ID within this step. `"otherwise"` is reserved for the implicit fall-through route.
+        name:
+          type: string
+          maxLength: 255
+          description: The branch name. Omit on update to preserve its existing name.
+        block:
+          $ref: '#/components/schemas/ValidationBlockInput'
+          description: The branch predicate. Omit to preserve an existing branch's block; new branches receive a default JavaScript block that returns true.
+      required:
+      - id
+      title: RouterStepDefinitionConfigBranchesItems
+    ExcelSheetRange:
+      type: object
+      properties:
+        start:
+          type: integer
+          minimum: 0
+          description: The starting sheet index (0-based).
+        end:
+          type: integer
+          minimum: 0
+          description: The ending sheet index (0-based). Must be greater than or equal to start.
+      required:
+      - start
+      - end
+      title: ExcelSheetRange
+    RouterStepDefinition:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+          description: Unique name for this step.
+        type:
+          $ref: '#/components/schemas/RouterStepDefinitionType'
+        config:
+          $ref: '#/components/schemas/RouterStepDefinitionConfig'
+          description: Optional. Omit on update to preserve the step's existing branches.
+        next:
+          type: array
+          items:
+            $ref: '#/components/schemas/RouterNextEntry'
+          description: Routes to downstream steps by branch ID, including the reserved `"otherwise"` route.
+      required:
+      - name
+      - type
+      description: Evaluates branch predicates in order and routes through the first matching branch. Uses the `"otherwise"` route when no branch matches.
+      title: RouterStepDefinition
+    JsonObject:
+      type: object
+      additionalProperties:
+        description: Any type
+      description: A flexible object that can hold any arbitrary JSON key-value structure.
+      title: JsonObject
+    ConditionalStepDefinitionConfigConditionsItems:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique ID for this condition branch.
+        type:
+          $ref: '#/components/schemas/ConditionalStepDefinitionConfigConditionsItemsType'
+        operation:
+          $ref: '#/components/schemas/ConditionalStepDefinitionConfigConditionsItemsOperation'
+          description: 'The comparison operation for this branch.
+
+
+            See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+            '
+        leftOperand:
+          type: string
+          description: 'The left operand expression. This is typically a workflow variable or dynamic expression.
+
+
+            See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+            '
+        rightOperand:
+          type: string
+          description: 'The right operand value. This is typically a literal comparison value and is omitted for fallback branches like `ELSE`.
+
+
+            See the [Conditional step docs](https://docs.extend.ai/2026-02-09/workflows/configuring-workflows#conditional).
+
+            '
+      required:
+      - id
+      - type
+      title: ConditionalStepDefinitionConfigConditionsItems
+    ParseConfigBlockOptionsFormulas:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable formula detection and parsing. When enabled, mathematical formulas and equations are detected and their LaTeX representations are included in the output. When disabled, formulas will be detected as text blocks and may not be accurately parsed.
+      description: Options for formula blocks.
+      title: ParseConfigBlockOptionsFormulas
+    ClassifyAdvancedOptions:
+      type: object
+      properties:
+        context:
+          $ref: '#/components/schemas/ClassifyAdvancedOptionsContext'
+          default: default
+          description: The context to use for classification.
+        advancedMultimodalEnabled:
+          type: boolean
+          default: true
+          description: Enable advanced multimodal processing for better handling of visual elements during classification.
+        memoryEnabled:
+          type: boolean
+          default: false
+          description: Enable memory for enhanced processing by learning from past successful classifications.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+      title: ClassifyAdvancedOptions
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

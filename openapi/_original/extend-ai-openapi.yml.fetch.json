@@ -1,0 +1,12 @@
+{
+ "url": "https://docs.extend.ai/openapi/api-reference.yaml",
+ "final": "https://docs.extend.ai/openapi/api-reference.yaml",
+ "status": 200,
+ "content_type": "application/x-yaml; charset=utf-8",
+ "bytes": 1149593,
+ "sha256": "3531639ef99bc03caa944f8d6eac8a9556f139980e3b3ae98569751dbeb5eb8b",
+ "fetched_at": "2026-10-19",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "re-archived: the provider's current document replaced a stale archive (roadmap#793); the old files are in openapi/_superseded/2026-10-19-stale"
+}

@@ -1,0 +1,1483 @@
+openapi: 3.0.1
+info:
+  title: Extend API
+  description: >-
+    The Extend API turns documents into high quality structured data. It exposes
+    file management, synchronous and asynchronous document processors (parse,
+    extract, classify, split), reusable processor definitions (extractors,
+    classifiers, splitters), durable multi-step workflows and workflow runs,
+    evaluation sets, and batch processing. All requests are authenticated with a
+    Bearer API token and should pin an API version via the x-extend-api-version
+    header.
+  termsOfService: https://www.extend.ai
+  contact:
+    name: Extend Support
+    url: https://docs.extend.ai
+  version: '2026-02-09'
+servers:
+  - url: https://api.extend.ai
+    description: Extend production API
+security:
+  - BearerAuth: []
+tags:
+  - name: Files
+  - name: Parse
+  - name: Extract
+  - name: Classify
+  - name: Split
+  - name: Workflows
+  - name: Workflow Runs
+  - name: Evaluations
+  - name: Batch
+paths:
+  /files/upload:
+    post:
+      operationId: uploadFile
+      tags:
+        - Files
+      summary: Upload a file
+      description: >-
+        Upload a document to Extend and receive a file ID that can be referenced
+        by processors and workflows. Supports optional conversion to PDF and
+        passwords for protected PDFs.
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - name: convertToPdf
+          in: query
+          required: false
+          schema:
+            type: boolean
+          description: Convert supported inputs (images, Word, PowerPoint, Excel, HTML) to PDF.
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+              properties:
+                file:
+                  type: string
+                  format: binary
+                  description: Binary file contents.
+                password:
+                  type: string
+                  description: Password to unlock a protected PDF.
+      responses:
+        '200':
+          description: The uploaded file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /files:
+    get:
+      operationId: listFiles
+      tags:
+        - Files
+      summary: List files
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/NextPageToken'
+        - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of files.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  files:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/File'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /files/{id}:
+    get:
+      operationId: getFile
+      tags:
+        - Files
+      summary: Get a file
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested file.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/File'
+        default:
+          $ref: '#/components/responses/ApiError'
+    delete:
+      operationId: deleteFile
+      tags:
+        - Files
+      summary: Delete a file
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: Deletion confirmation.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  success:
+                    type: boolean
+        default:
+          $ref: '#/components/responses/ApiError'
+  /parse:
+    post:
+      operationId: parseFile
+      tags:
+        - Parse
+      summary: Parse a file (synchronous)
+      description: >-
+        Synchronously parse a document into markdown and structured chunks. Has
+        a five minute timeout and is intended for onboarding and testing; use
+        POST /parse_runs for production.
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - name: responseType
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [json, url]
+            default: json
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+      responses:
+        '200':
+          description: A processed parse run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /parse_runs:
+    post:
+      operationId: createParseRun
+      tags:
+        - Parse
+      summary: Create a parse run (asynchronous)
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ParseRequest'
+      responses:
+        '200':
+          description: The created parse run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+    get:
+      operationId: listParseRuns
+      tags:
+        - Parse
+      summary: List parse runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/NextPageToken'
+        - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of parse runs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  parseRuns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ParseRun'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /parse_runs/{id}:
+    get:
+      operationId: getParseRun
+      tags:
+        - Parse
+      summary: Get a parse run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested parse run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /parse_runs/batch:
+    post:
+      operationId: batchCreateParseRuns
+      tags:
+        - Batch
+      summary: Batch create parse runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract:
+    post:
+      operationId: extractFile
+      tags:
+        - Extract
+      summary: Extract from a file (synchronous)
+      description: >-
+        Synchronously extract structured fields from a document using an inline
+        config or a saved extractor. Five minute timeout; use POST /extract_runs
+        for production.
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractRequest'
+      responses:
+        '200':
+          description: A processed extract run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract_runs:
+    post:
+      operationId: createExtractRun
+      tags:
+        - Extract
+      summary: Create an extract run (asynchronous)
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ExtractRequest'
+      responses:
+        '200':
+          description: The created extract run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract_runs/{id}:
+    get:
+      operationId: getExtractRun
+      tags:
+        - Extract
+      summary: Get an extract run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested extract run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extract_runs/batch:
+    post:
+      operationId: batchCreateExtractRuns
+      tags:
+        - Batch
+      summary: Batch create extract runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extractors:
+    get:
+      operationId: listExtractors
+      tags:
+        - Extract
+      summary: List extractors
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/NextPageToken'
+        - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of extractors.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  extractors:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Processor'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: createExtractor
+      tags:
+        - Extract
+      summary: Create an extractor
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorCreateRequest'
+      responses:
+        '200':
+          description: The created extractor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extractors/{id}:
+    get:
+      operationId: getExtractor
+      tags:
+        - Extract
+      summary: Get an extractor
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested extractor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: updateExtractor
+      tags:
+        - Extract
+      summary: Update an extractor
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorCreateRequest'
+      responses:
+        '200':
+          description: The updated extractor.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /extractors/{id}/versions:
+    post:
+      operationId: createExtractorVersion
+      tags:
+        - Extract
+      summary: Create an extractor version
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                releaseType:
+                  type: string
+                  enum: [MAJOR, MINOR, PATCH]
+                description:
+                  type: string
+                config:
+                  type: object
+      responses:
+        '200':
+          description: The created extractor version.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify:
+    post:
+      operationId: classifyFile
+      tags:
+        - Classify
+      summary: Classify a file (synchronous)
+      description: >-
+        Synchronously classify a document using an inline config or a saved
+        classifier. Five minute timeout; use POST /classify_runs for production.
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassifyRequest'
+      responses:
+        '200':
+          description: A processed classify run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify_runs:
+    post:
+      operationId: createClassifyRun
+      tags:
+        - Classify
+      summary: Create a classify run (asynchronous)
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassifyRequest'
+      responses:
+        '200':
+          description: The created classify run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify_runs/{id}:
+    get:
+      operationId: getClassifyRun
+      tags:
+        - Classify
+      summary: Get a classify run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested classify run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classify_runs/batch:
+    post:
+      operationId: batchCreateClassifyRuns
+      tags:
+        - Batch
+      summary: Batch create classify runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /classifiers:
+    get:
+      operationId: listClassifiers
+      tags:
+        - Classify
+      summary: List classifiers
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/NextPageToken'
+        - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of classifiers.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  classifiers:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Processor'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: createClassifier
+      tags:
+        - Classify
+      summary: Create a classifier
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProcessorCreateRequest'
+      responses:
+        '200':
+          description: The created classifier.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Processor'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /split:
+    post:
+      operationId: splitFile
+      tags:
+        - Split
+      summary: Split a file (synchronous)
+      description: >-
+        Synchronously split a multi-document file into subdocuments and classify
+        each. Five minute timeout; use POST /split_runs for production.
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SplitRequest'
+      responses:
+        '200':
+          description: A processed split run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /split_runs:
+    post:
+      operationId: createSplitRun
+      tags:
+        - Split
+      summary: Create a split run (asynchronous)
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SplitRequest'
+      responses:
+        '200':
+          description: The created split run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /split_runs/{id}:
+    get:
+      operationId: getSplitRun
+      tags:
+        - Split
+      summary: Get a split run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested split run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessorRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /split_runs/batch:
+    post:
+      operationId: batchCreateSplitRuns
+      tags:
+        - Batch
+      summary: Batch create split runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchRequest'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflows:
+    get:
+      operationId: listWorkflows
+      tags:
+        - Workflows
+      summary: List workflows
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/NextPageToken'
+        - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of workflows.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflows:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Workflow'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: createWorkflow
+      tags:
+        - Workflows
+      summary: Create a workflow
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: The created workflow.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflows/{id}:
+    get:
+      operationId: getWorkflow
+      tags:
+        - Workflows
+      summary: Get a workflow
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested workflow.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Workflow'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflow_runs:
+    post:
+      operationId: createWorkflowRun
+      tags:
+        - Workflow Runs
+      summary: Create a workflow run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WorkflowRunRequest'
+      responses:
+        '200':
+          description: The created workflow run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+    get:
+      operationId: listWorkflowRuns
+      tags:
+        - Workflow Runs
+      summary: List workflow runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/NextPageToken'
+        - $ref: '#/components/parameters/MaxPageSize'
+      responses:
+        '200':
+          description: A page of workflow runs.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  workflowRuns:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/WorkflowRun'
+                  nextPageToken:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflow_runs/{id}:
+    get:
+      operationId: getWorkflowRun
+      tags:
+        - Workflow Runs
+      summary: Get a workflow run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested workflow run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+    post:
+      operationId: updateWorkflowRun
+      tags:
+        - Workflow Runs
+      summary: Update a workflow run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                metadata:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The updated workflow run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WorkflowRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /workflow_runs/batch:
+    post:
+      operationId: batchCreateWorkflowRuns
+      tags:
+        - Workflow Runs
+      summary: Batch create workflow runs
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - workflow
+                - inputs
+              properties:
+                workflow:
+                  $ref: '#/components/schemas/WorkflowReference'
+                inputs:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      file:
+                        $ref: '#/components/schemas/FileInput'
+      responses:
+        '200':
+          description: The created batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_sets:
+    post:
+      operationId: createEvaluationSet
+      tags:
+        - Evaluations
+      summary: Create an evaluation set
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - entityId
+              properties:
+                name:
+                  type: string
+                entityId:
+                  type: string
+                  description: ID of the extractor, classifier, or splitter to evaluate.
+                description:
+                  type: string
+      responses:
+        '200':
+          description: The created evaluation set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSet'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_sets/{id}:
+    get:
+      operationId: getEvaluationSet
+      tags:
+        - Evaluations
+      summary: Get an evaluation set
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested evaluation set.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSet'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_set_items:
+    post:
+      operationId: createEvaluationSetItem
+      tags:
+        - Evaluations
+      summary: Create an evaluation set item
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - evaluationSetId
+              properties:
+                evaluationSetId:
+                  type: string
+                fileId:
+                  type: string
+                expectedOutput:
+                  type: object
+                  additionalProperties: true
+      responses:
+        '200':
+          description: The created evaluation set item.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                    example: evaluation_set_item
+                  id:
+                    type: string
+                  evaluationSetId:
+                    type: string
+        default:
+          $ref: '#/components/responses/ApiError'
+  /evaluation_set_runs:
+    post:
+      operationId: createEvaluationSetRun
+      tags:
+        - Evaluations
+      summary: Create an evaluation set run
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - evaluationSetId
+              properties:
+                evaluationSetId:
+                  type: string
+                processorVersionId:
+                  type: string
+      responses:
+        '200':
+          description: The created evaluation set run.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  object:
+                    type: string
+                    example: evaluation_set_run
+                  id:
+                    type: string
+                  status:
+                    $ref: '#/components/schemas/RunStatus'
+        default:
+          $ref: '#/components/responses/ApiError'
+  /batch_runs/{id}:
+    get:
+      operationId: getBatchRun
+      tags:
+        - Batch
+      summary: Get a batch run
+      description: >-
+        Unified endpoint to retrieve a batch run created by any of the batch
+        submission endpoints.
+      parameters:
+        - $ref: '#/components/parameters/ApiVersion'
+        - $ref: '#/components/parameters/PathId'
+      responses:
+        '200':
+          description: The requested batch run.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BatchRun'
+        default:
+          $ref: '#/components/responses/ApiError'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      description: Provide your Extend API token as a Bearer token in the Authorization header.
+  parameters:
+    ApiVersion:
+      name: x-extend-api-version
+      in: header
+      required: false
+      description: API version to pin the request to, for example 2026-02-09.
+      schema:
+        type: string
+        example: '2026-02-09'
+    PathId:
+      name: id
+      in: path
+      required: true
+      schema:
+        type: string
+    NextPageToken:
+      name: nextPageToken
+      in: query
+      required: false
+      schema:
+        type: string
+    MaxPageSize:
+      name: maxPageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+  responses:
+    ApiError:
+      description: Error response.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ApiError'
+  schemas:
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+        retryable:
+          type: boolean
+        requestId:
+          type: string
+    RunStatus:
+      type: string
+      enum:
+        - PENDING
+        - PROCESSING
+        - PROCESSED
+        - FAILED
+        - CANCELLED
+        - NEEDS_REVIEW
+        - REJECTED
+    FileFromUrl:
+      type: object
+      required:
+        - url
+      properties:
+        url:
+          type: string
+        name:
+          type: string
+        settings:
+          type: object
+          properties:
+            password:
+              type: string
+    FileFromId:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+    FileFromText:
+      type: object
+      required:
+        - text
+      properties:
+        text:
+          type: string
+    FileInput:
+      oneOf:
+        - $ref: '#/components/schemas/FileFromUrl'
+        - $ref: '#/components/schemas/FileFromId'
+        - $ref: '#/components/schemas/FileFromText'
+    RunMetadata:
+      type: object
+      additionalProperties: true
+      description: Custom metadata for a run, up to 10KB.
+    File:
+      type: object
+      properties:
+        object:
+          type: string
+          example: file
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [PDF, CSV, IMG, TXT, DOCX, EXCEL, XML, HTML]
+        presignedUrl:
+          type: string
+        parentFileId:
+          type: string
+          nullable: true
+        metadata:
+          type: object
+          additionalProperties: true
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ParseRequest:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        config:
+          type: object
+          description: Parse configuration (target, blocks, figures, tables, OCR options).
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    ParseRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: parse_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        file:
+          type: object
+        output:
+          type: object
+          properties:
+            chunks:
+              type: array
+              items:
+                type: object
+        config:
+          type: object
+        metrics:
+          type: object
+          properties:
+            processingTimeMs:
+              type: integer
+            pageCount:
+              type: integer
+        usage:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ExtractRequest:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        extractor:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+            overrideConfig:
+              type: object
+        config:
+          type: object
+          description: Inline extract config with schema, baseProcessor, extractionRules.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    ClassifyRequest:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        classifier:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+        config:
+          type: object
+          description: Inline classify config with classifications, baseProcessor, rules.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    SplitRequest:
+      type: object
+      required:
+        - file
+      properties:
+        file:
+          $ref: '#/components/schemas/FileInput'
+        splitter:
+          type: object
+          properties:
+            id:
+              type: string
+            version:
+              type: string
+            overrideConfig:
+              type: object
+        config:
+          type: object
+          description: Inline split config with splitClassifications, splitRules, baseProcessor.
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+    ProcessorRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        type:
+          type: string
+          enum: [EXTRACT, CLASSIFY, SPLIT]
+        file:
+          type: object
+        output:
+          type: object
+          additionalProperties: true
+        config:
+          type: object
+        usage:
+          type: object
+        dashboardUrl:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    Processor:
+      type: object
+      properties:
+        object:
+          type: string
+          example: processor
+        id:
+          type: string
+        name:
+          type: string
+        type:
+          type: string
+          enum: [EXTRACT, CLASSIFY, SPLIT]
+        version:
+          type: string
+        config:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    ProcessorCreateRequest:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+        config:
+          type: object
+    Workflow:
+      type: object
+      properties:
+        object:
+          type: string
+          example: workflow
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        version:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    WorkflowReference:
+      type: object
+      required:
+        - id
+      properties:
+        id:
+          type: string
+        version:
+          type: string
+    WorkflowRunRequest:
+      type: object
+      required:
+        - workflow
+        - file
+      properties:
+        workflow:
+          $ref: '#/components/schemas/WorkflowReference'
+        file:
+          $ref: '#/components/schemas/FileInput'
+        outputs:
+          type: array
+          items:
+            type: object
+        priority:
+          type: integer
+          default: 50
+        metadata:
+          $ref: '#/components/schemas/RunMetadata'
+        secrets:
+          type: object
+          additionalProperties: true
+    WorkflowRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: workflow_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        stepRuns:
+          type: array
+          items:
+            type: object
+        metadata:
+          type: object
+          additionalProperties: true
+        usage:
+          type: object
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    EvaluationSet:
+      type: object
+      properties:
+        object:
+          type: string
+          example: evaluation_set
+        id:
+          type: string
+        name:
+          type: string
+        description:
+          type: string
+        entity:
+          type: object
+          description: Summary of the associated extractor, classifier, or splitter.
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    BatchRequest:
+      type: object
+      required:
+        - inputs
+      properties:
+        inputs:
+          type: array
+          items:
+            type: object
+            properties:
+              file:
+                $ref: '#/components/schemas/FileInput'
+              metadata:
+                $ref: '#/components/schemas/RunMetadata'
+        processor:
+          type: object
+        config:
+          type: object
+    BatchRun:
+      type: object
+      properties:
+        object:
+          type: string
+          example: batch_run
+        id:
+          type: string
+        status:
+          $ref: '#/components/schemas/RunStatus'
+        runCount:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time

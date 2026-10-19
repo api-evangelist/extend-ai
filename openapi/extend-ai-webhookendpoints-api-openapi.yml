@@ -1,0 +1,1082 @@
+openapi: 3.2.0
+info:
+  title: Reference Webhook Endpoints API
+  version: 1.0.0
+servers:
+- url: https://api.extend.ai
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
+tags:
+- name: webhookEndpoints
+paths:
+  /webhook_endpoints:
+    post:
+      operationId: webhookEndpoints_create
+      summary: Create Webhook Endpoint
+      description: 'Create a new webhook endpoint. The response includes a `signingSecret` that is only returned once — store it securely for verifying webhook signatures.
+
+
+        The `enabledEvents` array specifies which global event types this endpoint should receive. Use the Webhook Events reference to see available event types.
+
+
+        To subscribe to events scoped to a specific resource (e.g., a single extractor or workflow), use Create Webhook Subscription after creating the endpoint.'
+      tags:
+      - webhookEndpoints
+      parameters:
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      responses:
+        '200':
+          description: Successfully created webhook endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookEndpointCreate'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: The URL that webhook events will be sent to.
+                name:
+                  type: string
+                  minLength: 1
+                  description: A human-readable name for the webhook endpoint.
+                status:
+                  $ref: '#/components/schemas/WebhookEndpointStatus'
+                enabledEvents:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/WebhookEndpointEventType'
+                  description: 'The list of global event types to subscribe to. Pass an empty array to create an endpoint with no global events (useful if you only plan to use resource-scoped subscriptions).
+
+                    '
+                apiVersion:
+                  $ref: '#/components/schemas/ApiVersionEnum'
+                advancedOptions:
+                  $ref: '#/components/schemas/WebhookAdvancedOptions'
+              required:
+              - url
+              - name
+              - enabledEvents
+              - apiVersion
+      security:
+      - BearerAuth: []
+    get:
+      operationId: webhookEndpoints_list
+      summary: List Webhook Endpoints
+      description: List all webhook endpoints.
+      tags:
+      - webhookEndpoints
+      parameters:
+      - name: status
+        in: query
+        description: Filter by endpoint status.
+        required: false
+        schema:
+          $ref: '#/components/schemas/WebhookEndpointStatus'
+      - name: sortDir
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDir'
+          default: desc
+      - name: nextPageToken
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/NextPageToken'
+      - name: maxPageSize
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/MaxPageSize'
+          default: 10
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of webhook endpoints
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhookEndpoints_list_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /webhook_endpoints/{id}:
+    get:
+      operationId: webhookEndpoints_retrieve
+      summary: Get Webhook Endpoint
+      description: Retrieve a webhook endpoint by ID.
+      tags:
+      - webhookEndpoints
+      parameters:
+      - name: id
+        in: path
+        description: 'The ID of the webhook endpoint.
+
+
+          Example: `"wh_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Retrieved webhook endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookEndpoint'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    post:
+      operationId: webhookEndpoints_update
+      summary: Update Webhook Endpoint
+      description: 'Update a webhook endpoint. Only the fields you include in the request body will be updated; omitted fields remain unchanged.
+
+
+        The `apiVersion` of a webhook endpoint cannot be changed after creation.'
+      tags:
+      - webhookEndpoints
+      parameters:
+      - name: id
+        in: path
+        description: 'The ID of the webhook endpoint to update.
+
+
+          Example: `"wh_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully updated webhook endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WebhookEndpoint'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                url:
+                  type: string
+                  format: uri
+                  description: The URL that webhook events will be sent to.
+                name:
+                  type: string
+                  minLength: 1
+                  description: A human-readable name for the webhook endpoint.
+                status:
+                  $ref: '#/components/schemas/WebhookEndpointStatus'
+                enabledEvents:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/WebhookEndpointEventType'
+                  description: The list of global event types to subscribe to.
+                advancedOptions:
+                  $ref: '#/components/schemas/WebhookAdvancedOptions'
+      security:
+      - BearerAuth: []
+    delete:
+      operationId: webhookEndpoints_delete
+      summary: Delete Webhook Endpoint
+      description: Delete a webhook endpoint and all of its subscriptions. This operation is permanent and cannot be undone.
+      tags:
+      - webhookEndpoints
+      parameters:
+      - name: id
+        in: path
+        description: 'The ID of the webhook endpoint to delete.
+
+
+          Example: `"wh_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully deleted webhook endpoint
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/webhookEndpoints_delete_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    MaxPageSize:
+      type: integer
+      minimum: 1
+      maximum: 1000
+      default: 10
+      description: The maximum number of results to return in the response. You may receive less than this number if there are fewer results than the maximum.
+      title: MaxPageSize
+    WebhookPayloadOptions:
+      type: object
+      properties:
+        format:
+          $ref: '#/components/schemas/WebhookPayloadFormat'
+        urlThresholdBytes:
+          type: integer
+          minimum: 0
+          description: 'When `format` is `url`, payloads larger than this threshold (in bytes) are delivered as a signed download URL instead of inline JSON. Only applicable when `format` is `url`.
+
+            '
+      required:
+      - format
+      description: Configuration for how webhook payloads are delivered.
+      title: WebhookPayloadOptions
+    WebhookAdvancedOptions:
+      type: object
+      properties:
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+          description: Custom HTTP headers to include in webhook requests.
+        payload:
+          $ref: '#/components/schemas/WebhookPayloadOptions'
+      description: Advanced configuration options for the webhook endpoint, including custom headers and payload delivery settings.
+      title: WebhookAdvancedOptions
+    webhookEndpoints_delete_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deleted webhook endpoint.
+      required:
+      - id
+      title: webhookEndpoints_delete_Response_200
+    SortDir:
+      type: string
+      enum:
+      - asc
+      - desc
+      default: desc
+      description: Sort in ascending or descending order. Ascending order means the earliest result is returned first.
+      title: SortDir
+    CreatedBy:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - user
+            description: 'Discriminator value: user'
+          email:
+            type: string
+            format: email
+            description: The email address of the user who created the resource.
+        required:
+        - type
+        - email
+        description: Attribution for a resource created via the studio by a logged-in user.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - api_key
+            description: 'Discriminator value: api_key'
+          name:
+            type: string
+            description: The name of the API key that created the resource.
+        required:
+        - type
+        - name
+        description: Attribution for a resource created via the API using an API key.
+      discriminator:
+        propertyName: type
+      description: 'The actor that created this resource.
+
+
+        * `user` — the resource was created via the studio by a logged-in user. The user''s `email` is exposed.
+
+        * `api_key` — the resource was created via the API using an API key. The key''s `name` is exposed.
+
+
+        May be `null` for resources created before attribution.
+
+        '
+      title: CreatedBy
+    WebhookEndpointCreate:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/WebhookEndpointCreateObject'
+        id:
+          type: string
+          description: Unique identifier for the webhook endpoint.
+        url:
+          type: string
+          format: uri
+          description: The URL that webhook events are sent to.
+        name:
+          type: string
+          description: A human-readable name for the webhook endpoint.
+        status:
+          $ref: '#/components/schemas/WebhookEndpointStatus'
+        enabledEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEndpointEventType'
+          description: 'The list of event types this endpoint is subscribed to at the global level. These are events that are not scoped to a specific resource.
+
+            '
+        apiVersion:
+          $ref: '#/components/schemas/ApiVersionEnum'
+        advancedOptions:
+          oneOf:
+          - $ref: '#/components/schemas/WebhookAdvancedOptions'
+          - type: 'null'
+          description: Advanced configuration options for the webhook endpoint, including custom headers and payload delivery settings.
+        signingSecret:
+          type: string
+          description: 'The signing secret used to verify webhook payloads. This is only returned when creating the endpoint and cannot be retrieved again.
+
+
+            Store it securely — you will need it to verify webhook signatures.
+
+            '
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the webhook endpoint was created.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - url
+      - name
+      - status
+      - enabledEvents
+      - apiVersion
+      - advancedOptions
+      - signingSecret
+      - createdAt
+      - createdBy
+      description: 'The response when creating a webhook endpoint. Includes the `signingSecret`, which is only returned on creation and cannot be retrieved again.
+
+        '
+      title: WebhookEndpointCreate
+    ApiVersionEnum:
+      type: string
+      title: ApiVersionEnum
+    WebhookEndpointCreateObject:
+      type: string
+      enum:
+      - webhook_endpoint
+      title: WebhookEndpointCreateObject
+    WebhookEndpointStatus:
+      type: string
+      enum:
+      - enabled
+      - disabled
+      description: The status of the webhook endpoint.
+      title: WebhookEndpointStatus
+    WebhookEndpointEventType:
+      type: string
+      enum:
+      - parse_run.processed
+      - parse_run.failed
+      - edit_run.processed
+      - edit_run.failed
+      - form_detection_run.processed
+      - form_detection_run.failed
+      - extract_run.processed
+      - extract_run.failed
+      - classify_run.processed
+      - classify_run.failed
+      - split_run.processed
+      - split_run.failed
+      - batch_processor_run.processed
+      - batch_processor_run.failed
+      - batch_parse_run.processed
+      - batch_parse_run.failed
+      - extractor.created
+      - extractor.updated
+      - extractor.deleted
+      - extractor.draft.updated
+      - extractor.version.published
+      - classifier.created
+      - classifier.updated
+      - classifier.deleted
+      - classifier.draft.updated
+      - classifier.version.published
+      - splitter.created
+      - splitter.updated
+      - splitter.deleted
+      - splitter.draft.updated
+      - splitter.version.published
+      - workflow.created
+      - workflow.deployed
+      - workflow.deleted
+      description: 'Event types available for webhook endpoints at the global level. Includes run events and resource lifecycle events.
+
+        '
+      title: WebhookEndpointEventType
+    WebhookPayloadFormat:
+      type: string
+      enum:
+      - json
+      - url
+      description: 'The format used to deliver webhook payloads.
+
+
+        - `json` — the full payload is sent inline in the webhook request body.
+
+        - `url` — large payloads are replaced with a signed download URL.
+
+        '
+      title: WebhookPayloadFormat
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling.
+        message:
+          type: string
+          description: "Human-readable error message suitable for displaying to developers. \nDo not rely on the exact text of this message as it may change.\n"
+        retryable:
+          type: boolean
+          description: 'Whether the request can be retried. When true, retry with exponential backoff.
+
+            When false, fix the underlying issue before retrying.
+
+            '
+        requestId:
+          type: string
+          description: "Unique request identifier for support purposes. Always include this \nwhen contacting Extend support about an error.\n"
+        docUrl:
+          type: string
+          description: Link to relevant documentation when one is available.
+      required:
+      - code
+      - message
+      - retryable
+      description: 'Standard error response format for all Extend API errors.
+
+
+        See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+        '
+      title: ApiError
+    webhookEndpoints_list_Response_200:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/WebhookEndpointsGetResponsesContentApplicationJsonSchemaObject'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEndpoint'
+        nextPageToken:
+          $ref: '#/components/schemas/NextPageToken'
+      required:
+      - object
+      - data
+      title: webhookEndpoints_list_Response_200
+    WebhookEndpointObject:
+      type: string
+      enum:
+      - webhook_endpoint
+      title: WebhookEndpointObject
+    WebhookEndpoint:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/WebhookEndpointObject'
+        id:
+          type: string
+          description: Unique identifier for the webhook endpoint.
+        url:
+          type: string
+          format: uri
+          description: The URL that webhook events are sent to.
+        name:
+          type: string
+          description: A human-readable name for the webhook endpoint.
+        status:
+          $ref: '#/components/schemas/WebhookEndpointStatus'
+        enabledEvents:
+          type: array
+          items:
+            $ref: '#/components/schemas/WebhookEndpointEventType'
+          description: 'The list of event types this endpoint is subscribed to at the global level. These are events that are not scoped to a specific resource.
+
+            '
+        apiVersion:
+          $ref: '#/components/schemas/ApiVersionEnum'
+        advancedOptions:
+          oneOf:
+          - $ref: '#/components/schemas/WebhookAdvancedOptions'
+          - type: 'null'
+          description: Advanced configuration options for the webhook endpoint, including custom headers and payload delivery settings.
+        createdAt:
+          type: string
+          format: date-time
+          description: The date and time the webhook endpoint was created.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - url
+      - name
+      - status
+      - enabledEvents
+      - apiVersion
+      - advancedOptions
+      - createdAt
+      - createdBy
+      title: WebhookEndpoint
+    NextPageToken:
+      type: string
+      description: 'The token used to fetch the page of results from a previous request. We use cursor based pagination and will return a `nextPageToken` in the response if there are more results.
+
+
+        Note that if other parameters are changed in subsequent requests, you may receive inconsistent data.
+
+        '
+      title: NextPageToken
+    WebhookEndpointsGetResponsesContentApplicationJsonSchemaObject:
+      type: string
+      enum:
+      - list
+      title: WebhookEndpointsGetResponsesContentApplicationJsonSchemaObject
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

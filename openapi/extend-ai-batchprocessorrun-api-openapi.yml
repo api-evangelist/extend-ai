@@ -1,0 +1,280 @@
+openapi: 3.2.0
+info:
+  title: Reference Batch Processor Run API
+  version: 1.0.0
+servers:
+- url: https://api.extend.ai
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
+tags:
+- name: batchProcessorRun
+paths:
+  /batch_processor_runs/{id}:
+    get:
+      operationId: batchProcessorRun_get
+      summary: Get Batch Processor Run (Deprecated)
+      description: 'Retrieve details about a batch processor run, including evaluation runs.
+
+
+        **Deprecated:** This endpoint is maintained for backwards compatibility only and will be replaced in a future API version. Use Get Evaluation Set Run for interacting with evaluation set runs.'
+      tags:
+      - batchProcessorRun
+      parameters:
+      - name: id
+        in: path
+        description: 'The unique identifier of the batch processor run to retrieve.
+
+
+          Example: `"bpr_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved batch processor run
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/batchProcessorRun_get_Response_200'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyError'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyError'
+        '404':
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LegacyError'
+      deprecated: true
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    LegacyBatchProcessorRunOptions:
+      type: object
+      properties:
+        fuzzyMatchFields:
+          type: array
+          items:
+            type: string
+          description: The fields that were fuzzy matched.
+        excludeFields:
+          type: array
+          items:
+            type: string
+          description: The fields that were excluded from the run.
+      description: The options for the batch processor run.
+      title: LegacyBatchProcessorRunOptions
+    batchProcessorRun_get_Response_200:
+      type: object
+      properties:
+        success:
+          type: boolean
+        batchProcessorRun:
+          $ref: '#/components/schemas/LegacyBatchProcessorRun'
+      required:
+      - success
+      - batchProcessorRun
+      title: batchProcessorRun_get_Response_200
+    LegacyBatchProcessorRun:
+      type: object
+      properties:
+        object:
+          type: string
+          description: 'The type of response. In this case, it will always be `"batch_processor_run"`.
+
+            '
+        id:
+          type: string
+          description: 'The unique identifier for this batch processor run.
+
+
+            Example: `"batch_processor_run_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        processorId:
+          type: string
+          description: 'The ID of the processor used for this run.
+
+
+            Example: `"ex_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        processorVersionId:
+          type: string
+          description: 'The ID of the specific processor version used.
+
+
+            Example: `"exv_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        processorName:
+          type: string
+          description: 'The name of the processor.
+
+
+            Example: `"Invoice Processor"`
+
+            '
+        metrics:
+          $ref: '#/components/schemas/LegacyBatchProcessorRunMetrics'
+        status:
+          $ref: '#/components/schemas/LegacyBatchProcessorRunStatus'
+          description: 'The current status of the batch processor run:
+
+            * `"PENDING"` - The batch processor run is waiting to start
+
+            * `"PROCESSING"` - The batch processor run is in progress
+
+            * `"PROCESSED"` - The batch processor run completed successfully
+
+            * `"FAILED"` - The batch processor run encountered an error
+
+            '
+        source:
+          $ref: '#/components/schemas/LegacyBatchProcessorRunSource'
+          description: 'The source of the batch processor run:
+
+            * `"EVAL_SET"` - The batch processor run was made from an evaluation set. The `sourceId` will be the ID of the evaluation set (e.g., `"ev_1234"`)
+
+            * `"PLAYGROUND"` - The batch processor run was made from the playground. The `sourceId` will not be set
+
+            * `"STUDIO"` - The batch processor run was made for a processor in Studio. The `sourceId` will be the ID of the processor (e.g., `"ex_1234"`)
+
+            '
+        sourceId:
+          type: string
+          description: 'The ID of the source of the batch processor run. See the `source` field for more details.
+
+            Example: `"ev_1234"` for EVAL_SET source, `"ex_1234"` for STUDIO source
+
+            '
+        runCount:
+          type: integer
+          description: The number of runs that were made.
+        options:
+          $ref: '#/components/schemas/LegacyBatchProcessorRunOptions'
+          description: The options for the batch processor run.
+        createdAt:
+          type: string
+          format: date-time
+          description: 'The time (in UTC) at which the batch processor run was created. Will follow the RFC 3339 format.
+
+
+            Example: `"2024-03-21T15:30:00Z"`
+
+            '
+        updatedAt:
+          type: string
+          format: date-time
+          description: 'The time (in UTC) at which the batch processor run was last updated. Will follow the RFC 3339 format.
+
+
+            Example: `"2024-03-21T16:45:00Z"`
+
+            '
+      required:
+      - object
+      - id
+      - processorId
+      - processorVersionId
+      - processorName
+      - metrics
+      - status
+      - source
+      - runCount
+      - options
+      - createdAt
+      - updatedAt
+      title: LegacyBatchProcessorRun
+    LegacyBatchProcessorRunSource:
+      type: string
+      enum:
+      - EVAL_SET
+      - PLAYGROUND
+      - STUDIO
+      description: 'The source of the batch processor run:
+
+        * `"EVAL_SET"` - The batch processor run was made from an evaluation set. The `sourceId` will be the ID of the evaluation set (e.g., `"ev_1234"`)
+
+        * `"PLAYGROUND"` - The batch processor run was made from the playground. The `sourceId` will not be set
+
+        * `"STUDIO"` - The batch processor run was made for a processor in Studio. The `sourceId` will be the ID of the processor (e.g., `"ex_1234"`)
+
+        '
+      title: LegacyBatchProcessorRunSource
+    LegacyError:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: string
+          description: Error message
+      title: LegacyError
+    LegacyBatchProcessorRunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      description: 'The current status of the batch processor run:
+
+        * `"PENDING"` - The batch processor run is waiting to start
+
+        * `"PROCESSING"` - The batch processor run is in progress
+
+        * `"PROCESSED"` - The batch processor run completed successfully
+
+        * `"FAILED"` - The batch processor run encountered an error
+
+        '
+      title: LegacyBatchProcessorRunStatus
+    LegacyBatchProcessorRunMetrics:
+      type: object
+      properties:
+        numFiles:
+          type: number
+          format: double
+          description: The total number of files processed in this batch run
+        numPages:
+          type: number
+          format: double
+          description: The total number of pages processed in this batch run
+      title: LegacyBatchProcessorRunMetrics
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

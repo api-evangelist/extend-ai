@@ -47,40 +47,6 @@ created: '2026-06-20'
 modified: '2026-06-20'
 specificationVersion: '0.23'
 apis:
-- aid: extend-ai:extend-ai-batch-api
-  name: Extend Batch API
-  description: The Batch API from Extend — 5 operation(s) for batch.
-  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
-  baseURL: https://api.extend.ai
-  tags:
-  - Batch
-  properties:
-  - type: OpenAPI
-    url: openapi/extend-ai-batch-api-openapi.yml
-  - type: Documentation
-    url: https://docs.extend.ai/api-quickstart
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
-  - type: PostmanCollection
-    url: collections/extend-ai.postman_collection.json
-  - type: OpenCollection
-    url: collections/extend-ai.opencollection.json
-  - type: Documentation
-    url: https://docs.extend.ai/extraction/overview
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
-  - type: Documentation
-    url: https://docs.extend.ai/workflows/overview
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
-  - type: Documentation
-    url: https://docs.extend.ai/evaluation/overview
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
 - aid: extend-ai:extend-ai-classify-api
   name: Extend Classify API
   description: The Classify API from Extend — 4 operation(s) for classify.
@@ -91,42 +57,6 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/extend-ai-classify-api-openapi.yml
-  - type: Documentation
-    url: https://docs.extend.ai/api-quickstart
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
-  - type: PostmanCollection
-    url: collections/extend-ai.postman_collection.json
-  - type: OpenCollection
-    url: collections/extend-ai.opencollection.json
-  - type: Documentation
-    url: https://docs.extend.ai/extraction/overview
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
-  - type: Documentation
-    url: https://docs.extend.ai/workflows/overview
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
-  - type: Documentation
-    url: https://docs.extend.ai/evaluation/overview
-  - type: APIReference
-    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
-- aid: extend-ai:extend-ai-evaluations-api
-  name: Extend Evaluations API
-  description: The Evaluations API from Extend — 4 operation(s) for evaluations.
-  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
-  baseURL: https://api.extend.ai
-  tags:
-  - Evaluation
-  tags_raw:
-  - Evaluations
-  properties:
-  - type: OpenAPI
-    url: openapi/extend-ai-evaluations-api-openapi.yml
   - type: Documentation
     url: https://docs.extend.ai/api-quickstart
   - type: APIReference
@@ -289,16 +219,16 @@ apis:
     url: https://docs.extend.ai/evaluation/overview
   - type: APIReference
     url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
-- aid: extend-ai:extend-ai-workflow-runs-api
-  name: Extend Workflow Runs API
-  description: The Workflow Runs API from Extend — 3 operation(s) for workflow runs.
+- aid: extend-ai:extend-ai-workflows-api
+  name: Extend Workflows API
+  description: The Workflows API from Extend — 2 operation(s) for workflows.
   humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
   baseURL: https://api.extend.ai
   tags:
-  - Workflow Runs
+  - Workflows
   properties:
   - type: OpenAPI
-    url: openapi/extend-ai-workflow-runs-api-openapi.yml
+    url: openapi/extend-ai-workflows-api-openapi.yml
   - type: Documentation
     url: https://docs.extend.ai/api-quickstart
   - type: APIReference
@@ -323,16 +253,968 @@ apis:
     url: https://docs.extend.ai/evaluation/overview
   - type: APIReference
     url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
-- aid: extend-ai:extend-ai-workflows-api
-  name: Extend Workflows API
-  description: The Workflows API from Extend — 2 operation(s) for workflows.
+- aid: extend-ai:extend-ai-api-reference-api
+  name: Extend API Reference API
+  description: The API Reference API from Extend — 0 operation(s) for api reference.
   humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
   baseURL: https://api.extend.ai
   tags:
-  - Workflows
+  - API Reference
   properties:
   - type: OpenAPI
-    url: openapi/extend-ai-workflows-api-openapi.yml
+    url: openapi/extend-ai-api-reference-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-batchprocessorrun-api
+  name: Extend Batch Processor Run API
+  description: The batchProcessorRun API from Extend — 1 operation(s) for batchprocessorrun.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - batchProcessorRun
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-batchprocessorrun-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-batchruns-api
+  name: Extend Batch Runs API
+  description: The batchRuns API from Extend — 1 operation(s) for batchruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - batchRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-batchruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-classifiers-api
+  name: Extend Classifiers API
+  description: The classifiers API from Extend — 2 operation(s) for classifiers.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - classifiers
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-classifiers-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-classifierversions-api
+  name: Extend Classifier Versions API
+  description: The classifierVersions API from Extend — 2 operation(s) for classifierversions.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - classifierVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-classifierversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-classifyruns-api
+  name: Extend Classify Runs API
+  description: The classifyRuns API from Extend — 4 operation(s) for classifyruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - classifyRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-classifyruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-detect-form-api
+  name: Extend Detect Form API
+  description: The Detect Form API from Extend — 1 operation(s) for detect form.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - Detect Form
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-detect-form-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-edit-api
+  name: Extend Edit API
+  description: The Edit API from Extend — 1 operation(s) for edit.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - Edit
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-edit-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-editruns-api
+  name: Extend Edit Runs API
+  description: The editRuns API from Extend — 2 operation(s) for editruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - editRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-editruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-editschemas-api
+  name: Extend Edit Schemas API
+  description: The editSchemas API from Extend — 1 operation(s) for editschemas.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - editSchemas
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-editschemas-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-edittemplates-api
+  name: Extend Edit Templates API
+  description: The editTemplates API from Extend — 2 operation(s) for edittemplates.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - editTemplates
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-edittemplates-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-evaluationsetitems-api
+  name: Extend Evaluation Set Items API
+  description: The evaluationSetItems API from Extend — 2 operation(s) for evaluationsetitems.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - evaluationSetItems
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-evaluationsetitems-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-evaluationsetruns-api
+  name: Extend Evaluation Set Runs API
+  description: The evaluationSetRuns API from Extend — 2 operation(s) for evaluationsetruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - evaluationSetRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-evaluationsetruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-evaluationsets-api
+  name: Extend Evaluation Sets API
+  description: The evaluationSets API from Extend — 2 operation(s) for evaluationsets.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - evaluationSets
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-evaluationsets-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-extractors-api
+  name: Extend Extractors API
+  description: The extractors API from Extend — 2 operation(s) for extractors.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - extractors
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-extractors-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-extractorversions-api
+  name: Extend Extractor Versions API
+  description: The extractorVersions API from Extend — 2 operation(s) for extractorversions.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - extractorVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-extractorversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-extractruns-api
+  name: Extend Extract Runs API
+  description: The extractRuns API from Extend — 4 operation(s) for extractruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - extractRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-extractruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-formdetectionruns-api
+  name: Extend Form Detection Runs API
+  description: The formDetectionRuns API from Extend — 2 operation(s) for formdetectionruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - formDetectionRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-formdetectionruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-parseruns-api
+  name: Extend Parse Runs API
+  description: The parseRuns API from Extend — 4 operation(s) for parseruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - parseRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-parseruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-processor-api
+  name: Extend Processor API
+  description: The processor API from Extend — 2 operation(s) for processor.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - processor
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-processor-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-processorrun-api
+  name: Extend Processor Run API
+  description: The processorRun API from Extend — 3 operation(s) for processorrun.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - processorRun
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-processorrun-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-processorversion-api
+  name: Extend Processor Version API
+  description: The processorVersion API from Extend — 3 operation(s) for processorversion.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - processorVersion
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-processorversion-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-splitruns-api
+  name: Extend Split Runs API
+  description: The splitRuns API from Extend — 4 operation(s) for splitruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - splitRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-splitruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-splitters-api
+  name: Extend Splitters API
+  description: The splitters API from Extend — 2 operation(s) for splitters.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - splitters
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-splitters-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-splitterversions-api
+  name: Extend Splitter Versions API
+  description: The splitterVersions API from Extend — 2 operation(s) for splitterversions.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - splitterVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-splitterversions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-webhookendpoints-api
+  name: Extend Webhook Endpoints API
+  description: The webhookEndpoints API from Extend — 2 operation(s) for webhookendpoints.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - webhookEndpoints
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-webhookendpoints-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-webhooksubscriptions-api
+  name: Extend Webhook Subscriptions API
+  description: The webhookSubscriptions API from Extend — 2 operation(s) for webhooksubscriptions.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - webhookSubscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-webhooksubscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-workflowruns-api
+  name: Extend Workflow Runs API
+  description: The workflowRuns API from Extend — 4 operation(s) for workflowruns.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - workflowRuns
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-workflowruns-api-openapi.yml
+  - type: Documentation
+    url: https://docs.extend.ai/api-quickstart
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  - type: PostmanCollection
+    url: collections/extend-ai.postman_collection.json
+  - type: OpenCollection
+    url: collections/extend-ai.opencollection.json
+  - type: Documentation
+    url: https://docs.extend.ai/extraction/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/parse-file
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run
+  - type: Documentation
+    url: https://docs.extend.ai/workflows/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run
+  - type: Documentation
+    url: https://docs.extend.ai/evaluation/overview
+  - type: APIReference
+    url: https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set
+- aid: extend-ai:extend-ai-workflowversions-api
+  name: Extend Workflow Versions API
+  description: The workflowVersions API from Extend — 2 operation(s) for workflowversions.
+  humanURL: https://docs.extend.ai/api-reference/endpoints/file/upload-file
+  baseURL: https://api.extend.ai
+  tags:
+  - workflowVersions
+  properties:
+  - type: OpenAPI
+    url: openapi/extend-ai-workflowversions-api-openapi.yml
   - type: Documentation
     url: https://docs.extend.ai/api-quickstart
   - type: APIReference

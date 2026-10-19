@@ -1,0 +1,1474 @@
+openapi: 3.2.0
+info:
+  title: Reference Classifiers API
+  version: 1.0.0
+servers:
+- url: https://api.extend.ai
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
+tags:
+- name: Classifiers
+paths:
+  /classifiers:
+    post:
+      operationId: classifiers_create
+      summary: Create Classifier
+      description: Create a new classifier.
+      tags:
+      - Classifiers
+      parameters:
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      responses:
+        '200':
+          description: Classifier created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classifier'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The name of the classifier.
+                cloneClassifierId:
+                  type: string
+                  description: 'The ID of an existing classifier to clone. If provided, the new classifier will be created with the same config as the classifier with this ID. Cannot be provided together with `config`.
+
+
+                    Example: `"cl_BMdfq_yWM3sT-ZzvCnA3f"`
+
+                    '
+                config:
+                  $ref: '#/components/schemas/ClassifyConfig'
+                  description: 'The configuration for the classifier. Cannot be provided together with `cloneClassifierId`.
+
+                    '
+              required:
+              - name
+      security:
+      - BearerAuth: []
+    get:
+      operationId: classifiers_list
+      summary: List Classifiers
+      description: 'List all classifiers.
+
+
+        Returns a summary of each classifier. Use `GET /classifiers/{id}` to retrieve the full object including `draftVersion`.'
+      tags:
+      - Classifiers
+      parameters:
+      - name: nextPageToken
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/NextPageToken'
+      - name: maxPageSize
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/MaxPageSize'
+          default: 10
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortBy'
+          default: updatedAt
+      - name: sortDir
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDir'
+          default: desc
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved classifiers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/classifiers_list_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /classifiers/{id}:
+    get:
+      operationId: classifiers_retrieve
+      summary: Get Classifier
+      description: Get details of a classifier.
+      tags:
+      - Classifiers
+      parameters:
+      - name: id
+        in: path
+        description: 'The ID of the classifier to get.
+
+
+          Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Classifier details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classifier'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    post:
+      operationId: classifiers_update
+      summary: Update Classifier
+      description: Update an existing classifier.
+      tags:
+      - Classifiers
+      parameters:
+      - name: id
+        in: path
+        description: 'The ID of the classifier to update.
+
+
+          Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Classifier updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Classifier'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: The new name of the classifier.
+                config:
+                  $ref: '#/components/schemas/ClassifyConfig'
+                  description: The new configuration for the classifier. This will update the draft version of the classifier.
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    ParseConfigBlockOptionsTablesAgentic:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable agentic table processing.
+        customInstructions:
+          type: string
+          description: Custom instructions to guide the agentic table processing.
+      description: Options for agentic table processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic table correction is triggered.
+      title: ParseConfigBlockOptionsTablesAgentic
+    MaxPageSize:
+      type: integer
+      minimum: 1
+      maximum: 1000
+      default: 10
+      description: The maximum number of results to return in the response. You may receive less than this number if there are fewer results than the maximum.
+      title: MaxPageSize
+    ClassifyConfig:
+      type: object
+      properties:
+        baseProcessor:
+          $ref: '#/components/schemas/ClassifyBaseProcessor'
+          default: classification_performance
+        baseVersion:
+          type: string
+          description: The version of the `"classification_performance"` or `"classification_light"` processor to use. If not provided, the latest stable version for the selected `baseProcessor` will be used automatically. See [Classification Changelog](https://docs.extend.ai/2026-02-09/model-versioning/classification/classification-performance) for more details.
+        classifications:
+          $ref: '#/components/schemas/Classifications'
+        classificationRules:
+          type: string
+          description: Custom rules to guide the classification process in natural language.
+        advancedOptions:
+          $ref: '#/components/schemas/ClassifyAdvancedOptions'
+          description: Advanced configuration options.
+        parseConfig:
+          $ref: '#/components/schemas/ParseConfig'
+          description: Configuration options for the parsing process.
+      required:
+      - classifications
+      title: ClassifyConfig
+    ParseConfigBlockOptionsTablesTargetFormat:
+      type: string
+      enum:
+      - markdown
+      - html
+      default: html
+      description: 'The target format for the table blocks. Supported values:
+
+        * `markdown`: Convert table to Markdown format
+
+        * `html`: Convert table to HTML format
+
+        '
+      title: ParseConfigBlockOptionsTablesTargetFormat
+    PageRangesItems:
+      type: object
+      properties:
+        start:
+          type: integer
+          description: The start page of the range.
+        end:
+          type: integer
+          default: 750
+          description: The end page of the range.
+      required:
+      - start
+      - end
+      title: PageRangesItems
+    SortDir:
+      type: string
+      enum:
+      - asc
+      - desc
+      default: desc
+      description: Sort in ascending or descending order. Ascending order means the earliest result is returned first.
+      title: SortDir
+    ClassifierVersionObject:
+      type: string
+      enum:
+      - classifier_version
+      description: The type of object. Will always be `"classifier_version"`.
+      title: ClassifierVersionObject
+    CreatedBy:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - user
+            description: 'Discriminator value: user'
+          email:
+            type: string
+            format: email
+            description: The email address of the user who created the resource.
+        required:
+        - type
+        - email
+        description: Attribution for a resource created via the studio by a logged-in user.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - api_key
+            description: 'Discriminator value: api_key'
+          name:
+            type: string
+            description: The name of the API key that created the resource.
+        required:
+        - type
+        - name
+        description: Attribution for a resource created via the API using an API key.
+      discriminator:
+        propertyName: type
+      description: 'The actor that created this resource.
+
+
+        * `user` — the resource was created via the studio by a logged-in user. The user''s `email` is exposed.
+
+        * `api_key` — the resource was created via the API using an API key. The key''s `name` is exposed.
+
+
+        May be `null` for resources created before attribution.
+
+        '
+      title: CreatedBy
+    ClassifierSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ClassifierSummaryObject'
+          description: The type of object. Will always be `"classifier"`.
+        id:
+          type: string
+          description: 'The ID of the classifier.
+
+
+            Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the classifier.
+
+
+            Example: `"Document Type Classifier"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: ClassifierSummary
+    ParseConfigBlockOptionsBarcodes:
+      type: object
+      properties:
+        imageClippingEnabled:
+          type: boolean
+          default: false
+          description: Whether to clip and extract images of barcodes. When enabled, barcode images will be available in the `imageUrl` field of BarcodeDetails.
+        readingEnabled:
+          type: boolean
+          default: false
+          description: Whether to decode and read barcode values. When enabled, decoded values will be available in the `decodedValue` field of BarcodeDetails.
+      description: Options for barcode blocks.
+      title: ParseConfigBlockOptionsBarcodes
+    ClassifyBaseProcessor:
+      type: string
+      enum:
+      - classification_performance
+      - classification_light
+      default: classification_performance
+      description: 'The base processor to use. For classifiers, this can be either `"classification_performance"` or `"classification_light"`. Defaults to `"classification_performance"` if not provided. See [Classification Changelog](https://docs.extend.ai/2026-02-09/model-versioning/classification/classification-performance) for more details.
+
+        '
+      title: ClassifyBaseProcessor
+    Classifications:
+      type: array
+      items:
+        $ref: '#/components/schemas/Classification'
+      description: Array of possible classifications. Must provide at least one classification. At least one classification must have the type `"other"`. Each classification item must have a unique id.
+      title: Classifications
+    ParseConfigBlockOptionsTextAgentic:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable agentic text processing for OCR corrections.
+        customInstructions:
+          type: string
+          description: Custom instructions to guide the agentic text processing.
+      description: Options for agentic text processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic text correction is triggered.
+      title: ParseConfigBlockOptionsTextAgentic
+    ParseConfigBlockOptionsTables:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: This option is deprecated and will have no effect. It will be removed in the next API version.
+          deprecated: true
+        targetFormat:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTablesTargetFormat'
+          default: html
+          description: 'The target format for the table blocks. Supported values:
+
+            * `markdown`: Convert table to Markdown format
+
+            * `html`: Convert table to HTML format
+
+            '
+        tableHeaderContinuationEnabled:
+          type: boolean
+          default: false
+          description: Whether to automatically copy table headers to headerless tables on subsequent pages when they have matching column counts. Useful for multi-page tables.
+        cellBlocksEnabled:
+          type: boolean
+          default: false
+          description: Whether to include individual table cell blocks in the output. When enabled, each cell in a table will be represented as a separate block with its own bounding box and content and will be `children` of the table block. Only supported on `parse_performance` engineVersion `1.0.1`.
+        agentic:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTablesAgentic'
+          description: Options for agentic table processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic table correction is triggered.
+      description: Options for table blocks.
+      title: ParseConfigBlockOptionsTables
+    ClassifierVersion:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ClassifierVersionObject'
+          description: The type of object. Will always be `"classifier_version"`.
+        id:
+          type: string
+          description: 'The unique identifier for this version of the classifier.
+
+
+            Example: `"clv_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        description:
+          type:
+          - string
+          - 'null'
+          description: 'A description of this version of the classifier.
+
+
+            Example: `"Added new document types for Q4 processing"`
+
+            '
+        version:
+          type: string
+          description: 'The version number or identifier for this specific version of the classifier. The draft version will have version="draft".
+
+
+            Examples: `"1.0"`, `"2.1"`, `"draft"`
+
+            '
+        config:
+          $ref: '#/components/schemas/ClassifyConfig'
+          description: 'The configuration settings for this version of the classifier.
+
+            '
+        classifierId:
+          type: string
+          description: 'The ID of the classifier that this version belongs to.
+
+
+            Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - description
+      - version
+      - config
+      - classifierId
+      - createdAt
+      - createdBy
+      title: ClassifierVersion
+    ParseConfigChunkingStrategy:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategyType'
+          default: page
+          description: 'The type of chunking strategy. Supported values:
+
+
+            * `page`: Chunk document by pages.
+
+            * `document`: Entire document is a single chunk. Essentially no chunking.
+
+            * `section`: Split by logical sections. Not supported for target=spatial.
+
+            '
+        options:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategyOptions'
+          description: Additional options for the chunking strategy.
+      description: Strategy for dividing the document into chunks.
+      title: ParseConfigChunkingStrategy
+    ParseConfigAdvancedOptionsFormattingDetectionItemsType:
+      type: string
+      enum:
+      - change_tracking
+      description: 'The type of formatting detection to enable.
+
+
+        * `"change_tracking"` — Detect tracked changes (insertions, deletions, substitutions) indicated by strikethroughs, colored text, or underlines in the source document.
+
+        '
+      title: ParseConfigAdvancedOptionsFormattingDetectionItemsType
+    Classification:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the classification. We recommend lowercase, underscore-separated format.
+        type:
+          type: string
+          description: Type identifier for the classification.
+        description:
+          type: string
+          description: A detailed description of the classification.
+      required:
+      - id
+      - type
+      - description
+      title: Classification
+    ParseConfigAdvancedOptions:
+      type: object
+      properties:
+        pageRotationEnabled:
+          type: boolean
+          default: true
+          description: Whether to automatically detect and correct page rotation.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+        excelParsingMode:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsExcelParsingMode'
+          description: 'Controls how Excel files are parsed.
+
+
+            * `basic`: Fast, deterministic parsing.
+
+            * `advanced`: Enable layout block detection for complex spreadsheets. This mode incurs additional credits when enabled.
+
+
+            For `.xls` files, `basic` mode is always used.
+
+            '
+        excelSkipHiddenContent:
+          type: boolean
+          default: false
+          description: Whether to exclude hidden rows, columns, and sheets when parsing Excel files.
+        excelUseRawCellValues:
+          type: boolean
+          default: false
+          description: Whether to return raw calculated cell values instead of locale-formatted values when parsing Excel files. Useful when downstream processing needs the underlying numeric or unformatted data.
+        excelSkipCalculation:
+          type: boolean
+          default: true
+          description: Whether to skip formula recalculation when opening Excel workbooks. Significantly improves parsing speed for formula-heavy spreadsheets. Disable if cell values depend on volatile functions like NOW() or TODAY().
+        excelIncludeCellMetadata:
+          type: boolean
+          default: false
+          description: Whether to include spreadsheet cell provenance when parsing Excel files in advanced mode. When enabled, table cell block details include source cell references and formulas, text or heading block details can include source ranges, and HTML table output includes `data-cell` and `data-formula` attributes.
+        excelIncludeCellFormatting:
+          type: boolean
+          default: false
+          description: Whether to include spreadsheet cell formatting when parsing Excel files in advanced mode. When enabled, table cell block details include structured formatting such as bold, italic, font color, and background color, and HTML table output preserves inline cell styles.
+        verticalGroupingThreshold:
+          type: number
+          format: double
+          minimum: 0.1
+          maximum: 5
+          default: 1
+          description: Multiplier for the Y-axis threshold used to determine if text blocks should be placed on the same line or not (0.1-5.0, default 1.0). Higher values group elements that are further apart vertically. Only applies when the spatial target is set.
+        returnOcr:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsReturnOcr'
+          description: Options for returning raw OCR data in the response.
+        alwaysConvertToPdf:
+          type: boolean
+          default: false
+          description: Whether to convert supported file types (images, Word documents, PowerPoint, Excel, HTML) to PDF before parsing. This can improve parsing quality for some file types and ensures spatial output with bounding boxes.
+        enrichmentFormat:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsEnrichmentFormat'
+          default: xml
+          description: 'The format used for enrichment annotations in the output.
+
+
+            * `xml`: Use XML-style tags for enrichment annotations, e.g. <page_number>1</page_number> or <barcode>1234567890</barcode>
+
+            * `bracket`: Use bracket-style notation for enrichment annotations, e.g. [page_number: 1] or [barcode: 1234567890]
+
+            '
+        imageConversionQuality:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsImageConversionQuality'
+          default: medium
+          description: 'Controls the quality level when converting images or documents to PDF for parsing.
+
+
+            * `high`: Maximum quality, can add some latency for large/dense documents
+
+            * `medium`: Balanced quality and speed
+
+            * `low`: Lower quality, smaller file sizes, faster processing
+
+            '
+        formattingDetection:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParseConfigAdvancedOptionsFormattingDetectionItems'
+          description: 'Enable detection of formatting-based annotations in the document. Currently supports change tracking detection.
+
+
+            When enabled, detected changes are represented inline within the `content` field of applicable blocks using standard HTML change-tracking elements: [`<ins>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ins) for insertions and [`<del>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del) for deletions, grouped inside a `<change>` wrapper.
+
+
+            Affected block types: `text`, `heading`, `section_heading`, `header`, `footer`.
+
+
+            **Note:** Requires `engine: "parse_performance"` with `engineVersion >= "2.0.0"`.
+
+            '
+      title: ParseConfigAdvancedOptions
+    ClassifierObject:
+      type: string
+      enum:
+      - classifier
+      description: The type of object. Will always be `"classifier"`.
+      title: ClassifierObject
+    ParseConfigEngine:
+      type: string
+      enum:
+      - parse_performance
+      - parse_light
+      - parse_auto
+      default: parse_performance
+      description: 'The parsing engine to use. Supported values:
+
+        * `parse_performance`: Full-featured parsing engine with highest accuracy (default)
+
+        * `parse_light`: Lightweight parsing engine optimized for high-volume, cost-sensitive ingestion. Uses the new layout model with full layout support and the markdown target at lower cost and latency, but performs worse than `parse_performance` on lower-quality scans, harder handwriting, larger tables, non-Latin-based languages, and dense checkbox regions.
+
+        * `parse_auto`: Adaptive parsing that classifies difficulty and routes work per page — simple pages are parsed with the parse_light model pipeline while complex pages get performance-level model treatment. Billed per page by complexity.
+
+        '
+      title: ParseConfigEngine
+    ParseConfigAdvancedOptionsExcelParsingMode:
+      type: string
+      enum:
+      - basic
+      - advanced
+      description: 'Controls how Excel files are parsed.
+
+
+        * `basic`: Fast, deterministic parsing.
+
+        * `advanced`: Enable layout block detection for complex spreadsheets. This mode incurs additional credits when enabled.
+
+
+        For `.xls` files, `basic` mode is always used.
+
+        '
+      title: ParseConfigAdvancedOptionsExcelParsingMode
+    NextPageToken:
+      type: string
+      description: 'The token used to fetch the page of results from a previous request. We use cursor based pagination and will return a `nextPageToken` in the response if there are more results.
+
+
+        Note that if other parameters are changed in subsequent requests, you may receive inconsistent data.
+
+        '
+      title: NextPageToken
+    ParseConfigBlockOptionsText:
+      type: object
+      properties:
+        signatureDetectionEnabled:
+          type: boolean
+          default: false
+          description: Whether an additional vision model will be utilized for advanced signature detection. Recommended for most use cases, but should be disabled if signature detection is not necessary and latency is a concern.
+        agentic:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTextAgentic'
+          description: Options for agentic text processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic text correction is triggered.
+      description: Options for text blocks.
+      title: ParseConfigBlockOptionsText
+    ParseConfig:
+      type: object
+      properties:
+        target:
+          $ref: '#/components/schemas/ParseConfigTarget'
+          default: markdown
+          description: 'The target format for the parsed content.
+
+
+            Supported values:
+
+
+            * `markdown`: True markdown with logical reading order (headings, lists, tables, checkboxes). Best default for LLMs/RAG and enables section-based chunking.
+
+            * `spatial`: Layout/position-preserving text that uses markdown elements for block types but is not strictly markdown due to whitespace/tabs used to maintain placement. Only page-based chunking is supported.
+
+
+            Guidance:
+
+
+            * Prefer `markdown` for most documents, multi-column reading order, and retrieval use cases
+
+            * Prefer `spatial` for messy/scanned/handwritten or skewed documents, when you need near 1:1 layout fidelity, or for BOL-like logistics docs
+
+
+            See “Markdown vs Spatial” in the [Parse guide](https://docs.extend.ai/2026-02-09/parsing/configuration#target-format) for details.
+
+            '
+        chunkingStrategy:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategy'
+          description: Strategy for dividing the document into chunks.
+        engine:
+          $ref: '#/components/schemas/ParseConfigEngine'
+          default: parse_performance
+          description: 'The parsing engine to use. Supported values:
+
+            * `parse_performance`: Full-featured parsing engine with highest accuracy (default)
+
+            * `parse_light`: Lightweight parsing engine optimized for high-volume, cost-sensitive ingestion. Uses the new layout model with full layout support and the markdown target at lower cost and latency, but performs worse than `parse_performance` on lower-quality scans, harder handwriting, larger tables, non-Latin-based languages, and dense checkbox regions.
+
+            * `parse_auto`: Adaptive parsing that classifies difficulty and routes work per page — simple pages are parsed with the parse_light model pipeline while complex pages get performance-level model treatment. Billed per page by complexity.
+
+            '
+        engineVersion:
+          type: string
+          default: latest
+          description: 'Pin a specific parser engine version for reproducibility. When set to `latest`, the most recent stable version of the selected engine is used.
+
+            '
+        blockOptions:
+          $ref: '#/components/schemas/ParseConfigBlockOptions'
+          description: Options for controlling how different block types are processed.
+        advancedOptions:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptions'
+      description: Configuration options for the parsing process. Defaults depend on the selected parser engine and version.
+      title: ParseConfig
+    CreatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was created. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: CreatedAt
+    ParseConfigChunkingStrategyOptions:
+      type: object
+      properties:
+        minCharacters:
+          type: integer
+          default: 500
+          description: Specify a minimum number of characters per chunk.
+        maxCharacters:
+          type: integer
+          default: 10000
+          description: Specify a maximum number of characters per chunk.
+      description: Additional options for the chunking strategy.
+      title: ParseConfigChunkingStrategyOptions
+    SortBy:
+      type: string
+      enum:
+      - updatedAt
+      - createdAt
+      default: updatedAt
+      description: Sort by the given field.
+      title: SortBy
+    PageRanges:
+      type: array
+      items:
+        $ref: '#/components/schemas/PageRangesItems'
+      description: Limit processing to the specified page ranges. See [Page Ranges](https://docs.extend.ai/2026-02-09/page-ranges).
+      title: PageRanges
+    ParseConfigAdvancedOptionsImageConversionQuality:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+      default: medium
+      description: 'Controls the quality level when converting images or documents to PDF for parsing.
+
+
+        * `high`: Maximum quality, can add some latency for large/dense documents
+
+        * `medium`: Balanced quality and speed
+
+        * `low`: Lower quality, smaller file sizes, faster processing
+
+        '
+      title: ParseConfigAdvancedOptionsImageConversionQuality
+    ClassifierSummaryObject:
+      type: string
+      enum:
+      - classifier
+      description: The type of object. Will always be `"classifier"`.
+      title: ClassifierSummaryObject
+    ParseConfigAdvancedOptionsEnrichmentFormat:
+      type: string
+      enum:
+      - xml
+      - bracket
+      default: xml
+      description: 'The format used for enrichment annotations in the output.
+
+
+        * `xml`: Use XML-style tags for enrichment annotations, e.g. <page_number>1</page_number> or <barcode>1234567890</barcode>
+
+        * `bracket`: Use bracket-style notation for enrichment annotations, e.g. [page_number: 1] or [barcode: 1234567890]
+
+        '
+      title: ParseConfigAdvancedOptionsEnrichmentFormat
+    ParseConfigAdvancedOptionsReturnOcr:
+      type: object
+      properties:
+        words:
+          type: boolean
+          default: false
+          description: Whether to include word-level OCR data in the response, including word bounding boxes and confidence scores. This meaningfully impacts the response size, consider using the signed url return format.
+      description: Options for returning raw OCR data in the response.
+      title: ParseConfigAdvancedOptionsReturnOcr
+    ParseConfigChunkingStrategyType:
+      type: string
+      enum:
+      - page
+      - document
+      - section
+      default: page
+      description: 'The type of chunking strategy. Supported values:
+
+
+        * `page`: Chunk document by pages.
+
+        * `document`: Entire document is a single chunk. Essentially no chunking.
+
+        * `section`: Split by logical sections. Not supported for target=spatial.
+
+        '
+      title: ParseConfigChunkingStrategyType
+    Classifier:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ClassifierObject'
+          description: The type of object. Will always be `"classifier"`.
+        id:
+          type: string
+          description: 'The ID of the classifier.
+
+
+            Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the classifier.
+
+
+            Example: `"Document Type Classifier"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+        draftVersion:
+          $ref: '#/components/schemas/ClassifierVersion'
+          description: The draft version of the classifier. This is the editable version in the Extend dashboard.
+      required:
+      - object
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      - draftVersion
+      title: Classifier
+    UpdatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was last updated. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: UpdatedAt
+    ParseConfigBlockOptionsFigures:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: Whether to include figures in the output.
+        figureImageClippingEnabled:
+          type: boolean
+          default: true
+          description: Whether to clip and extract images from figures.
+        advancedChartExtractionEnabled:
+          type: boolean
+          default: false
+          description: Whether to enable advanced chart extraction using vision models for improved data extraction from charts.
+        customInstructions:
+          type: string
+          maxLength: 2000
+          description: 'Custom instructions injected into the vision model prompt used to analyze and summarize figures. Use to steer figure descriptions toward your use case (e.g. domain terminology, details to always capture). Requires `enabled: true`. Available on `parse_performance` >= `2.0.0` and `parse_light` >= `1.0.0`.
+
+            '
+      description: Options for figure blocks.
+      title: ParseConfigBlockOptionsFigures
+    ParseConfigBlockOptionsKeyValue:
+      type: object
+      properties:
+        blankFieldFormattingEnabled:
+          type: boolean
+          default: false
+          description: Whether to preserve blank field formatting for key-value pairs with empty values.
+      description: Options for key-value pair blocks.
+      title: ParseConfigBlockOptionsKeyValue
+    ParseConfigTarget:
+      type: string
+      enum:
+      - markdown
+      - spatial
+      default: markdown
+      description: 'The target format for the parsed content.
+
+
+        Supported values:
+
+
+        * `markdown`: True markdown with logical reading order (headings, lists, tables, checkboxes). Best default for LLMs/RAG and enables section-based chunking.
+
+        * `spatial`: Layout/position-preserving text that uses markdown elements for block types but is not strictly markdown due to whitespace/tabs used to maintain placement. Only page-based chunking is supported.
+
+
+        Guidance:
+
+
+        * Prefer `markdown` for most documents, multi-column reading order, and retrieval use cases
+
+        * Prefer `spatial` for messy/scanned/handwritten or skewed documents, when you need near 1:1 layout fidelity, or for BOL-like logistics docs
+
+
+        See “Markdown vs Spatial” in the [Parse guide](https://docs.extend.ai/2026-02-09/parsing/configuration#target-format) for details.
+
+        '
+      title: ParseConfigTarget
+    ParseConfigBlockOptionsFormulas:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable formula detection and parsing. When enabled, mathematical formulas and equations are detected and their LaTeX representations are included in the output. When disabled, formulas will be detected as text blocks and may not be accurately parsed.
+      description: Options for formula blocks.
+      title: ParseConfigBlockOptionsFormulas
+    ParseConfigAdvancedOptionsFormattingDetectionItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsFormattingDetectionItemsType'
+          description: 'The type of formatting detection to enable.
+
+
+            * `"change_tracking"` — Detect tracked changes (insertions, deletions, substitutions) indicated by strikethroughs, colored text, or underlines in the source document.
+
+            '
+      required:
+      - type
+      title: ParseConfigAdvancedOptionsFormattingDetectionItems
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling.
+        message:
+          type: string
+          description: "Human-readable error message suitable for displaying to developers. \nDo not rely on the exact text of this message as it may change.\n"
+        retryable:
+          type: boolean
+          description: 'Whether the request can be retried. When true, retry with exponential backoff.
+
+            When false, fix the underlying issue before retrying.
+
+            '
+        requestId:
+          type: string
+          description: "Unique request identifier for support purposes. Always include this \nwhen contacting Extend support about an error.\n"
+        docUrl:
+          type: string
+          description: Link to relevant documentation when one is available.
+      required:
+      - code
+      - message
+      - retryable
+      description: 'Standard error response format for all Extend API errors.
+
+
+        See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+        '
+      title: ApiError
+    ParseConfigBlockOptions:
+      type: object
+      properties:
+        figures:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsFigures'
+          description: Options for figure blocks.
+        tables:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTables'
+          description: Options for table blocks.
+        text:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsText'
+          description: Options for text blocks.
+        keyValue:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsKeyValue'
+          description: Options for key-value pair blocks.
+        barcodes:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsBarcodes'
+          description: Options for barcode blocks.
+        formulas:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsFormulas'
+          description: Options for formula blocks.
+      description: Options for controlling how different block types are processed.
+      title: ParseConfigBlockOptions
+    classifiers_list_Response_200:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ClassifiersGetResponsesContentApplicationJsonSchemaObject'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassifierSummary'
+        nextPageToken:
+          $ref: '#/components/schemas/NextPageToken'
+      required:
+      - object
+      - data
+      title: classifiers_list_Response_200
+    ClassifyAdvancedOptions:
+      type: object
+      properties:
+        context:
+          $ref: '#/components/schemas/ClassifyAdvancedOptionsContext'
+          default: default
+          description: The context to use for classification.
+        advancedMultimodalEnabled:
+          type: boolean
+          default: true
+          description: Enable advanced multimodal processing for better handling of visual elements during classification.
+        memoryEnabled:
+          type: boolean
+          default: false
+          description: Enable memory for enhanced processing by learning from past successful classifications.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+      title: ClassifyAdvancedOptions
+    ClassifyAdvancedOptionsContext:
+      type: string
+      enum:
+      - default
+      - max
+      default: default
+      description: The context to use for classification.
+      title: ClassifyAdvancedOptionsContext
+    ClassifiersGetResponsesContentApplicationJsonSchemaObject:
+      type: string
+      enum:
+      - list
+      title: ClassifiersGetResponsesContentApplicationJsonSchemaObject
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

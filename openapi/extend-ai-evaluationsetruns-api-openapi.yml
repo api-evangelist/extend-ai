@@ -1,0 +1,1115 @@
+openapi: 3.2.0
+info:
+  title: Reference Evaluation Set Runs API
+  version: 1.0.0
+servers:
+- url: https://api.extend.ai
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
+tags:
+- name: evaluationSetRuns
+paths:
+  /evaluation_set_runs:
+    post:
+      operationId: evaluationSetRuns_create
+      summary: Create Evaluation Set Run
+      description: 'Create and start an async evaluation set run. The response returns the evaluation set run object with its initial status; use `GET /evaluation_set_runs/{id}` to poll for completion.
+
+
+        Evaluation set runs are currently supported for document processor evaluation sets.'
+      tags:
+      - evaluationSetRuns
+      parameters:
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Evaluation set run created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSetRun'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                evaluationSetId:
+                  type: string
+                  description: The ID of the evaluation set to run.
+                entity:
+                  $ref: '#/components/schemas/EvaluationSetRunsPostRequestBodyContentApplicationJsonSchemaEntity'
+                  description: 'Optional processor and version to run against the evaluation set. If omitted, the evaluation set''s processor is run at its draft version.
+
+                    '
+                evaluationSetItemIds:
+                  type: array
+                  items:
+                    type: string
+                  description: Optional list of evaluation set item IDs to run. If omitted, all items in the evaluation set are run.
+              required:
+              - evaluationSetId
+      security:
+      - BearerAuth: []
+  /evaluation_set_runs/{id}:
+    get:
+      operationId: evaluationSetRuns_retrieve
+      summary: Get Evaluation Set Run
+      description: Get details of an evaluation set run.
+      tags:
+      - evaluationSetRuns
+      parameters:
+      - name: id
+        in: path
+        description: 'The ID of the evaluation set run.
+
+
+          Example: `"bpr_Xj8mK2pL9nR4vT7qY5wZ"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully retrieved evaluation set run
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSetRun'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    SplitterSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/SplitterSummaryObject'
+          description: The type of object. Will always be `"splitter"`.
+        id:
+          type: string
+          description: 'The ID of the splitter.
+
+
+            Example: `"spl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the splitter.
+
+
+            Example: `"Invoice Packet Splitter"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: SplitterSummary
+    ClassifierVersionSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ClassifierVersionSummaryObject'
+          description: The type of object. Will always be `"classifier_version"`.
+        id:
+          type: string
+          description: 'The unique identifier for this version of the classifier.
+
+
+            Example: `"clv_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        description:
+          type:
+          - string
+          - 'null'
+          description: 'A description of this version of the classifier.
+
+
+            Example: `"Added new document types for Q4 processing"`
+
+            '
+        version:
+          type: string
+          description: 'The version number or identifier for this specific version of the classifier. The draft version will have version="draft".
+
+
+            Examples: `"1.0"`, `"2.1"`, `"draft"`
+
+            '
+        classifierId:
+          type: string
+          description: 'The ID of the classifier that this version belongs to.
+
+
+            Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - description
+      - version
+      - classifierId
+      - createdAt
+      - createdBy
+      title: ClassifierVersionSummary
+    SplitterVersionSummaryObject:
+      type: string
+      enum:
+      - splitter_version
+      description: The type of object. Will always be `"splitter_version"`.
+      title: SplitterVersionSummaryObject
+    SplitterSummaryObject:
+      type: string
+      enum:
+      - splitter
+      description: The type of object. Will always be `"splitter"`.
+      title: SplitterSummaryObject
+    CreatedBy:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - user
+            description: 'Discriminator value: user'
+          email:
+            type: string
+            format: email
+            description: The email address of the user who created the resource.
+        required:
+        - type
+        - email
+        description: Attribution for a resource created via the studio by a logged-in user.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - api_key
+            description: 'Discriminator value: api_key'
+          name:
+            type: string
+            description: The name of the API key that created the resource.
+        required:
+        - type
+        - name
+        description: Attribution for a resource created via the API using an API key.
+      discriminator:
+        propertyName: type
+      description: 'The actor that created this resource.
+
+
+        * `user` — the resource was created via the studio by a logged-in user. The user''s `email` is exposed.
+
+        * `api_key` — the resource was created via the API using an API key. The key''s `name` is exposed.
+
+
+        May be `null` for resources created before attribution.
+
+        '
+      title: CreatedBy
+    ClassifierSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ClassifierSummaryObject'
+          description: The type of object. Will always be `"classifier"`.
+        id:
+          type: string
+          description: 'The ID of the classifier.
+
+
+            Example: `"cl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the classifier.
+
+
+            Example: `"Document Type Classifier"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: ClassifierSummary
+    EvaluationSetRun:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/EvaluationSetRunObject'
+          description: 'The type of object. In this case, it will always be `"evaluation_set_run"`.
+
+            '
+        id:
+          type: string
+          description: 'The unique identifier for this evaluation set run.
+
+
+            Example: `"bpr_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        evaluationSetId:
+          type: string
+          description: 'The ID of the evaluation set that was run.
+
+
+            Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+            '
+        entity:
+          $ref: '#/components/schemas/EvaluationSetRunEntity'
+          description: The extractor, classifier, or splitter that was run.
+        entityVersion:
+          $ref: '#/components/schemas/EvaluationSetRunEntityVersion'
+          description: The version of the extractor, classifier, or splitter that was run.
+        metrics:
+          $ref: '#/components/schemas/EvaluationSetRunMetrics'
+          description: 'Metrics for the evaluation set run. The shape depends on the entity type.
+
+            '
+        status:
+          $ref: '#/components/schemas/BatchRunStatus'
+        options:
+          $ref: '#/components/schemas/EvaluationSetRunOptions'
+          description: The options for the evaluation set run.
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - evaluationSetId
+      - entity
+      - entityVersion
+      - metrics
+      - status
+      - options
+      - createdAt
+      - updatedAt
+      title: EvaluationSetRun
+    ExtractorSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ExtractorSummaryObject'
+          description: The type of object. Will always be `"extractor"`.
+        id:
+          type: string
+          description: 'The ID of the extractor.
+
+
+            Example: `"ex_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the extractor.
+
+
+            Example: `"Invoice Extractor"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - name
+      - createdAt
+      - updatedAt
+      title: ExtractorSummary
+    EvaluationSetRunsPostRequestBodyContentApplicationJsonSchemaEntity:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the extractor, classifier, or splitter to evaluate.
+        version:
+          $ref: '#/components/schemas/ProcessorVersionString'
+          default: latest
+      required:
+      - id
+      description: 'Optional processor and version to run against the evaluation set. If omitted, the evaluation set''s processor is run at its draft version.
+
+        '
+      title: EvaluationSetRunsPostRequestBodyContentApplicationJsonSchemaEntity
+    EvaluationSetRunEntityVersion:
+      oneOf:
+      - $ref: '#/components/schemas/ExtractorVersionSummary'
+      - $ref: '#/components/schemas/ClassifierVersionSummary'
+      - $ref: '#/components/schemas/SplitterVersionSummary'
+      description: The version of the extractor, classifier, or splitter that was run.
+      title: EvaluationSetRunEntityVersion
+    EvaluationSetRunEntity:
+      oneOf:
+      - $ref: '#/components/schemas/ExtractorSummary'
+      - $ref: '#/components/schemas/ClassifierSummary'
+      - $ref: '#/components/schemas/SplitterSummary'
+      description: The extractor, classifier, or splitter that was run.
+      title: EvaluationSetRunEntity
+    ExtractorSummaryObject:
+      type: string
+      enum:
+      - extractor
+      description: The type of object. Will always be `"extractor"`.
+      title: ExtractorSummaryObject
+    ClassificationMetric:
+      type: object
+      properties:
+        countExpected:
+          type: number
+          format: double
+          description: The number of files whose expected classification was this class.
+        countPredicted:
+          type: number
+          format: double
+          description: The number of files the model classified as this class.
+        countCorrect:
+          type: number
+          format: double
+          description: The number of files correctly classified as this class.
+        precision:
+          type: number
+          format: double
+          description: '`countCorrect / countPredicted` for this class.
+
+            '
+        recall:
+          type: number
+          format: double
+          description: '`countCorrect / countExpected` for this class.
+
+            '
+        f1:
+          type: number
+          format: double
+          description: 'Harmonic mean of `precision` and `recall`.
+
+            '
+      description: Per-class precision, recall, and F1 for a classify evaluation run.
+      title: ClassificationMetric
+    EvaluationSetRunObject:
+      type: string
+      enum:
+      - evaluation_set_run
+      description: 'The type of object. In this case, it will always be `"evaluation_set_run"`.
+
+        '
+      title: EvaluationSetRunObject
+    ExtractorVersionSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ExtractorVersionSummaryObject'
+          description: The type of object. Will always be `"extractor_version"`.
+        id:
+          type: string
+          description: 'The unique identifier for this version of the extractor.
+
+
+            Example: `"exv_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        description:
+          type:
+          - string
+          - 'null'
+          description: 'A description of this version of the extractor.
+
+
+            Example: `"Updated extraction fields for new invoice format"`
+
+            '
+        version:
+          type: string
+          description: 'The version number or identifier for this specific version of the extractor. The draft version will have version="draft".
+
+
+            Examples: `"1.0"`, `"2.1"`, `"draft"`
+
+            '
+        extractorId:
+          type: string
+          description: 'The ID of the extractor that this version belongs to.
+
+
+            Example: `"ex_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - description
+      - version
+      - extractorId
+      - createdAt
+      - createdBy
+      title: ExtractorVersionSummary
+    ClassifierVersionSummaryObject:
+      type: string
+      enum:
+      - classifier_version
+      description: The type of object. Will always be `"classifier_version"`.
+      title: ClassifierVersionSummaryObject
+    SplitterVersionSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/SplitterVersionSummaryObject'
+          description: The type of object. Will always be `"splitter_version"`.
+        id:
+          type: string
+          description: 'The unique identifier for this version of the splitter.
+
+
+            Example: `"splv_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        description:
+          type:
+          - string
+          - 'null'
+          description: 'A description of this version of the splitter.
+
+
+            Example: `"Updated split rules for multi-invoice packets"`
+
+            '
+        version:
+          type: string
+          description: 'The version number or identifier for this specific version of the splitter. The draft version will have version="draft".
+
+
+            Examples: `"1.0"`, `"2.1"`, `"draft"`
+
+            '
+        splitterId:
+          type: string
+          description: 'The ID of the splitter that this version belongs to.
+
+
+            Example: `"spl_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - description
+      - version
+      - splitterId
+      - createdAt
+      - createdBy
+      title: SplitterVersionSummary
+    CreatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was created. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: CreatedAt
+    BatchRunStatus:
+      type: string
+      enum:
+      - PENDING
+      - PROCESSING
+      - PROCESSED
+      - FAILED
+      - CANCELLED
+      description: 'The status of a batch run:
+
+        * `"PENDING"` - The batch has been created and is waiting to be processed
+
+        * `"PROCESSING"` - The batch is currently being processed
+
+        * `"PROCESSED"` - All runs in the batch have completed successfully
+
+        * `"FAILED"` - The batch failed to process
+
+        * `"CANCELLED"` - The batch was cancelled
+
+        '
+      title: BatchRunStatus
+    EvaluationSetRunMetrics:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ExtractEvaluationSetRunMetricsType'
+            description: The type of processor for this evaluation set. Always `"EXTRACT"` for extractor evaluation runs.
+          numFilesTotal:
+            type: number
+            format: double
+            description: The total number of files that will be processed in this evaluation set run.
+          numFilesProcessed:
+            type: number
+            format: double
+            description: The number of files that have finished processing.
+          numFiles:
+            type: number
+            format: double
+            description: Deprecated. Use `numFilesProcessed` instead.
+            deprecated: true
+          numPages:
+            type: number
+            format: double
+            description: The total number of pages processed across the completed files.
+          meanLatencyMs:
+            type: number
+            format: double
+            description: Mean per-file latency in milliseconds.
+          p50LatencyMs:
+            type: number
+            format: double
+            description: 50th percentile per-file latency in milliseconds.
+          p90LatencyMs:
+            type: number
+            format: double
+            description: 90th percentile per-file latency in milliseconds.
+          p95LatencyMs:
+            type: number
+            format: double
+            description: 95th percentile per-file latency in milliseconds.
+          p99LatencyMs:
+            type: number
+            format: double
+            description: 99th percentile per-file latency in milliseconds.
+          accuracy:
+            type: number
+            format: double
+            description: Aggregate accuracy across every reviewed field in `fieldMetrics`.
+          fieldMetrics:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/EvaluationSetRunFieldMetric'
+            description: 'Per-field accuracy statistics. Keys are the extractor schema''s field names — nested fields are flattened to dot-joined paths. See [Extraction response format](https://docs.extend.ai/2026-02-09/extraction/response-format#output-value-and-metadata) for more on how extractor field paths are structured.
+
+              '
+        required:
+        - type
+        description: 'Metrics for an evaluation set run against an extractor.
+
+          '
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/ClassifyEvaluationSetRunMetricsType'
+            description: The type of processor for this evaluation set. Always `"CLASSIFY"` for classifier evaluation runs.
+          numFilesTotal:
+            type: number
+            format: double
+            description: The total number of files that will be processed in this evaluation set run.
+          numFilesProcessed:
+            type: number
+            format: double
+            description: The number of files that have finished processing.
+          numFiles:
+            type: number
+            format: double
+            description: Deprecated. Use `numFilesProcessed` instead.
+            deprecated: true
+          numPages:
+            type: number
+            format: double
+            description: The total number of pages processed across the completed files.
+          meanLatencyMs:
+            type: number
+            format: double
+            description: Mean per-file latency in milliseconds.
+          p50LatencyMs:
+            type: number
+            format: double
+            description: 50th percentile per-file latency in milliseconds.
+          p90LatencyMs:
+            type: number
+            format: double
+            description: 90th percentile per-file latency in milliseconds.
+          p95LatencyMs:
+            type: number
+            format: double
+            description: 95th percentile per-file latency in milliseconds.
+          p99LatencyMs:
+            type: number
+            format: double
+            description: 99th percentile per-file latency in milliseconds.
+          accuracy:
+            type: number
+            format: double
+            description: 'Overall accuracy across the evaluation set, computed as the share of files whose predicted class matched the expected class.
+
+              '
+          classificationMetrics:
+            type: object
+            additionalProperties:
+              $ref: '#/components/schemas/ClassificationMetric'
+            description: 'Per-class precision, recall, and F1. Keys are the classifier''s classification types as defined in the classifier configuration.
+
+              '
+        required:
+        - type
+        description: 'Metrics for an evaluation set run against a classifier.
+
+          '
+      - type: object
+        properties:
+          type:
+            $ref: '#/components/schemas/SplitterEvaluationSetRunMetricsType'
+            description: The type of processor for this evaluation set. Always `"SPLITTER"` for splitter evaluation runs.
+          numFilesTotal:
+            type: number
+            format: double
+            description: The total number of files that will be processed in this evaluation set run.
+          numFilesProcessed:
+            type: number
+            format: double
+            description: The number of files that have finished processing.
+          numFiles:
+            type: number
+            format: double
+            description: Deprecated. Use `numFilesProcessed` instead.
+            deprecated: true
+          numPages:
+            type: number
+            format: double
+            description: The total number of pages processed across the completed files.
+          meanLatencyMs:
+            type: number
+            format: double
+            description: Mean per-file latency in milliseconds.
+          p50LatencyMs:
+            type: number
+            format: double
+            description: 50th percentile per-file latency in milliseconds.
+          p90LatencyMs:
+            type: number
+            format: double
+            description: 90th percentile per-file latency in milliseconds.
+          p95LatencyMs:
+            type: number
+            format: double
+            description: 95th percentile per-file latency in milliseconds.
+          p99LatencyMs:
+            type: number
+            format: double
+            description: 99th percentile per-file latency in milliseconds.
+          precision:
+            type: number
+            format: double
+            description: '`numSplitsCorrect / numSplitsPredicted`.
+
+              '
+          recall:
+            type: number
+            format: double
+            description: '`numSplitsCorrect / numSplitsExpected`.
+
+              '
+          f1:
+            type: number
+            format: double
+            description: Harmonic mean of `precision` and `recall`.
+          numSplitsExpected:
+            type: number
+            format: double
+            description: The total number of expected split documents across the evaluation set.
+          numSplitsPredicted:
+            type: number
+            format: double
+            description: The total number of split documents the model produced.
+          numSplitsCorrect:
+            type: number
+            format: double
+            description: The number of predicted splits that exactly matched an expected split.
+        required:
+        - type
+        description: 'Metrics for an evaluation set run against a splitter.
+
+          '
+      discriminator:
+        propertyName: type
+      description: 'Metrics for the evaluation set run. The shape depends on the entity type.
+
+        '
+      title: EvaluationSetRunMetrics
+    ProcessorVersionString:
+      type: string
+      default: latest
+      description: 'An optional version to use. When not supplied, the most recent published version will be used. Special values include:
+
+        - `"latest"` for the most recent published version. If there are no published versions, the draft version will be used.
+
+        - `"draft"` for the draft version.
+
+        - Specific version numbers corresponding to versions your team has published, e.g. `"1.0"`, `"2.2"`, etc.
+
+        '
+      title: ProcessorVersionString
+    ClassifierSummaryObject:
+      type: string
+      enum:
+      - classifier
+      description: The type of object. Will always be `"classifier"`.
+      title: ClassifierSummaryObject
+    ExtractEvaluationSetRunMetricsType:
+      type: string
+      enum:
+      - EXTRACT
+      description: The type of processor for this evaluation set. Always `"EXTRACT"` for extractor evaluation runs.
+      title: ExtractEvaluationSetRunMetricsType
+    EvaluationSetRunFieldMetric:
+      type: object
+      properties:
+        countTotal:
+          type: number
+          format: double
+          description: The number of runs that included this field in the schema.
+        countPresent:
+          type: number
+          format: double
+          description: The number of runs where the model produced a non-null value for this field.
+        countExpected:
+          type: number
+          format: double
+          description: The number of runs where an expected value was provided.
+        countAccurate:
+          type: number
+          format: double
+          description: The number of runs where the extracted value matched the expected value.
+        accuracy:
+          type: number
+          format: double
+          description: 'Accuracy for this field, computed as `countAccurate / countExpected`. Omitted when `countExpected` is `0`.
+
+            '
+      description: Per-field accuracy statistics for an extract evaluation run.
+      title: EvaluationSetRunFieldMetric
+    UpdatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was last updated. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: UpdatedAt
+    EvaluationSetRunOptions:
+      type: object
+      properties:
+        fuzzyMatchFields:
+          type: array
+          items:
+            type: string
+          description: The fields that were fuzzy matched.
+        excludeFields:
+          type: array
+          items:
+            type: string
+          description: The fields that were excluded from the run.
+      description: The options for the evaluation set run.
+      title: EvaluationSetRunOptions
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling.
+        message:
+          type: string
+          description: "Human-readable error message suitable for displaying to developers. \nDo not rely on the exact text of this message as it may change.\n"
+        retryable:
+          type: boolean
+          description: 'Whether the request can be retried. When true, retry with exponential backoff.
+
+            When false, fix the underlying issue before retrying.
+
+            '
+        requestId:
+          type: string
+          description: "Unique request identifier for support purposes. Always include this \nwhen contacting Extend support about an error.\n"
+        docUrl:
+          type: string
+          description: Link to relevant documentation when one is available.
+      required:
+      - code
+      - message
+      - retryable
+      description: 'Standard error response format for all Extend API errors.
+
+
+        See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+        '
+      title: ApiError
+    SplitterEvaluationSetRunMetricsType:
+      type: string
+      enum:
+      - SPLITTER
+      description: The type of processor for this evaluation set. Always `"SPLITTER"` for splitter evaluation runs.
+      title: SplitterEvaluationSetRunMetricsType
+    ClassifyEvaluationSetRunMetricsType:
+      type: string
+      enum:
+      - CLASSIFY
+      description: The type of processor for this evaluation set. Always `"CLASSIFY"` for classifier evaluation runs.
+      title: ClassifyEvaluationSetRunMetricsType
+    ExtractorVersionSummaryObject:
+      type: string
+      enum:
+      - extractor_version
+      description: The type of object. Will always be `"extractor_version"`.
+      title: ExtractorVersionSummaryObject
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer

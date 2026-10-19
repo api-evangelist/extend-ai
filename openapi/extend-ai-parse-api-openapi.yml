@@ -1,263 +1,1923 @@
 openapi: 3.2.0
 info:
-  title: Extend Parse API
-  description: The Extend API turns documents into high quality structured data. It exposes file management, synchronous and asynchronous document processors (parse, extract, classify, split), reusable processor definitions (extractors, classifiers, splitters), durable multi-step workflows and workflow runs, evaluation sets, and batch processing. All requests are authenticated with a Bearer API token and should pin an API version via the x-extend-api-version header.
-  termsOfService: https://www.extend.ai
-  contact:
-    name: Extend Support
-    url: https://docs.extend.ai
-  version: '2026-02-09'
+  title: Reference Parse API
+  version: 1.0.0
 servers:
 - url: https://api.extend.ai
-  description: Extend production API
-security:
-- BearerAuth: []
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
 tags:
 - name: Parse
 paths:
   /parse:
     post:
-      operationId: parseFile
-      tags:
-      - Parse
-      summary: Parse a file (synchronous)
-      description: Synchronously parse a document into markdown and structured chunks. Has a five minute timeout and is intended for onboarding and testing; use POST /parse_runs for production.
+      operationId: parse
+      summary: Parse File (Sync)
+      description: 'Parse a file synchronously, waiting for the result before returning. This endpoint has a **5-minute timeout** — if processing takes longer, the request will fail.
+
+
+        **Note:** This endpoint is intended for onboarding and testing only. For production workloads, use `POST /parse_runs` with polling or webhooks instead, as it provides better reliability for large files and avoids timeout issues.
+
+
+        The Parse endpoint allows you to convert documents into structured, machine-readable formats with fine-grained control over the parsing process. This endpoint is ideal for extracting cleaned document content to be used as context for downstream processing, e.g. RAG pipelines, custom ingestion pipelines, embeddings classification, etc.
+
+
+        For more details, see the Parse File guide.'
       parameters:
-      - $ref: '#/components/parameters/ApiVersion'
       - name: responseType
         in: query
+        description: 'Controls the format of the response chunks. Defaults to `json` if not specified.
+
+          * `json` - Returns parsed outputs in the response body
+
+          * `url` - Return a presigned URL to the parsed content in the response body
+
+          '
+        required: false
+        schema:
+          $ref: '#/components/schemas/ParsePostParametersResponseType'
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
         required: false
         schema:
           type: string
           enum:
-          - json
-          - url
-          default: json
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully parsed file
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ParseRun'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
       requestBody:
-        required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ParseRequest'
-      responses:
-        '200':
-          description: A processed parse run.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParseRun'
-        default:
-          $ref: '#/components/responses/ApiError'
-  /parse_runs:
-    post:
-      operationId: createParseRun
+              type: object
+              properties:
+                file:
+                  $ref: '#/components/schemas/ParsePostRequestBodyContentApplicationJsonSchemaFile'
+                  description: The file to be parsed. Files can be provided as a URL or an Extend file ID.
+                config:
+                  $ref: '#/components/schemas/ParseConfig'
+                metadata:
+                  $ref: '#/components/schemas/RunMetadata'
+                dataRetention:
+                  $ref: '#/components/schemas/DataRetention'
+              required:
+              - file
+      security:
+      - BearerAuth: []
       tags:
       - Parse
-      summary: Create a parse run (asynchronous)
-      parameters:
-      - $ref: '#/components/parameters/ApiVersion'
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ParseRequest'
-      responses:
-        '200':
-          description: The created parse run.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParseRun'
-        default:
-          $ref: '#/components/responses/ApiError'
-    get:
-      operationId: listParseRuns
-      tags:
-      - Parse
-      summary: List parse runs
-      parameters:
-      - $ref: '#/components/parameters/ApiVersion'
-      - $ref: '#/components/parameters/NextPageToken'
-      - $ref: '#/components/parameters/MaxPageSize'
-      responses:
-        '200':
-          description: A page of parse runs.
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  parseRuns:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/ParseRun'
-                  nextPageToken:
-                    type: string
-        default:
-          $ref: '#/components/responses/ApiError'
-  /parse_runs/{id}:
-    get:
-      operationId: getParseRun
-      tags:
-      - Parse
-      summary: Get a parse run
-      parameters:
-      - $ref: '#/components/parameters/ApiVersion'
-      - $ref: '#/components/parameters/PathId'
-      responses:
-        '200':
-          description: The requested parse run.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ParseRun'
-        default:
-          $ref: '#/components/responses/ApiError'
 components:
   schemas:
-    ParseRequest:
+    Block:
       type: object
-      required:
-      - file
       properties:
-        file:
-          $ref: '#/components/schemas/FileInput'
-        config:
-          type: object
-          description: Parse configuration (target, blocks, figures, tables, OCR options).
-        metadata:
-          $ref: '#/components/schemas/RunMetadata'
-    FileFromText:
-      type: object
-      required:
-      - text
-      properties:
-        text:
+        object:
+          $ref: '#/components/schemas/BlockObject'
+          description: 'The type of object. In this case, it will always be `"block"`.
+
+            '
+        id:
           type: string
-    RunStatus:
+          description: A unique identifier for the block, deterministically generated as a hash of the block content.
+        parentBlockId:
+          type: string
+          description: The ID of the parent block. For example, for a table cell block, this would be the ID of the parent table block. Only set if this is a child block.
+        type:
+          $ref: '#/components/schemas/BlockType'
+          description: "The type of block:\n* `\"text\"` - Regular text content\n* `\"heading\"` - Section or document headings \n* `\"section_heading\"` - Subsection headings\n* `\"table\"` - Tabular data with rows and columns\n* `\"figure\"` - Images, charts, diagrams, or logos\n* `\"table_head\"` - Table header cells\n* `\"table_cell\"` - Table body cells\n* `\"key_value\"` - Key-value pairs (e.g., form regions, key-val groups, etc)\n* `\"page_number\"` - Page number indicators\n* `\"barcode\"` - Barcodes and QR codes\n* `\"formula\"` - Mathematical formulas and equations\n* `\"header\"` - Page headers\n* `\"footer\"` - Page footers\n"
+        content:
+          type: string
+          description: The textual content of the block formatted based on the target format.
+        details:
+          $ref: '#/components/schemas/BlockDetails'
+          description: 'Additional details specific to the block type. The schema depends on the block type.
+
+            '
+        metadata:
+          $ref: '#/components/schemas/BlockMetadata'
+          description: Metadata about the block.
+        polygon:
+          type: array
+          items:
+            $ref: '#/components/schemas/BlockPolygonItems'
+          description: An array of points defining the polygon that bounds the block.
+        boundingBox:
+          $ref: '#/components/schemas/BoundingBox'
+          description: A simplified bounding box for the block.
+        children:
+          type: array
+          items:
+            $ref: '#/components/schemas/Block'
+          description: An array of child blocks. For example, a table block may contain table cell blocks as children when `cellBlocksEnabled` is set to true.
+      required:
+      - object
+      - id
+      - type
+      - content
+      - details
+      - metadata
+      - polygon
+      - boundingBox
+      title: Block
+    ParseConfigBlockOptionsTables:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: This option is deprecated and will have no effect. It will be removed in the next API version.
+          deprecated: true
+        targetFormat:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTablesTargetFormat'
+          default: html
+          description: 'The target format for the table blocks. Supported values:
+
+            * `markdown`: Convert table to Markdown format
+
+            * `html`: Convert table to HTML format
+
+            '
+        tableHeaderContinuationEnabled:
+          type: boolean
+          default: false
+          description: Whether to automatically copy table headers to headerless tables on subsequent pages when they have matching column counts. Useful for multi-page tables.
+        cellBlocksEnabled:
+          type: boolean
+          default: false
+          description: Whether to include individual table cell blocks in the output. When enabled, each cell in a table will be represented as a separate block with its own bounding box and content and will be `children` of the table block. Only supported on `parse_performance` engineVersion `1.0.1`.
+        agentic:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTablesAgentic'
+          description: Options for agentic table processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic table correction is triggered.
+      description: Options for table blocks.
+      title: ParseConfigBlockOptionsTables
+    FormulaDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/FormulaDetailsType'
+          description: Indicates this is a formula details object
+        latex:
+          type: string
+          description: The LaTeX representation of the detected formula.
+      required:
+      - type
+      description: Details for formula blocks
+      title: FormulaDetails
+    ChunkType:
+      type: string
+      enum:
+      - page
+      - document
+      - section
+      description: The type of chunk.
+      title: ChunkType
+    FormulaDetailsType:
+      type: string
+      enum:
+      - formula_details
+      description: Indicates this is a formula details object
+      title: FormulaDetailsType
+    TableDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TableDetailsType'
+          description: Indicates this is a table details object
+        rowCount:
+          type: integer
+          description: The number of rows in the table
+        columnCount:
+          type: integer
+          description: The number of columns in the table
+      required:
+      - type
+      - rowCount
+      - columnCount
+      description: Details for table blocks
+      title: TableDetails
+    ParseConfigBlockOptionsText:
+      type: object
+      properties:
+        signatureDetectionEnabled:
+          type: boolean
+          default: false
+          description: Whether an additional vision model will be utilized for advanced signature detection. Recommended for most use cases, but should be disabled if signature detection is not necessary and latency is a concern.
+        agentic:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTextAgentic'
+          description: Options for agentic text processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic text correction is triggered.
+      description: Options for text blocks.
+      title: ParseConfigBlockOptionsText
+    ParseConfig:
+      type: object
+      properties:
+        target:
+          $ref: '#/components/schemas/ParseConfigTarget'
+          default: markdown
+          description: 'The target format for the parsed content.
+
+
+            Supported values:
+
+
+            * `markdown`: True markdown with logical reading order (headings, lists, tables, checkboxes). Best default for LLMs/RAG and enables section-based chunking.
+
+            * `spatial`: Layout/position-preserving text that uses markdown elements for block types but is not strictly markdown due to whitespace/tabs used to maintain placement. Only page-based chunking is supported.
+
+
+            Guidance:
+
+
+            * Prefer `markdown` for most documents, multi-column reading order, and retrieval use cases
+
+            * Prefer `spatial` for messy/scanned/handwritten or skewed documents, when you need near 1:1 layout fidelity, or for BOL-like logistics docs
+
+
+            See “Markdown vs Spatial” in the [Parse guide](https://docs.extend.ai/2026-02-09/parsing/configuration#target-format) for details.
+
+            '
+        chunkingStrategy:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategy'
+          description: Strategy for dividing the document into chunks.
+        engine:
+          $ref: '#/components/schemas/ParseConfigEngine'
+          default: parse_performance
+          description: 'The parsing engine to use. Supported values:
+
+            * `parse_performance`: Full-featured parsing engine with highest accuracy (default)
+
+            * `parse_light`: Lightweight parsing engine optimized for high-volume, cost-sensitive ingestion. Uses the new layout model with full layout support and the markdown target at lower cost and latency, but performs worse than `parse_performance` on lower-quality scans, harder handwriting, larger tables, non-Latin-based languages, and dense checkbox regions.
+
+            * `parse_auto`: Adaptive parsing that classifies difficulty and routes work per page — simple pages are parsed with the parse_light model pipeline while complex pages get performance-level model treatment. Billed per page by complexity.
+
+            '
+        engineVersion:
+          type: string
+          default: latest
+          description: 'Pin a specific parser engine version for reproducibility. When set to `latest`, the most recent stable version of the selected engine is used.
+
+            '
+        blockOptions:
+          $ref: '#/components/schemas/ParseConfigBlockOptions'
+          description: Options for controlling how different block types are processed.
+        advancedOptions:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptions'
+      description: Configuration options for the parsing process. Defaults depend on the selected parser engine and version.
+      title: ParseConfig
+    FileSummaryObject:
+      type: string
+      enum:
+      - file
+      description: The type of object. Will always be `"file"`.
+      title: FileSummaryObject
+    ParseConfigChunkingStrategyOptions:
+      type: object
+      properties:
+        minCharacters:
+          type: integer
+          default: 500
+          description: Specify a minimum number of characters per chunk.
+        maxCharacters:
+          type: integer
+          default: 10000
+          description: Specify a maximum number of characters per chunk.
+      description: Additional options for the chunking strategy.
+      title: ParseConfigChunkingStrategyOptions
+    ParseRunMetrics:
+      type: object
+      properties:
+        processingTimeMs:
+          type: number
+          format: double
+          description: The time taken to process the document in milliseconds.
+        pageCount:
+          type: number
+          format: double
+          description: The number of pages from the document that were parsed. For PDF and image files, this is the actual page count. For spreadsheet files (Excel, CSV), this is an estimated page count based on content volume (~1000 tokens per page).
+      required:
+      - processingTimeMs
+      - pageCount
+      description: 'Metrics about the parsing process.
+
+
+        **Availability:** Present when `status` is `"PROCESSED"`.
+
+        '
+      title: ParseRunMetrics
+    DataRetention:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/DataRetentionMode'
+          default: workspace_default
+          description: 'The retention mode for this run:
+
+            * `workspace_default` - Use the workspace''s configured retention policy.
+
+            * `zero` - Do not retain supported run data after processing.
+
+            '
+      description: 'Controls data retention for this run. When omitted or set to `workspace_default`, Extend uses your workspace''s configured retention policy. Set `mode` to `zero` to request zero data retention for the run, which deletes supported run data after processing instead of retaining it under the workspace policy.
+
+
+        Zero data retention is available to all customers on paid plans upon request. If you''re on a free plan, the request will fail with a 400 error. If you''d like to request ZDR to be enabled, please reach out to support@extend.ai.
+
+        '
+      title: DataRetention
+    PageRanges:
+      type: array
+      items:
+        $ref: '#/components/schemas/PageRangesItems'
+      description: Limit processing to the specified page ranges. See [Page Ranges](https://docs.extend.ai/2026-02-09/page-ranges).
+      title: PageRanges
+    TableCellDetailsType:
+      type: string
+      enum:
+      - table_cell_details
+      description: Indicates this is a table cell details object
+      title: TableCellDetailsType
+    ParseConfigChunkingStrategyType:
+      type: string
+      enum:
+      - page
+      - document
+      - section
+      default: page
+      description: 'The type of chunking strategy. Supported values:
+
+
+        * `page`: Chunk document by pages.
+
+        * `document`: Entire document is a single chunk. Essentially no chunking.
+
+        * `section`: Split by logical sections. Not supported for target=spatial.
+
+        '
+      title: ParseConfigChunkingStrategyType
+    BlockMetadataPage:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: The page number where this block appears.
+        width:
+          type: number
+          format: double
+          description: The width of the page in points.
+        height:
+          type: number
+          format: double
+          description: The height of the page in points.
+      required:
+      - number
+      description: Information about the page this block appears on.
+      title: BlockMetadataPage
+    ParseRunObject:
+      type: string
+      enum:
+      - parse_run
+      description: The type of object. Will always be `"parse_run"`.
+      title: ParseRunObject
+    ParseConfigBlockOptionsFigures:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: true
+          description: Whether to include figures in the output.
+        figureImageClippingEnabled:
+          type: boolean
+          default: true
+          description: Whether to clip and extract images from figures.
+        advancedChartExtractionEnabled:
+          type: boolean
+          default: false
+          description: Whether to enable advanced chart extraction using vision models for improved data extraction from charts.
+        customInstructions:
+          type: string
+          maxLength: 2000
+          description: 'Custom instructions injected into the vision model prompt used to analyze and summarize figures. Use to steer figure descriptions toward your use case (e.g. domain terminology, details to always capture). Requires `enabled: true`. Available on `parse_performance` >= `2.0.0` and `parse_light` >= `1.0.0`.
+
+            '
+      description: Options for figure blocks.
+      title: ParseConfigBlockOptionsFigures
+    RunUsageBreakdownCharge:
+      type: object
+      properties:
+        product:
+          type: string
+          description: 'Identifier for the billable cost driver. Base charges use the processor and tier (e.g. `extraction_performance`, `extraction_light`, `parse_light`); add-ons use the feature code (e.g. `review_agent`, `large_array_max_context`, `extraction_schema_groups`, `priority_parsing`, `agentic_text_correction`, `advanced_excel_parsing`); `agent_usage` is an Operator overage for unusually high effort relative to document size.
+
+            '
+        unit:
+          $ref: '#/components/schemas/RunUsageBreakdownChargeUnit'
+          description: The unit `quantity` is measured in. `page` for per-page charges, `cell` for advanced Excel parsing, `usd` for additional amounts billed such as Operator overages (`agent_usage`).
+        quantity:
+          type: number
+          format: double
+          description: How many units this charge was billed for.
+        credits:
+          type: number
+          format: double
+          description: Credits consumed by this charge.
+        pages:
+          type: array
+          items:
+            type: integer
+          description: '1-indexed page numbers that incurred this charge. Present on usage-based add-ons that are only billed for the pages where they actually applied (e.g. `agentic_text_correction`, `agentic_table_correction`).
+
+            '
+      required:
+      - product
+      - unit
+      - quantity
+      - credits
+      description: 'A single cost driver within a breakdown entry''s credit total. The per-unit rate is `credits / quantity`. Certain charges, such as `agent_usage`, have a unit of `usd`
+
+        '
+      title: RunUsageBreakdownCharge
+    RunUsageBreakdownEntryObject:
+      type: string
+      enum:
+      - extract_run
+      - classify_run
+      - split_run
+      - parse_run
+      - edit_run
+      - form_detection_run
+      description: 'The public object type of the contributing resource. Mirrors the top-level `object` field on the corresponding endpoint so callers can fetch the underlying resource by id if they want more detail.
+
+        '
+      title: RunUsageBreakdownEntryObject
+    ParseConfigBlockOptions:
+      type: object
+      properties:
+        figures:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsFigures'
+          description: Options for figure blocks.
+        tables:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsTables'
+          description: Options for table blocks.
+        text:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsText'
+          description: Options for text blocks.
+        keyValue:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsKeyValue'
+          description: Options for key-value pair blocks.
+        barcodes:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsBarcodes'
+          description: Options for barcode blocks.
+        formulas:
+          $ref: '#/components/schemas/ParseConfigBlockOptionsFormulas'
+          description: Options for formula blocks.
+      description: Options for controlling how different block types are processed.
+      title: ParseConfigBlockOptions
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling.
+        message:
+          type: string
+          description: "Human-readable error message suitable for displaying to developers. \nDo not rely on the exact text of this message as it may change.\n"
+        retryable:
+          type: boolean
+          description: 'Whether the request can be retried. When true, retry with exponential backoff.
+
+            When false, fix the underlying issue before retrying.
+
+            '
+        requestId:
+          type: string
+          description: "Unique request identifier for support purposes. Always include this \nwhen contacting Extend support about an error.\n"
+        docUrl:
+          type: string
+          description: Link to relevant documentation when one is available.
+      required:
+      - code
+      - message
+      - retryable
+      description: 'Standard error response format for all Extend API errors.
+
+
+        See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+        '
+      title: ApiError
+    ParseRun:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ParseRunObject'
+          description: The type of object. Will always be `"parse_run"`.
+        id:
+          type: string
+          description: 'A unique identifier for the parse run.
+
+
+            Example: `"pr_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        batchId:
+          type:
+          - string
+          - 'null'
+          description: 'The ID of the batch this run belongs to, if created via `POST /parse_runs/batch`.
+
+
+            **Availability:** Present when the run was submitted as part of a batch.
+
+
+            Example: `"bpar_Xj8mK2pL9nR4vT7qY5wZ"`
+
+            '
+        file:
+          oneOf:
+          - $ref: '#/components/schemas/FileSummary'
+          - type: 'null'
+          description: The file that was parsed. This file can be used as a parameter for other Extend endpoints, such as `POST /workflow_runs`. May be `null` for batch parse runs where file ingestion failed.
+        status:
+          $ref: '#/components/schemas/ParseRunStatusEnum'
+          description: 'The status of the parse run:
+
+            * `"PENDING"` - The run has been created and is waiting to be processed. Only applies to runs created via `POST /parse_runs/batch`.
+
+            * `"PROCESSING"` - The file is still being processed
+
+            * `"PROCESSED"` - The file was successfully processed
+
+            * `"FAILED"` - The processing failed (see `failureReason` for details)
+
+            '
+        failureReason:
+          type:
+          - string
+          - 'null'
+          description: 'The reason for failure.
+
+
+            **Availability:** Present when `status` is `"FAILED"`.
+
+
+            Possible values include:
+
+            * `UNABLE_TO_DOWNLOAD_FILE` - The file could not be downloaded from the provided URL
+
+            * `FILE_TYPE_NOT_SUPPORTED` - The file type is not supported for parsing
+
+            * `FILE_SIZE_TOO_LARGE` - The file exceeds the maximum allowed size
+
+            * `CORRUPT_FILE` - The file appears to be corrupted or malformed
+
+            * `OCR_ERROR` - An error occurred during optical character recognition
+
+            * `PASSWORD_PROTECTED_FILE` - The file is password protected and cannot be processed
+
+            * `FAILED_TO_CONVERT_TO_PDF` - The file could not be converted to PDF for processing
+
+            * `FAILED_TO_CONVERT_TO_JPEG` - The file could not be converted to JPEG for processing
+
+            * `FAILED_TO_GENERATE_TARGET_FORMAT` - The output could not be generated in the requested format
+
+            * `CHUNKING_ERROR` - An error occurred while chunking the document
+
+            * `INTERNAL_ERROR` - An unexpected internal error occurred
+
+            * `INVALID_CONFIG_OPTIONS` - The provided configuration options are invalid
+
+            * `OUT_OF_CREDITS` - Insufficient credits to process the file
+
+
+            **Note:** Additional failure reasons may be added in the future. Your integration should handle unknown values gracefully.
+
+            '
+        failureMessage:
+          type:
+          - string
+          - 'null'
+          description: 'A human-readable description of the failure.
+
+
+            **Availability:** Present when `status` is `"FAILED"`.
+
+            '
+        metadata:
+          oneOf:
+          - $ref: '#/components/schemas/RunMetadata'
+          - type: 'null'
+          description: 'Any metadata that was provided when creating the parse run.
+
+
+            **Availability:** Present when metadata was provided during creation.
+
+            '
+        output:
+          oneOf:
+          - $ref: '#/components/schemas/ParseRunOutput'
+          - type: 'null'
+          description: 'The parse run output.
+
+
+            **Availability:** Present when `status` is `"PROCESSED"` and the request was made without the `responseType=url` query parameter. Contains the parsed chunks.
+
+            '
+        outputUrl:
+          type:
+          - string
+          - 'null'
+          description: 'A presigned URL to download the parse run output as a JSON file. The object shape is the same as the `output` field. Expires after 15 minutes.
+
+
+            **Availability:** Present when `status` is `"PROCESSED"` and the request was made with `responseType=url` query parameter.
+
+            '
+        metrics:
+          oneOf:
+          - $ref: '#/components/schemas/ParseRunMetrics'
+          - type: 'null'
+          description: 'Metrics about the parsing process.
+
+
+            **Availability:** Present when `status` is `"PROCESSED"`.
+
+            '
+        config:
+          $ref: '#/components/schemas/ParseConfig'
+          description: The configuration used for the parsing process, including any default values that were applied.
+        usage:
+          oneOf:
+          - $ref: '#/components/schemas/RunUsage'
+          - type: 'null'
+          description: 'Usage credits consumed by this parse run.
+
+
+            **Availability:** Present when `status` is `"PROCESSED"`, the run was created after October 7, 2025, and the customer is on the current billing system.
+
+            '
+      required:
+      - object
+      - id
+      - file
+      - status
+      - failureReason
+      - failureMessage
+      - metadata
+      - output
+      - outputUrl
+      - metrics
+      - config
+      - usage
+      description: Parse run object.
+      title: ParseRun
+    ParseRunStatusEnum:
       type: string
       enum:
       - PENDING
       - PROCESSING
       - PROCESSED
       - FAILED
-      - CANCELLED
-      - NEEDS_REVIEW
-      - REJECTED
-    RunMetadata:
-      type: object
-      additionalProperties: true
-      description: Custom metadata for a run, up to 10KB.
-    ApiError:
+      description: 'The status of the parse run:
+
+        * `"PENDING"` - The run has been created and is waiting to be processed. Only applies to runs created via `POST /parse_runs/batch`.
+
+        * `"PROCESSING"` - The file is still being processed
+
+        * `"PROCESSED"` - The file was successfully processed
+
+        * `"FAILED"` - The processing failed (see `failureReason` for details)
+
+        '
+      title: ParseRunStatusEnum
+    ParseConfigBlockOptionsTablesTargetFormat:
+      type: string
+      enum:
+      - markdown
+      - html
+      default: html
+      description: 'The target format for the table blocks. Supported values:
+
+        * `markdown`: Convert table to Markdown format
+
+        * `html`: Convert table to HTML format
+
+        '
+      title: ParseConfigBlockOptionsTablesTargetFormat
+    ParseRunOutput:
       type: object
       properties:
-        code:
-          type: string
-        message:
-          type: string
-        retryable:
-          type: boolean
-        requestId:
-          type: string
-    FileInput:
+        chunks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Chunk'
+          description: An array of chunks that were parsed from the file.
+        ocr:
+          $ref: '#/components/schemas/ParseRunOutputOcr'
+          description: Raw OCR data from the parsing process. Only included when `returnOcr` is configured in the parse config's advanced options.
+        metadata:
+          oneOf:
+          - $ref: '#/components/schemas/ParseRunOutputMetadata'
+          - type: 'null'
+          description: Rotation, dimension, and file-type metadata about the parse output. `null` for parse runs that completed before this field was introduced.
+      required:
+      - chunks
+      description: 'The parse run output.
+
+
+        **Availability:** Present when `status` is `"PROCESSED"` and the request was made without the `responseType=url` query parameter. Contains the parsed chunks.
+
+        '
+      title: ParseRunOutput
+    RunUsageBreakdownChargeUnit:
+      type: string
+      enum:
+      - page
+      - cell
+      - usd
+      description: The unit `quantity` is measured in. `page` for per-page charges, `cell` for advanced Excel parsing, `usd` for additional amounts billed such as Operator overages (`agent_usage`).
+      title: RunUsageBreakdownChargeUnit
+    ParsePostRequestBodyContentApplicationJsonSchemaFile:
       oneOf:
       - $ref: '#/components/schemas/FileFromUrl'
       - $ref: '#/components/schemas/FileFromId'
-      - $ref: '#/components/schemas/FileFromText'
+      description: The file to be parsed. Files can be provided as a URL or an Extend file ID.
+      title: ParsePostRequestBodyContentApplicationJsonSchemaFile
+    CellFormatting:
+      type: object
+      properties:
+        bold:
+          type: boolean
+          description: Whether the cell text is bold.
+        italic:
+          type: boolean
+          description: Whether the cell text is italic.
+        fontColor:
+          type: string
+          description: Cell font color as a hex string.
+        backgroundColor:
+          type: string
+          description: Cell background color as a hex string.
+      description: Structured formatting for an Excel table cell
+      title: CellFormatting
+    ParseConfigChunkingStrategy:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategyType'
+          default: page
+          description: 'The type of chunking strategy. Supported values:
+
+
+            * `page`: Chunk document by pages.
+
+            * `document`: Entire document is a single chunk. Essentially no chunking.
+
+            * `section`: Split by logical sections. Not supported for target=spatial.
+
+            '
+        options:
+          $ref: '#/components/schemas/ParseConfigChunkingStrategyOptions'
+          description: Additional options for the chunking strategy.
+      description: Strategy for dividing the document into chunks.
+      title: ParseConfigChunkingStrategy
+    BlockMetadataSheet:
+      type: object
+      properties:
+        index:
+          type: integer
+          description: The zero-based index of the sheet in the original workbook.
+        name:
+          type: string
+          description: The name of the sheet in the original workbook.
+      required:
+      - index
+      - name
+      description: Spreadsheet sheet metadata. Present for blocks parsed from spreadsheet files, such as Excel workbooks.
+      title: BlockMetadataSheet
+    FileFromId:
+      type: object
+      properties:
+        id:
+          type: string
+          description: 'An Extend file ID.
+
+
+            Example: `"file_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+      required:
+      - id
+      description: 'An Extend file ID (for instance from another run or a previous file upload).
+
+        '
+      title: FileFromId
+    ParseConfigAdvancedOptionsImageConversionQuality:
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+      default: medium
+      description: 'Controls the quality level when converting images or documents to PDF for parsing.
+
+
+        * `high`: Maximum quality, can add some latency for large/dense documents
+
+        * `medium`: Balanced quality and speed
+
+        * `low`: Lower quality, smaller file sizes, faster processing
+
+        '
+      title: ParseConfigAdvancedOptionsImageConversionQuality
+    BoundingBox:
+      type: object
+      properties:
+        left:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The left coordinate of the bounding box.
+        top:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The top coordinate of the bounding box.
+        right:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The right coordinate of the bounding box.
+        bottom:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: The bottom coordinate of the bounding box.
+      required:
+      - left
+      - top
+      - right
+      - bottom
+      description: A bounding box defined by its edges.
+      title: BoundingBox
+    UpdatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was last updated. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: UpdatedAt
+    ParsePostParametersResponseType:
+      type: string
+      enum:
+      - json
+      - url
+      title: ParsePostParametersResponseType
+    ParseConfigBlockOptionsKeyValue:
+      type: object
+      properties:
+        blankFieldFormattingEnabled:
+          type: boolean
+          default: false
+          description: Whether to preserve blank field formatting for key-value pairs with empty values.
+      description: Options for key-value pair blocks.
+      title: ParseConfigBlockOptionsKeyValue
+    ParseConfigBlockOptionsTextAgentic:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable agentic text processing for OCR corrections.
+        customInstructions:
+          type: string
+          description: Custom instructions to guide the agentic text processing.
+      description: Options for agentic text processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic text correction is triggered.
+      title: ParseConfigBlockOptionsTextAgentic
+    FigureDetailsFigureType:
+      type: string
+      enum:
+      - other
+      - chart
+      - image
+      - diagram
+      - logo
+      description: 'The refined type of figure - only set when figure classification and summarization is enabled. Possible values:
+
+
+        * `image`: A photographic image
+
+        * `chart`: A data chart or graph
+
+        * `diagram`: A schematic or diagram
+
+        * `logo`: A company or brand logo
+
+        * `other`: Any other type of figure
+
+        '
+      title: FigureDetailsFigureType
+    TableCellDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TableCellDetailsType'
+          description: Indicates this is a table cell details object
+        rowIndex:
+          type: integer
+        columnIndex:
+          type: integer
+        cellReference:
+          type: string
+          description: Source spreadsheet cell or range in A1 notation, such as `B2` or `A1:C1` for a merged cell. Only set for Excel table cells when `advancedOptions.excelIncludeCellMetadata` is enabled.
+        formula:
+          type: string
+          description: Source spreadsheet formula text with a leading `=`, when the cell has a formula. Only set for Excel table cells when `advancedOptions.excelIncludeCellMetadata` is enabled.
+        formatting:
+          $ref: '#/components/schemas/CellFormatting'
+          description: Structured spreadsheet cell formatting. Only set when `advancedOptions.excelIncludeCellFormatting` is enabled and formatting is present.
+      required:
+      - type
+      - rowIndex
+      - columnIndex
+      description: Details for table cell blocks
+      title: TableCellDetails
+    ParseRunOutputOcr:
+      type: object
+      properties:
+        words:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParseRunOutputOcrWordsItems'
+          description: An array of individual words detected by OCR.
+      description: Raw OCR data from the parsing process. Only included when `returnOcr` is configured in the parse config's advanced options.
+      title: ParseRunOutputOcr
+    ParseRunOutputOcrWordsItems:
+      type: object
+      properties:
+        content:
+          type: string
+          description: The text content of the word.
+        boundingBox:
+          $ref: '#/components/schemas/BoundingBox'
+          description: The bounding box coordinates of the word.
+        confidence:
+          type: number
+          format: double
+          description: The confidence score of the OCR detection for this word, between 0 and 1.
+        pageNumber:
+          type: number
+          format: double
+          description: The page number where the word was detected.
+        blockId:
+          type: string
+          description: The `id` of the block (see the `Block` schema) this word was assigned to, based on bounding-box overlap. Omitted when the word doesn't fall within any block's bounding box.
+        rotation:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: "Clockwise degrees the word is rotated from upright, as a whole number in `[0, 360)`. \n\n`null` when the orientation could not be calculated for the word. \n\n**Availability:** Present on parse runs created on or after October 6, 2026.\n"
+      required:
+      - content
+      - boundingBox
+      - confidence
+      - pageNumber
+      title: ParseRunOutputOcrWordsItems
+    BlockObject:
+      type: string
+      enum:
+      - block
+      description: 'The type of object. In this case, it will always be `"block"`.
+
+        '
+      title: BlockObject
+    KeyValueDetailsType:
+      type: string
+      enum:
+      - key_value_details
+      description: Indicates this is a key-value details object
+      title: KeyValueDetailsType
+    ParseConfigAdvancedOptionsExcelParsingMode:
+      type: string
+      enum:
+      - basic
+      - advanced
+      description: 'Controls how Excel files are parsed.
+
+
+        * `basic`: Fast, deterministic parsing.
+
+        * `advanced`: Enable layout block detection for complex spreadsheets. This mode incurs additional credits when enabled.
+
+
+        For `.xls` files, `basic` mode is always used.
+
+        '
+      title: ParseConfigAdvancedOptionsExcelParsingMode
+    DataRetentionMode:
+      type: string
+      enum:
+      - workspace_default
+      - zero
+      default: workspace_default
+      description: 'The retention mode for this run:
+
+        * `workspace_default` - Use the workspace''s configured retention policy.
+
+        * `zero` - Do not retain supported run data after processing.
+
+        '
+      title: DataRetentionMode
+    CreatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was created. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: CreatedAt
+    FileFromUrlSettings:
+      type: object
+      properties:
+        password:
+          type: string
+          description: The password to unlock a password-protected PDF.
+      description: Optional settings for the file, such as a password for password-protected PDFs.
+      title: FileFromUrlSettings
+    BarcodeDetailsType:
+      type: string
+      enum:
+      - barcode_details
+      description: Indicates this is a barcode details object
+      title: BarcodeDetailsType
+    RunUsage:
+      type: object
+      properties:
+        credits:
+          type: number
+          format: double
+          description: 'The credits consumed by this run. For most run types this is the line item for the run''s own work; for `workflow_run` this is the aggregate across all child runs.
+
+            '
+        totalCredits:
+          type: number
+          format: double
+          description: 'The total credits accounted for under this run, including any other runs it was responsible for creating. For example, an extract run on a fresh upload triggers a parse run, so `totalCredits` includes both line items. For runs that didn''t trigger any other work — like `parse_run`, `edit_run` and `workflow_run` — `totalCredits` equals `credits`.
+
+
+            **Availability:** Present on runs persisted on or after May 14, 2026. Runs persisted before that date will omit this field.
+
+            '
+        breakdown:
+          type: array
+          items:
+            $ref: '#/components/schemas/RunUsageBreakdownEntry'
+          description: 'The chargeable resources that make up `totalCredits`, including this run itself when it has its own line item. For `workflow_run`, lists every contributing child run sorted by creation time (the workflow itself isn''t chargeable and has no line item).
+
+
+            **Availability:** Present on runs persisted on or after May 14, 2026. Runs persisted before that date will omit this field.
+
+            '
+      required:
+      - credits
+      description: 'Usage credits consumed by a run.
+
+
+        **Availability:** This field will not be returned for:
+
+        * Runs created before October 7, 2025
+
+        * Customers on legacy billing systems
+
+
+        For more details on how credits work, see our [Credits Guide](https://docs.extend.ai/general/how-credits-work).
+
+        '
+      title: RunUsage
+    ChunkMetadata:
+      type: object
+      properties:
+        pageRange:
+          $ref: '#/components/schemas/ChunkMetadataPageRange'
+          description: 'The page range this chunk covers. Often will just be a partial page, in which cases `start` and `end` will be the same.
+
+            '
+        minOcrConfidence:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Lowest per-word OCR confidence across words in this chunk, or `null` when word-level confidence is unavailable.
+        avgOcrConfidence:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Average per-word OCR confidence across words in this chunk, or `null` when word-level confidence is unavailable.
+      required:
+      - pageRange
+      description: Metadata about the chunk.
+      title: ChunkMetadata
+    ParseConfigAdvancedOptionsReturnOcr:
+      type: object
+      properties:
+        words:
+          type: boolean
+          default: false
+          description: Whether to include word-level OCR data in the response, including word bounding boxes and confidence scores. This meaningfully impacts the response size, consider using the signed url return format.
+      description: Options for returning raw OCR data in the response.
+      title: ParseConfigAdvancedOptionsReturnOcr
     FileFromUrl:
       type: object
-      required:
-      - url
       properties:
         url:
           type: string
+          description: 'A URL to download the file. For production use cases, we recommend using presigned URLs with a 5-15 minute expiration time.
+
+
+            Supported file types can be found [here](https://docs.extend.ai/2026-02-09/general/supported-file-types).
+
+            '
         name:
           type: string
+          description: The name of the file. If not set, the file name is taken from the URL.
         settings:
-          type: object
-          properties:
-            password:
-              type: string
-    FileFromId:
-      type: object
+          $ref: '#/components/schemas/FileFromUrlSettings'
+          description: Optional settings for the file, such as a password for password-protected PDFs.
       required:
-      - id
+      - url
+      title: FileFromUrl
+    KeyValueDetails:
+      type: object
       properties:
-        id:
-          type: string
-    ParseRun:
+        type:
+          $ref: '#/components/schemas/KeyValueDetailsType'
+          description: Indicates this is a key-value details object
+      required:
+      - type
+      description: Details for key-value pair blocks
+      title: KeyValueDetails
+    ParseConfigTarget:
+      type: string
+      enum:
+      - markdown
+      - spatial
+      default: markdown
+      description: 'The target format for the parsed content.
+
+
+        Supported values:
+
+
+        * `markdown`: True markdown with logical reading order (headings, lists, tables, checkboxes). Best default for LLMs/RAG and enables section-based chunking.
+
+        * `spatial`: Layout/position-preserving text that uses markdown elements for block types but is not strictly markdown due to whitespace/tabs used to maintain placement. Only page-based chunking is supported.
+
+
+        Guidance:
+
+
+        * Prefer `markdown` for most documents, multi-column reading order, and retrieval use cases
+
+        * Prefer `spatial` for messy/scanned/handwritten or skewed documents, when you need near 1:1 layout fidelity, or for BOL-like logistics docs
+
+
+        See “Markdown vs Spatial” in the [Parse guide](https://docs.extend.ai/2026-02-09/parsing/configuration#target-format) for details.
+
+        '
+      title: ParseConfigTarget
+    RunUsageBreakdownEntry:
       type: object
       properties:
         object:
-          type: string
-          example: parse_run
+          $ref: '#/components/schemas/RunUsageBreakdownEntryObject'
+          description: 'The public object type of the contributing resource. Mirrors the top-level `object` field on the corresponding endpoint so callers can fetch the underlying resource by id if they want more detail.
+
+            '
         id:
           type: string
-        status:
-          $ref: '#/components/schemas/RunStatus'
-        file:
-          type: object
-        output:
-          type: object
-          properties:
-            chunks:
-              type: array
-              items:
-                type: object
-        config:
-          type: object
-        metrics:
-          type: object
-          properties:
-            processingTimeMs:
-              type: integer
-            pageCount:
-              type: integer
-        usage:
-          type: object
+          description: The id of the contributing resource (e.g. `pr_3UZSj69pYZDKHFuuX57ic`).
+        credits:
+          type: number
+          format: double
+          description: Credits charged to the contributing resource.
+        charges:
+          type: array
+          items:
+            $ref: '#/components/schemas/RunUsageBreakdownCharge'
+          description: 'Itemized cost drivers that make up this entry''s `credits`. When present, `sum(charges[].credits) === credits`.
+
+
+            **Availability:** Present on runs persisted on or after June 10, 2026. Runs persisted before that date will omit this field.
+
+            '
+      required:
+      - object
+      - id
+      - credits
+      description: 'One line item in a run''s `usage.breakdown`. Each entry corresponds to a concrete chargeable resource that contributed credits to the parent operation. When `charges` is present, it itemizes the cost drivers behind this entry''s `credits`.
+
+        '
+      title: RunUsageBreakdownEntry
+    ChunkObject:
+      type: string
+      enum:
+      - chunk
+      description: 'The type of object. In this case, it will always be `"chunk"`.
+
+        '
+      title: ChunkObject
+    ParseConfigAdvancedOptionsFormattingDetectionItems:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsFormattingDetectionItemsType'
+          description: 'The type of formatting detection to enable.
+
+
+            * `"change_tracking"` — Detect tracked changes (insertions, deletions, substitutions) indicated by strikethroughs, colored text, or underlines in the source document.
+
+            '
+      required:
+      - type
+      title: ParseConfigAdvancedOptionsFormattingDetectionItems
+    FigureDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/FigureDetailsType'
+          description: Indicates this is a figure details object
+        imageUrl:
+          type: string
+          description: URL to the clipped/segmented figure image. Only set if the option `figureImageClippingEnabled` in the input is `true`, which it is by default.
+        figureType:
+          $ref: '#/components/schemas/FigureDetailsFigureType'
+          description: 'The refined type of figure - only set when figure classification and summarization is enabled. Possible values:
+
+
+            * `image`: A photographic image
+
+            * `chart`: A data chart or graph
+
+            * `diagram`: A schematic or diagram
+
+            * `logo`: A company or brand logo
+
+            * `other`: Any other type of figure
+
+            '
+      required:
+      - type
+      description: Details for figure blocks
+      title: FigureDetails
+    ParseConfigAdvancedOptionsEnrichmentFormat:
+      type: string
+      enum:
+      - xml
+      - bracket
+      default: xml
+      description: 'The format used for enrichment annotations in the output.
+
+
+        * `xml`: Use XML-style tags for enrichment annotations, e.g. <page_number>1</page_number> or <barcode>1234567890</barcode>
+
+        * `bracket`: Use bracket-style notation for enrichment annotations, e.g. [page_number: 1] or [barcode: 1234567890]
+
+        '
+      title: ParseConfigAdvancedOptionsEnrichmentFormat
+    BlockType:
+      type: string
+      enum:
+      - text
+      - heading
+      - section_heading
+      - table
+      - figure
+      - table_head
+      - table_cell
+      - key_value
+      - page_number
+      - barcode
+      - formula
+      - header
+      - footer
+      description: "The type of block:\n* `\"text\"` - Regular text content\n* `\"heading\"` - Section or document headings \n* `\"section_heading\"` - Subsection headings\n* `\"table\"` - Tabular data with rows and columns\n* `\"figure\"` - Images, charts, diagrams, or logos\n* `\"table_head\"` - Table header cells\n* `\"table_cell\"` - Table body cells\n* `\"key_value\"` - Key-value pairs (e.g., form regions, key-val groups, etc)\n* `\"page_number\"` - Page number indicators\n* `\"barcode\"` - Barcodes and QR codes\n* `\"formula\"` - Mathematical formulas and equations\n* `\"header\"` - Page headers\n* `\"footer\"` - Page footers\n"
+      title: BlockType
+    ParseRunOutputMetadata:
+      type: object
+      properties:
+        originalMimeType:
+          type:
+          - string
+          - 'null'
+          description: The file's media type before any format conversion.
+        finalMimeType:
+          type:
+          - string
+          - 'null'
+          description: The file's media type after any format conversion.
+        pages:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/ParseRunOutputMetadataPagesItems'
+          description: Per-page rotation and original-dimension info. Set when file is a PDF or was converted to PDF.
+      description: Rotation, dimension, and file-type metadata about the parse output. `null` for parse runs that completed before this field was introduced.
+      title: ParseRunOutputMetadata
+    ParseConfigBlockOptionsTablesAgentic:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable agentic table processing.
+        customInstructions:
+          type: string
+          description: Custom instructions to guide the agentic table processing.
+      description: Options for agentic table processing using VLM-based review and correction. Enabling this incurs additional credits on pages where agentic table correction is triggered.
+      title: ParseConfigBlockOptionsTablesAgentic
+    FileMetadata:
+      type: object
+      properties:
+        pageCount:
+          type: number
+          format: double
+          description: The number of pages in the file. This is only set for PDF/DOCX files.
+        parentSplit:
+          $ref: '#/components/schemas/ParentSplit'
+      title: FileMetadata
+    PageRangesItems:
+      type: object
+      properties:
+        start:
+          type: integer
+          description: The start page of the range.
+        end:
+          type: integer
+          default: 750
+          description: The end page of the range.
+      required:
+      - start
+      - end
+      title: PageRangesItems
+    TextDetailsType:
+      type: string
+      enum:
+      - text_details
+      description: Indicates this is a text details object
+      title: TextDetailsType
+    TextDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/TextDetailsType'
+          description: Indicates this is a text details object
+        cellReference:
+          type: string
+          description: Source spreadsheet cell or range in A1 notation for Excel-derived text or heading blocks. Only set when `advancedOptions.excelIncludeCellMetadata` is enabled.
+      required:
+      - type
+      description: Details for text and heading blocks
+      title: TextDetails
+    ParseConfigBlockOptionsBarcodes:
+      type: object
+      properties:
+        imageClippingEnabled:
+          type: boolean
+          default: false
+          description: Whether to clip and extract images of barcodes. When enabled, barcode images will be available in the `imageUrl` field of BarcodeDetails.
+        readingEnabled:
+          type: boolean
+          default: false
+          description: Whether to decode and read barcode values. When enabled, decoded values will be available in the `decodedValue` field of BarcodeDetails.
+      description: Options for barcode blocks.
+      title: ParseConfigBlockOptionsBarcodes
+    BlockPolygonItems:
+      type: object
+      properties:
+        x:
+          type: number
+          format: double
+        y:
+          type: number
+          format: double
+      required:
+      - x
+      - y
+      title: BlockPolygonItems
+    RunMetadata:
+      type: object
+      additionalProperties:
+        description: Any type
+      description: 'An optional object that can be passed in to identify the run. It will be returned back to you in the response and webhooks. Maximum size is 10KB.
+
+
+        To categorize runs for billing and usage tracking, include `extend:usage_tags` with an array of string values (e.g., `{"extend:usage_tags": ["production", "team-eng", "customer-123"]}`). Tags must contain only alphanumeric characters, hyphens, and underscores; any special characters will be automatically removed.
+
+        '
+      title: RunMetadata
+    BlockMetadata:
+      type: object
+      properties:
+        page:
+          $ref: '#/components/schemas/BlockMetadataPage'
+          description: Information about the page this block appears on.
+        sheet:
+          $ref: '#/components/schemas/BlockMetadataSheet'
+          description: Spreadsheet sheet metadata. Present for blocks parsed from spreadsheet files, such as Excel workbooks.
+        minOcrConfidence:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Lowest per-word OCR confidence across words in this block, or `null` when word-level confidence is unavailable.
+        avgOcrConfidence:
+          type:
+          - number
+          - 'null'
+          format: double
+          description: Average per-word OCR confidence across words in this block, or `null` when word-level confidence is unavailable.
+      description: Metadata about the block.
+      title: BlockMetadata
+    FileSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/FileSummaryObject'
+          description: The type of object. Will always be `"file"`.
+        id:
+          type: string
+          description: 'ID for the file.
+
+
+            Example: `"file_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the file
+
+
+            Example: `"Invoices.pdf"`
+
+            '
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/FileType'
+          - type: 'null'
+          description: 'The type of the file.
+
+
+            **Availability:** Present when the file type could be determined.
+
+            '
+        parentFileId:
+          type:
+          - string
+          - 'null'
+          description: 'ID of the parent file.
+
+
+            **Availability:** Present for files created via a Splitter in a workflow.
+
+            '
+        metadata:
+          $ref: '#/components/schemas/FileMetadata'
         createdAt:
-          type: string
-          format: date-time
+          $ref: '#/components/schemas/CreatedAt'
         updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - name
+      - type
+      - parentFileId
+      - metadata
+      - createdAt
+      - updatedAt
+      title: FileSummary
+    ParseConfigAdvancedOptions:
+      type: object
+      properties:
+        pageRotationEnabled:
+          type: boolean
+          default: true
+          description: Whether to automatically detect and correct page rotation.
+        pageRanges:
+          $ref: '#/components/schemas/PageRanges'
+        excelParsingMode:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsExcelParsingMode'
+          description: 'Controls how Excel files are parsed.
+
+
+            * `basic`: Fast, deterministic parsing.
+
+            * `advanced`: Enable layout block detection for complex spreadsheets. This mode incurs additional credits when enabled.
+
+
+            For `.xls` files, `basic` mode is always used.
+
+            '
+        excelSkipHiddenContent:
+          type: boolean
+          default: false
+          description: Whether to exclude hidden rows, columns, and sheets when parsing Excel files.
+        excelUseRawCellValues:
+          type: boolean
+          default: false
+          description: Whether to return raw calculated cell values instead of locale-formatted values when parsing Excel files. Useful when downstream processing needs the underlying numeric or unformatted data.
+        excelSkipCalculation:
+          type: boolean
+          default: true
+          description: Whether to skip formula recalculation when opening Excel workbooks. Significantly improves parsing speed for formula-heavy spreadsheets. Disable if cell values depend on volatile functions like NOW() or TODAY().
+        excelIncludeCellMetadata:
+          type: boolean
+          default: false
+          description: Whether to include spreadsheet cell provenance when parsing Excel files in advanced mode. When enabled, table cell block details include source cell references and formulas, text or heading block details can include source ranges, and HTML table output includes `data-cell` and `data-formula` attributes.
+        excelIncludeCellFormatting:
+          type: boolean
+          default: false
+          description: Whether to include spreadsheet cell formatting when parsing Excel files in advanced mode. When enabled, table cell block details include structured formatting such as bold, italic, font color, and background color, and HTML table output preserves inline cell styles.
+        verticalGroupingThreshold:
+          type: number
+          format: double
+          minimum: 0.1
+          maximum: 5
+          default: 1
+          description: Multiplier for the Y-axis threshold used to determine if text blocks should be placed on the same line or not (0.1-5.0, default 1.0). Higher values group elements that are further apart vertically. Only applies when the spatial target is set.
+        returnOcr:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsReturnOcr'
+          description: Options for returning raw OCR data in the response.
+        alwaysConvertToPdf:
+          type: boolean
+          default: false
+          description: Whether to convert supported file types (images, Word documents, PowerPoint, Excel, HTML) to PDF before parsing. This can improve parsing quality for some file types and ensures spatial output with bounding boxes.
+        enrichmentFormat:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsEnrichmentFormat'
+          default: xml
+          description: 'The format used for enrichment annotations in the output.
+
+
+            * `xml`: Use XML-style tags for enrichment annotations, e.g. <page_number>1</page_number> or <barcode>1234567890</barcode>
+
+            * `bracket`: Use bracket-style notation for enrichment annotations, e.g. [page_number: 1] or [barcode: 1234567890]
+
+            '
+        imageConversionQuality:
+          $ref: '#/components/schemas/ParseConfigAdvancedOptionsImageConversionQuality'
+          default: medium
+          description: 'Controls the quality level when converting images or documents to PDF for parsing.
+
+
+            * `high`: Maximum quality, can add some latency for large/dense documents
+
+            * `medium`: Balanced quality and speed
+
+            * `low`: Lower quality, smaller file sizes, faster processing
+
+            '
+        formattingDetection:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParseConfigAdvancedOptionsFormattingDetectionItems'
+          description: 'Enable detection of formatting-based annotations in the document. Currently supports change tracking detection.
+
+
+            When enabled, detected changes are represented inline within the `content` field of applicable blocks using standard HTML change-tracking elements: [`<ins>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/ins) for insertions and [`<del>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/del) for deletions, grouped inside a `<change>` wrapper.
+
+
+            Affected block types: `text`, `heading`, `section_heading`, `header`, `footer`.
+
+
+            **Note:** Requires `engine: "parse_performance"` with `engineVersion >= "2.0.0"`.
+
+            '
+      title: ParseConfigAdvancedOptions
+    ParseConfigAdvancedOptionsFormattingDetectionItemsType:
+      type: string
+      enum:
+      - change_tracking
+      description: 'The type of formatting detection to enable.
+
+
+        * `"change_tracking"` — Detect tracked changes (insertions, deletions, substitutions) indicated by strikethroughs, colored text, or underlines in the source document.
+
+        '
+      title: ParseConfigAdvancedOptionsFormattingDetectionItemsType
+    ParseConfigEngine:
+      type: string
+      enum:
+      - parse_performance
+      - parse_light
+      - parse_auto
+      default: parse_performance
+      description: 'The parsing engine to use. Supported values:
+
+        * `parse_performance`: Full-featured parsing engine with highest accuracy (default)
+
+        * `parse_light`: Lightweight parsing engine optimized for high-volume, cost-sensitive ingestion. Uses the new layout model with full layout support and the markdown target at lower cost and latency, but performs worse than `parse_performance` on lower-quality scans, harder handwriting, larger tables, non-Latin-based languages, and dense checkbox regions.
+
+        * `parse_auto`: Adaptive parsing that classifies difficulty and routes work per page — simple pages are parsed with the parse_light model pipeline while complex pages get performance-level model treatment. Billed per page by complexity.
+
+        '
+      title: ParseConfigEngine
+    FileType:
+      type: string
+      enum:
+      - PDF
+      - CSV
+      - IMG
+      - TXT
+      - DOCX
+      - EXCEL
+      - XML
+      - HTML
+      description: The type of the file based on the file extension or content type.
+      title: FileType
+    ChunkMetadataPageRange:
+      type: object
+      properties:
+        start:
+          type: integer
+          description: The starting page number (inclusive).
+        end:
+          type: integer
+          description: The ending page number (inclusive).
+      required:
+      - start
+      - end
+      description: 'The page range this chunk covers. Often will just be a partial page, in which cases `start` and `end` will be the same.
+
+        '
+      title: ChunkMetadataPageRange
+    BlockDetails:
+      oneOf:
+      - $ref: '#/components/schemas/TextDetails'
+      - $ref: '#/components/schemas/TableDetails'
+      - $ref: '#/components/schemas/TableCellDetails'
+      - $ref: '#/components/schemas/FigureDetails'
+      - $ref: '#/components/schemas/BarcodeDetails'
+      - $ref: '#/components/schemas/FormulaDetails'
+      - $ref: '#/components/schemas/KeyValueDetails'
+      - $ref: '#/components/schemas/EmptyBlockDetails'
+      description: 'Additional details specific to the block type. The schema depends on the block type.
+
+        '
+      title: BlockDetails
+    ParseRunOutputMetadataPagesItems:
+      type: object
+      properties:
+        number:
+          type: integer
+          description: The page number this entry describes.
+        rotationApplied:
+          type:
+          - integer
+          - 'null'
+          description: Degrees Extend rotated the page to make it upright, as a multiple of 90. Positive values are clockwise and negative values are counterclockwise (for example, `-90` is equivalent to `270`). `0` if rotation detection ran and the page was already upright; `null` if rotation detection was disabled for this run. Normalize with `((value % 360) + 360) % 360` before branching on it.
+        originalPageWidth:
+          type: number
+          format: double
+          description: The file's true page width, independent of rendering resolution.
+        originalPageHeight:
+          type: number
+          format: double
+          description: The file's true page height, independent of rendering resolution.
+        dpi:
+          type: number
+          format: double
+          description: The DPI that `boundingBox`/`polygon` coordinates on this page are scaled to. Multiply `originalPageWidth`/`originalPageHeight` by `dpi / 72` to convert them into that same coordinate space.
+      required:
+      - number
+      - rotationApplied
+      - originalPageWidth
+      - originalPageHeight
+      - dpi
+      title: ParseRunOutputMetadataPagesItems
+    EmptyBlockDetails:
+      type: object
+      properties: {}
+      description: An empty object
+      title: EmptyBlockDetails
+    BarcodeDetails:
+      type: object
+      properties:
+        type:
+          $ref: '#/components/schemas/BarcodeDetailsType'
+          description: Indicates this is a barcode details object
+        imageUrl:
           type: string
-          format: date-time
-  parameters:
-    PathId:
-      name: id
-      in: path
-      required: true
-      schema:
-        type: string
-    NextPageToken:
-      name: nextPageToken
-      in: query
-      required: false
-      schema:
-        type: string
-    MaxPageSize:
-      name: maxPageSize
-      in: query
-      required: false
-      schema:
-        type: integer
-    ApiVersion:
-      name: x-extend-api-version
-      in: header
-      required: false
-      description: API version to pin the request to, for example 2026-02-09.
-      schema:
-        type: string
-        example: '2026-02-09'
-  responses:
-    ApiError:
-      description: Error response.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ApiError'
+          description: URL to the clipped/segmented barcode image. Only set if the option `imageClippingEnabled` in blockOptions.barcodes is `true`.
+        decodedValue:
+          type: string
+          description: The decoded value of the barcode or QR code. Only set if the option `readingEnabled` in blockOptions.barcodes is `true`.
+        format:
+          type: string
+          description: The format of the barcode (e.g., "QRCode", "Code128", "DataMatrix", "EAN13").
+      required:
+      - type
+      description: Details for barcode blocks
+      title: BarcodeDetails
+    FigureDetailsType:
+      type: string
+      enum:
+      - figure_details
+      description: Indicates this is a figure details object
+      title: FigureDetailsType
+    Chunk:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/ChunkObject'
+          description: 'The type of object. In this case, it will always be `"chunk"`.
+
+            '
+        type:
+          $ref: '#/components/schemas/ChunkType'
+          description: The type of chunk.
+        content:
+          type: string
+          description: The parsed content of the chunk.
+        metadata:
+          $ref: '#/components/schemas/ChunkMetadata'
+          description: Metadata about the chunk.
+        blocks:
+          type: array
+          items:
+            $ref: '#/components/schemas/Block'
+          description: 'An array of block objects that make up the chunk. A Block represents a distinct content element within a document, such as a paragraph of text, a heading, a table, or a figure. Blocks are the fundamental units that make up chunks in parsed documents.
+
+            '
+      required:
+      - object
+      - type
+      - content
+      - metadata
+      - blocks
+      title: Chunk
+    TableDetailsType:
+      type: string
+      enum:
+      - table_details
+      description: Indicates this is a table details object
+      title: TableDetailsType
+    ParseConfigBlockOptionsFormulas:
+      type: object
+      properties:
+        enabled:
+          type: boolean
+          default: false
+          description: Whether to enable formula detection and parsing. When enabled, mathematical formulas and equations are detected and their LaTeX representations are included in the output. When disabled, formulas will be detected as text blocks and may not be accurately parsed.
+      description: Options for formula blocks.
+      title: ParseConfigBlockOptionsFormulas
+    ParentSplit:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the split.
+        type:
+          type: string
+          description: The type of the split.
+        identifier:
+          type: string
+          description: The identifier of the split.
+        startPage:
+          type: integer
+          description: The start page of the split.
+        endPage:
+          type: integer
+          description: The end page of the split.
+      required:
+      - id
+      - type
+      - identifier
+      - startPage
+      - endPage
+      description: 'The split metadata details for a derivative file.
+
+
+        **Availability:** Only included if this file is a derivative of another file, for instance if it was created via a Splitter in a workflow.
+
+        '
+      title: ParentSplit
   securitySchemes:
     BearerAuth:
       type: http
       scheme: bearer
-      description: Provide your Extend API token as a Bearer token in the Authorization header.

@@ -1,0 +1,1285 @@
+openapi: 3.2.0
+info:
+  title: Reference Evaluation Set Items API
+  version: 1.0.0
+servers:
+- url: https://api.extend.ai
+  description: Production
+- url: https://api.us2.extend.app
+  description: Production US2
+- url: https://api.eu1.extend.ai
+  description: Production EU1
+tags:
+- name: evaluationSetItems
+paths:
+  /evaluation_sets/{evaluationSetId}/items:
+    post:
+      operationId: evaluationSetItems_create
+      summary: Create Evaluation Set Items
+      description: 'Evaluation set items are the individual files and expected outputs that are used to evaluate the performance of a given extractor, classifier, or splitter in Extend. This endpoint will create new evaluation set items in Extend, which will be used during an evaluation run.
+
+
+        Each item references exactly one of:
+
+
+        - **`fileId`** — a single file. The item is evaluated as one single-file run.
+
+        - **`fileIds`** — an ordered package of 2–50 files. The item is evaluated as one multifile extraction run, with a single `expectedOutput` covering the whole package. Multifile items are only supported on evaluation sets attached to a JSON-schema extractor.
+
+
+        **Limit:** You can create up to 100 items at a time.
+
+
+        Learn more about how to create evaluation set items in the Evaluation Sets product page.'
+      tags:
+      - evaluationSetItems
+      parameters:
+      - name: evaluationSetId
+        in: path
+        description: 'The ID of the evaluation set.
+
+
+          Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Evaluation set items created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/evaluationSetItems_create_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/EvaluationSetsEvaluationSetIdItemsPostRequestBodyContentApplicationJsonSchemaItemsItems'
+                  description: An array of objects representing the evaluation set items to create.
+              required:
+              - items
+      security:
+      - BearerAuth: []
+    get:
+      operationId: evaluationSetItems_list
+      summary: List Evaluation Set Items
+      description: 'List items in a specific evaluation set.
+
+
+        Returns a summary of each evaluation set item. Use the Get Evaluation Set Item endpoint to get the full details of an evaluation set item.'
+      tags:
+      - evaluationSetItems
+      parameters:
+      - name: evaluationSetId
+        in: path
+        description: 'The ID of the evaluation set.
+
+
+          Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: sortBy
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortBy'
+          default: updatedAt
+      - name: sortDir
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/SortDir'
+          default: desc
+      - name: nextPageToken
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/NextPageToken'
+      - name: maxPageSize
+        in: query
+        required: false
+        schema:
+          $ref: '#/components/schemas/MaxPageSize'
+          default: 10
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of evaluation set items
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/evaluationSetItems_list_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+  /evaluation_sets/{evaluationSetId}/items/{itemId}:
+    get:
+      operationId: evaluationSetItems_retrieve
+      summary: Get Evaluation Set Item
+      description: Get details of an evaluation set item.
+      tags:
+      - evaluationSetItems
+      parameters:
+      - name: evaluationSetId
+        in: path
+        description: 'The ID of the evaluation set.
+
+
+          Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        description: 'The ID of the evaluation set item.
+
+
+          Example: `"evi_kR9mNP12Qw4yTv8BdR3H"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Evaluation set item details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSetItem'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+    post:
+      operationId: evaluationSetItems_update
+      summary: Update Evaluation Set Item
+      description: If you need to change the expected output for a given evaluation set item, you can use this endpoint to update the item. This can be useful if you need to correct an error in the expected output or if the output of the extractor, classifier, or splitter has changed.
+      tags:
+      - evaluationSetItems
+      parameters:
+      - name: evaluationSetId
+        in: path
+        description: 'The ID of the evaluation set.
+
+
+          Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        description: 'The ID of the evaluation set item.
+
+
+          Example: `"evi_kR9mNP12Qw4yTv8BdR3H"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Successfully updated evaluation set item
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EvaluationSetItem'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                expectedOutput:
+                  $ref: '#/components/schemas/ProvidedProcessorOutput'
+                  description: The expected output of the extractor, classifier, or splitter when run against the file. This must conform to the output schema of the entity associated with the evaluation set.
+              required:
+              - expectedOutput
+      security:
+      - BearerAuth: []
+    delete:
+      operationId: evaluationSetItems_delete
+      summary: Delete Evaluation Set Item
+      description: Delete an evaluation set item.
+      tags:
+      - evaluationSetItems
+      parameters:
+      - name: evaluationSetId
+        in: path
+        description: 'The ID of the evaluation set.
+
+
+          Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: itemId
+        in: path
+        description: 'The ID of the evaluation set item.
+
+
+          Example: `"evi_kR9mNP12Qw4yTv8BdR3H"`
+
+          '
+        required: true
+        schema:
+          type: string
+      - name: x-extend-api-version
+        in: header
+        description: API version to use for the request. If you're using an SDK, you can ignore this parameter. If you are not using an SDK and do not specify a version, you will either receive a `400 Bad Request` or be set to a previous legacy version. See [API Versioning](https://docs.extend.ai/2026-02-09/api-reference/api-versioning) for more details.
+        required: false
+        schema:
+          type: string
+          enum:
+          - '2026-02-09'
+          default: '2026-02-09'
+      - name: x-extend-workspace-id
+        in: header
+        description: 'The workspace ID to target. **Required** when using an organization-scoped API key; optional for workspace-scoped keys (the key is already tied to a workspace). See [Authentication](https://docs.extend.ai/2026-02-09/api-reference/authentication) for details on API key scopes.
+
+          '
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Evaluation set item deleted successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/evaluationSetItems_delete_Response_200'
+        '400':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '401':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '402':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '403':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '404':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '422':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '429':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+        '500':
+          description: 'Standard error response format for all Extend API errors.
+
+
+            See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+            '
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiError'
+      security:
+      - BearerAuth: []
+components:
+  schemas:
+    MaxPageSize:
+      type: integer
+      minimum: 1
+      maximum: 1000
+      default: 10
+      description: The maximum number of results to return in the response. You may receive less than this number if there are fewer results than the maximum.
+      title: MaxPageSize
+    FileMetadata:
+      type: object
+      properties:
+        pageCount:
+          type: number
+          format: double
+          description: The number of pages in the file. This is only set for PDF/DOCX files.
+        parentSplit:
+          $ref: '#/components/schemas/ParentSplit'
+      title: FileMetadata
+    SortDir:
+      type: string
+      enum:
+      - asc
+      - desc
+      default: desc
+      description: Sort in ascending or descending order. Ascending order means the earliest result is returned first.
+      title: SortDir
+    CreatedBy:
+      oneOf:
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - user
+            description: 'Discriminator value: user'
+          email:
+            type: string
+            format: email
+            description: The email address of the user who created the resource.
+        required:
+        - type
+        - email
+        description: Attribution for a resource created via the studio by a logged-in user.
+      - type: object
+        properties:
+          type:
+            type: string
+            enum:
+            - api_key
+            description: 'Discriminator value: api_key'
+          name:
+            type: string
+            description: The name of the API key that created the resource.
+        required:
+        - type
+        - name
+        description: Attribution for a resource created via the API using an API key.
+      discriminator:
+        propertyName: type
+      description: 'The actor that created this resource.
+
+
+        * `user` — the resource was created via the studio by a logged-in user. The user''s `email` is exposed.
+
+        * `api_key` — the resource was created via the API using an API key. The key''s `name` is exposed.
+
+
+        May be `null` for resources created before attribution.
+
+        '
+      title: CreatedBy
+    EvaluationSetItemObject:
+      type: string
+      enum:
+      - evaluation_set_item
+      description: 'The type of object. In this case, it will always be `"evaluation_set_item"`.
+
+        '
+      title: EvaluationSetItemObject
+    ProvidedSplitOutputSplitsItems:
+      type: object
+      properties:
+        classificationId:
+          type: string
+          description: ID of the classification type (defined in the splitter config)
+        type:
+          type: string
+          description: The type of the split document (defined in the splitter config), corresponds to the classificationId
+        startPage:
+          type: integer
+          description: The start page of the split document
+        endPage:
+          type: integer
+          description: The end page of the split document
+      required:
+      - classificationId
+      - type
+      - startPage
+      - endPage
+      title: ProvidedSplitOutputSplitsItems
+    evaluationSetItems_create_Response_200:
+      type: object
+      properties:
+        evaluationSetItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluationSetItem'
+      required:
+      - evaluationSetItems
+      title: evaluationSetItems_create_Response_200
+    FileSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/FileSummaryObject'
+          description: The type of object. Will always be `"file"`.
+        id:
+          type: string
+          description: 'ID for the file.
+
+
+            Example: `"file_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        name:
+          type: string
+          description: 'The name of the file
+
+
+            Example: `"Invoices.pdf"`
+
+            '
+        type:
+          oneOf:
+          - $ref: '#/components/schemas/FileType'
+          - type: 'null'
+          description: 'The type of the file.
+
+
+            **Availability:** Present when the file type could be determined.
+
+            '
+        parentFileId:
+          type:
+          - string
+          - 'null'
+          description: 'ID of the parent file.
+
+
+            **Availability:** Present for files created via a Splitter in a workflow.
+
+            '
+        metadata:
+          $ref: '#/components/schemas/FileMetadata'
+        createdAt:
+          $ref: '#/components/schemas/CreatedAt'
+        updatedAt:
+          $ref: '#/components/schemas/UpdatedAt'
+      required:
+      - object
+      - id
+      - name
+      - type
+      - parentFileId
+      - metadata
+      - createdAt
+      - updatedAt
+      title: FileSummary
+    EvaluationSetItemSummary:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/EvaluationSetItemSummaryObject'
+          description: 'The type of object. In this case, it will always be `"evaluation_set_item"`.
+
+            '
+        id:
+          type: string
+          description: 'The ID of the evaluation set item.
+
+
+            Example: `"evi_kR9mNP12Qw4yTv8BdR3H"`
+
+            '
+        file:
+          oneOf:
+          - $ref: '#/components/schemas/FileSummary'
+          - type: 'null'
+          description: 'A summary of the file associated with the evaluation set item. `null` for multifile items (use `files` instead).
+
+            '
+        files:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/FileSummary'
+          description: 'The files associated with a multifile evaluation set item, in the order they were submitted. Only populated for items created with `fileIds`.
+
+
+            For single-file items, this is `null` — use `file` instead.
+
+            '
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - file
+      - files
+      - createdBy
+      title: EvaluationSetItemSummary
+    ProvidedSplitOutput:
+      type: object
+      properties:
+        splits:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProvidedSplitOutputSplitsItems'
+      required:
+      - splits
+      title: ProvidedSplitOutput
+    evaluationSetItems_delete_Response_200:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the deleted evaluation set item.
+      required:
+      - id
+      title: evaluationSetItems_delete_Response_200
+    EvaluationSetsEvaluationSetIdItemsGetResponsesContentApplicationJsonSchemaObject:
+      type: string
+      enum:
+      - list
+      title: EvaluationSetsEvaluationSetIdItemsGetResponsesContentApplicationJsonSchemaObject
+    NextPageToken:
+      type: string
+      description: 'The token used to fetch the page of results from a previous request. We use cursor based pagination and will return a `nextPageToken` in the response if there are more results.
+
+
+        Note that if other parameters are changed in subsequent requests, you may receive inconsistent data.
+
+        '
+      title: NextPageToken
+    FileType:
+      type: string
+      enum:
+      - PDF
+      - CSV
+      - IMG
+      - TXT
+      - DOCX
+      - EXCEL
+      - XML
+      - HTML
+      description: The type of the file based on the file extension or content type.
+      title: FileType
+    evaluationSetItems_list_Response_200:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/EvaluationSetsEvaluationSetIdItemsGetResponsesContentApplicationJsonSchemaObject'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/EvaluationSetItemSummary'
+        nextPageToken:
+          $ref: '#/components/schemas/NextPageToken'
+      required:
+      - object
+      - data
+      title: evaluationSetItems_list_Response_200
+    ProvidedExtractOutput:
+      type: object
+      properties:
+        value:
+          $ref: '#/components/schemas/JsonObject'
+          description: The expected extraction output, provided as a JSON object that conforms to the schema defined in the extractor config
+      description: 'The expected extraction output.
+
+
+        **Important:** Make sure to nest the JSON object conforming to the schema in a `value` object, and include all properties defined in the schema.
+
+        '
+      title: ProvidedExtractOutput
+    FileSummaryObject:
+      type: string
+      enum:
+      - file
+      description: The type of object. Will always be `"file"`.
+      title: FileSummaryObject
+    CreatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was created. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: CreatedAt
+    ParentSplit:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The ID of the split.
+        type:
+          type: string
+          description: The type of the split.
+        identifier:
+          type: string
+          description: The identifier of the split.
+        startPage:
+          type: integer
+          description: The start page of the split.
+        endPage:
+          type: integer
+          description: The end page of the split.
+      required:
+      - id
+      - type
+      - identifier
+      - startPage
+      - endPage
+      description: 'The split metadata details for a derivative file.
+
+
+        **Availability:** Only included if this file is a derivative of another file, for instance if it was created via a Splitter in a workflow.
+
+        '
+      title: ParentSplit
+    ProvidedProcessorOutput:
+      oneOf:
+      - $ref: '#/components/schemas/ProvidedExtractOutput'
+      - $ref: '#/components/schemas/ProvidedClassifyOutput'
+      - $ref: '#/components/schemas/ProvidedSplitOutput'
+      title: ProvidedProcessorOutput
+    SortBy:
+      type: string
+      enum:
+      - updatedAt
+      - createdAt
+      default: updatedAt
+      description: Sort by the given field.
+      title: SortBy
+    JsonObject:
+      type: object
+      additionalProperties:
+        description: Any type
+      description: A flexible object that can hold any arbitrary JSON key-value structure.
+      title: JsonObject
+    EvaluationSetItem:
+      type: object
+      properties:
+        object:
+          $ref: '#/components/schemas/EvaluationSetItemObject'
+          description: 'The type of object. In this case, it will always be `"evaluation_set_item"`.
+
+            '
+        id:
+          type: string
+          description: 'The ID of the evaluation set item.
+
+
+            Example: `"evi_kR9mNP12Qw4yTv8BdR3H"`
+
+            '
+        evaluationSetId:
+          type: string
+          description: 'The ID of the evaluation set that this item belongs to.
+
+
+            Example: `"ev_2LcgeY_mp2T5yPaEuq5Lw"`
+
+            '
+        file:
+          oneOf:
+          - $ref: '#/components/schemas/FileSummary'
+          - type: 'null'
+          description: 'A summary of the file associated with the evaluation set item. `null` for multifile items (use `files` instead).
+
+            '
+        files:
+          type:
+          - array
+          - 'null'
+          items:
+            $ref: '#/components/schemas/FileSummary'
+          description: 'The files associated with a multifile evaluation set item, in the order they were submitted. Only populated for items created with `fileIds`.
+
+
+            For single-file items, this is `null` — use `file` instead.
+
+            '
+        expectedOutput:
+          $ref: '#/components/schemas/ProvidedProcessorOutput'
+          description: The expected output that will be used to evaluate the performance of the extractor, classifier, or splitter associated with the evaluation set. This must conform to the output schema of the entity associated with the evaluation set.
+        createdBy:
+          $ref: '#/components/schemas/CreatedBy'
+      required:
+      - object
+      - id
+      - evaluationSetId
+      - file
+      - files
+      - expectedOutput
+      - createdBy
+      title: EvaluationSetItem
+    UpdatedAt:
+      type: string
+      format: date-time
+      description: 'The time (in UTC) at which the object was last updated. Will follow the RFC 3339 format.
+
+
+        Example: `"2024-03-21T16:45:00Z"`
+
+        '
+      title: UpdatedAt
+    ApiError:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Error code for programmatic handling.
+        message:
+          type: string
+          description: "Human-readable error message suitable for displaying to developers. \nDo not rely on the exact text of this message as it may change.\n"
+        retryable:
+          type: boolean
+          description: 'Whether the request can be retried. When true, retry with exponential backoff.
+
+            When false, fix the underlying issue before retrying.
+
+            '
+        requestId:
+          type: string
+          description: "Unique request identifier for support purposes. Always include this \nwhen contacting Extend support about an error.\n"
+        docUrl:
+          type: string
+          description: Link to relevant documentation when one is available.
+      required:
+      - code
+      - message
+      - retryable
+      description: 'Standard error response format for all Extend API errors.
+
+
+        See the [Error Codes documentation](https://docs.extend.ai/2026-02-09/api-reference/error-handling) for error handling recommendations.
+
+        '
+      title: ApiError
+    EvaluationSetsEvaluationSetIdItemsPostRequestBodyContentApplicationJsonSchemaItemsItems:
+      type: object
+      properties:
+        fileId:
+          type: string
+          description: 'Extend''s internal ID for the file. It will always start with "file_". Mutually exclusive with `fileIds`.
+
+
+            Example: `"file_xK9mLPqRtN3vS8wF5hB2cQ"`
+
+            '
+        fileIds:
+          type: array
+          items:
+            type: string
+          description: 'An ordered list of Extend file IDs to evaluate together as a single multifile item. Mutually exclusive with `fileId`.
+
+
+            Each evaluation run evaluates the item as one multifile extraction run over these files, in this order. Only supported for evaluation sets whose entity is a JSON-schema extractor. File IDs must be unique.
+
+
+            See [Multifile Extraction](https://docs.extend.ai/2026-02-09/extraction/multifile) for details.
+
+            '
+        expectedOutput:
+          $ref: '#/components/schemas/ProvidedProcessorOutput'
+          description: The expected output that will be compared to the actual output of the extractor, classifier, or splitter when run against the file(s).
+      required:
+      - expectedOutput
+      description: 'Each item references exactly one of `fileId` (a single file) or `fileIds` (a multifile item) — provide one or the other.
+
+        '
+      title: EvaluationSetsEvaluationSetIdItemsPostRequestBodyContentApplicationJsonSchemaItemsItems
+    EvaluationSetItemSummaryObject:
+      type: string
+      enum:
+      - evaluation_set_item
+      description: 'The type of object. In this case, it will always be `"evaluation_set_item"`.
+
+        '
+      title: EvaluationSetItemSummaryObject
+    ProvidedClassifyOutput:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The unique identifier for this classification (defined in the classifier config)
+        type:
+          type: string
+          description: The type of classification (defined in the classifier config)
+      required:
+      - id
+      - type
+      title: ProvidedClassifyOutput
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
