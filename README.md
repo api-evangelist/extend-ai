@@ -1,4 +1,4 @@
-# Extend (extend-ai)
+# Extend
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -66,159 +66,139 @@
 
 Extend is an intelligent document processing platform that turns documents into high quality, structured data. Its REST API at api.extend.ai exposes parsing, extraction, classification, and splitting processors, durable multi-step workflows, evaluation sets, and batch processing for automating document-heavy operations.
 
-**APIs.json:** [https://raw.githubusercontent.com/api-evangelist/extend-ai/refs/heads/main/apis.yml](https://raw.githubusercontent.com/api-evangelist/extend-ai/refs/heads/main/apis.yml)
+**Areas:** Document Processing · Document AI · Intelligent Document Processing · OCR · Extraction · Classification
 
-## Tags
+## Extend on APIs.io
 
-- Document Processing
-- Document AI
-- Intelligent Document Processing
-- OCR
-- Extraction
-- Classification
+Everything profiled for Extend is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/extend-ai/](https://apis.io/providers/extend-ai/)** — or go straight to one of the APIs or properties below.
 
-## Timestamps
+### APIs (9)
 
-- **Created:** 2026-06-20
-- **Modified:** 2026-06-20
+- [Extend Batch API](https://apis.io/apis/extend-ai/extend-ai-batch-api/) — The Batch API from Extend — 5 operation(s) for batch.
+- [Extend Classify API](https://apis.io/apis/extend-ai/extend-ai-classify-api/) — The Classify API from Extend — 4 operation(s) for classify.
+- [Extend Evaluations API](https://apis.io/apis/extend-ai/extend-ai-evaluations-api/) — The Evaluations API from Extend — 4 operation(s) for evaluations.
+- [Extend Extract API](https://apis.io/apis/extend-ai/extend-ai-extract-api/) — The Extract API from Extend — 6 operation(s) for extract.
+- [Extend Files API](https://apis.io/apis/extend-ai/extend-ai-files-api/) — The Files API from Extend — 3 operation(s) for files.
+- [Extend Parse API](https://apis.io/apis/extend-ai/extend-ai-parse-api/) — The Parse API from Extend — 3 operation(s) for parse.
+- [Extend Split API](https://apis.io/apis/extend-ai/extend-ai-split-api/) — The Split API from Extend — 3 operation(s) for split.
+- [Extend Workflow Runs API](https://apis.io/apis/extend-ai/extend-ai-workflow-runs-api/) — The Workflow Runs API from Extend — 3 operation(s) for workflow runs.
+- [Extend Workflows API](https://apis.io/apis/extend-ai/extend-ai-workflows-api/) — The Workflows API from Extend — 2 operation(s) for workflows.
 
-## APIs
+### Published properties
 
-### Extend Files API
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
 
-Upload, list, retrieve, and delete files used as inputs to Extend processors and workflows, with optional PDF conversion and password-protected document support.
+#### MCP servers (1)
 
-- **Human URL:** [https://docs.extend.ai/api-reference/endpoints/file/upload-file](https://docs.extend.ai/api-reference/endpoints/file/upload-file)
-- **Base URL:** `https://api.extend.ai`
+Model Context Protocol servers that expose the API to agents.
 
-#### Tags
+- [extend-ai](https://apis.io/servers/extend-ai/extend-ai/)
 
-- Files
-- Upload
-- Documents
+#### Agentic access (1)
 
-#### Properties
+Which operations an agent can call, which act, and which need a human in the loop.
 
-- [Documentation](https://docs.extend.ai/api-quickstart)
-- [API Reference](https://docs.extend.ai/api-reference/endpoints/file/upload-file)
-- [OpenAPI](openapi/extend-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/extend-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/extend-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+- [Extend Ai Agentic Access](https://apis.io/agentic-access/extend-ai/extend-ai-agentic-access/)
 
-### Extend Processors API
+#### Collections (10)
 
-Synchronous parse, extract, classify, and split endpoints plus management of reusable extractors, classifiers, and splitters for document understanding.
+Postman and Open Collection request collections.
 
-- **Human URL:** [https://docs.extend.ai/api-reference/endpoints/parse/parse-file](https://docs.extend.ai/api-reference/endpoints/parse/parse-file)
-- **Base URL:** `https://api.extend.ai`
+- [Extend API](https://apis.io/collections/extend-ai/open-extend-ai/)
+- [Extend Batch API](https://apis.io/collections/extend-ai/open-extend-ai-batch-api/)
+- [Extend Batch Classify API](https://apis.io/collections/extend-ai/open-extend-ai-classify-api/)
+- [Extend Batch Evaluations API](https://apis.io/collections/extend-ai/open-extend-ai-evaluations-api/)
+- [Extend Batch Extract API](https://apis.io/collections/extend-ai/open-extend-ai-extract-api/)
+- [Extend Batch Files API](https://apis.io/collections/extend-ai/open-extend-ai-files-api/)
+- [Extend Batch Parse API](https://apis.io/collections/extend-ai/open-extend-ai-parse-api/)
+- [Extend Batch Split API](https://apis.io/collections/extend-ai/open-extend-ai-split-api/)
+- [Extend Batch Workflow Runs API](https://apis.io/collections/extend-ai/open-extend-ai-workflow-runs-api/)
+- [Extend Batch Workflows API](https://apis.io/collections/extend-ai/open-extend-ai-workflows-api/)
 
-#### Tags
+#### Security (3)
 
-- Parse
-- Extract
-- Classify
-- Split
+Authentication, trust centre, and vulnerability disclosure.
 
-#### Properties
+- [Extend Ai Authentication](https://apis.io/security/extend-ai/extend-ai-authentication/)
+- [Extend Ai Domain Security](https://apis.io/security/extend-ai/extend-ai-domain-security/)
+- [Extend Ai Trust Center](https://apis.io/security/extend-ai/extend-ai-trust-center/)
 
-- [Documentation](https://docs.extend.ai/extraction/overview)
-- [API Reference](https://docs.extend.ai/api-reference/endpoints/parse/parse-file)
-- [OpenAPI](openapi/extend-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/extend-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/extend-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+#### Plans and pricing (1)
 
-### Extend Processor Runs API
+Published plans, tiers and prices.
 
-Asynchronous run lifecycle for parse, extract, classify, and split operations, returning run objects you poll or receive via webhooks for production workloads.
+- [Extend Ai Plans Pricing](https://apis.io/plans/extend-ai/extend-ai-plans-pricing/)
 
-- **Human URL:** [https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run](https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run)
-- **Base URL:** `https://api.extend.ai`
+#### Rate limits (1)
 
-#### Tags
+Published request limits.
 
-- Processor Runs
-- Async
-- Polling
+- [Extend Ai Rate Limits](https://apis.io/rate-limits/extend-ai/extend-ai-rate-limits/)
 
-#### Properties
+#### FinOps (1)
 
-- [API Reference](https://docs.extend.ai/api-reference/endpoints/parse/create-parse-run)
-- [OpenAPI](openapi/extend-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/extend-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/extend-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
+What the API costs to run, by operation.
 
-### Extend Workflows API
+- [Extend Ai Finops](https://apis.io/finops/extend-ai/extend-ai-finops/)
 
-Create and manage versioned, durable multi-step workflows that chain parsing, splitting, extraction, classification, validation, and routing.
+## Where to find this API
 
-- **Human URL:** [https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow](https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow)
-- **Base URL:** `https://api.extend.ai`
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
 
-#### Tags
-
-- Workflows
-- Orchestration
-- Durable
-
-#### Properties
-
-- [Documentation](https://docs.extend.ai/workflows/overview)
-- [API Reference](https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow)
-- [OpenAPI](openapi/extend-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/extend-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/extend-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Extend Workflow Runs API
-
-Run deployed workflows against files, then poll, update, list, and batch workflow runs with priorities, metadata, secrets, and human-review states.
-
-- **Human URL:** [https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run](https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run)
-- **Base URL:** `https://api.extend.ai`
-
-#### Tags
-
-- Workflow Runs
-- Execution
-- Webhooks
-
-#### Properties
-
-- [API Reference](https://docs.extend.ai/api-reference/endpoints/workflow/create-workflow-run)
-- [OpenAPI](openapi/extend-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/extend-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/extend-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-### Extend Evaluations API
-
-Create evaluation sets and items against extractors, classifiers, or splitters, trigger evaluation runs, and track batch runs to measure processor accuracy over time.
-
-- **Human URL:** [https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set](https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set)
-- **Base URL:** `https://api.extend.ai`
-
-#### Tags
-
-- Evaluations
-- Batches
-- Quality
-
-#### Properties
-
-- [Documentation](https://docs.extend.ai/evaluation/overview)
-- [API Reference](https://docs.extend.ai/api-reference/endpoints/evaluation/create-evaluation-set)
-- [OpenAPI](openapi/extend-ai-openapi.yml) — [OpenAPI Specification](https://spec.openapis.org/oas/latest.html)
-- [Postman Collection](collections/extend-ai.postman_collection.json) — [Postman Collection 2.1](https://schema.getpostman.com/json/collection/v2.1.0/collection.json)
-- [Open Collection](collections/extend-ai.opencollection.json) — [Open Collection 1.0](https://schema.opencollection.com/opencollection/v1.0.0.json)
-
-## Common Properties
-
-- [LinkedIn](https://www.linkedin.com/company/extend-ai)
 - [Website](https://www.extend.ai)
 - [Documentation](https://docs.extend.ai)
-- [Plans](plans/extend-ai-plans-pricing.yml)
-- [Rate Limits](rate-limits/extend-ai-rate-limits.yml)
-- [Fin Ops](finops/extend-ai-finops.yml)
 
-## Maintainers
+## API Evangelist rating
 
-**FN:** Kin Lane
-**Email:** kin@apievangelist.com
+**Kin Score 29.2** — thin · rubric 0.25.0 · scored 2026-10-23
+
+| Facet | Score |
+|---|---|
+| Discoverability | 68.3 |
+| Contract quality | 50.9 |
+| Contract governance | 0.0 |
+| Operational transparency | 7.9 |
+| Developer ergonomics | 29.8 |
+| Access clarity | 15.8 |
+
+**Agent readiness 57.7** — agent-ready (gated down from agent-native)
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | derived (partial credit) |
+| Reversibility Documented | — |
+| MCP Server | verified |
+| Auth Clarity | served (partial credit) |
+| Idempotency | — |
+| Error Semantics | verified |
+| OpenAPI Examples | partial |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | yes |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | verified |
+| Dynamic Client Registration | yes |
+| Agentic Commerce | — |
+| Pagination Ratio | paginated |
+| Operation Distinctiveness | distinct |
+
+**Regulatory alignment 16.7** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/extend-ai/](https://apis.io/providers/extend-ai/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Extend: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/extend-ai/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
